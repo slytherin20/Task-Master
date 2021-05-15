@@ -18,6 +18,9 @@ code {
   height:100%;
 }
 .nav-bar{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   height: 50px;
   color:white;
   background-color:rebeccapurple;
@@ -51,4 +54,16 @@ code {
   display:inline;
   height: 800px;
   width:600px;
+}
+
+.menu-icon{
+  color: white;
+  height:24px;
+}
+.menu-icon:hover,.cancel-icon:hover{
+  cursor: pointer;
+}
+
+.sidebar-menu{
+  width:25%;
 }
