@@ -60,7 +60,7 @@ code {
   color: white;
   height:24px;
 }
-.menu-icon:hover,.cancel-icon:hover{
+.menu-icon:hover,.cancel-icon:hover,.account-img:hover{
   cursor: pointer;
 }
 
