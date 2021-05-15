@@ -15,13 +15,14 @@ function SignUp(){
                 firebase.auth.TwitterAuthProvider.PROVIDER_ID,
                 firebase.auth.GithubAuthProvider.PROVIDER_ID,
                 ],
-        signInSuccessWithAuthResults: ()=> false
+        signInSuccessWithAuthResults: ()=> false,
+
     }
     return(
-        <>
-        <h1>This is a cool app</h1>
-        <StyledFirebaseAuth uiCallback = {ui=>ui.disableAutoSignIn()} uiConfig = {uiConfig} firebaseAuth = {auth} />
-        </>
+        <div className="main-page">
+        <nav className="nav-bar">Task Master - A to do tracking app</nav>
+        <StyledFirebaseAuth className = "sign-in-options" uiCallback = {ui=>ui.disableAutoSignIn()} uiConfig = {uiConfig} firebaseAuth = {auth} />
+        </div>
     )
 }
 
