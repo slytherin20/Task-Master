@@ -11,10 +11,12 @@ function Sidebar({status,closeMenuHandler}){
                 <span>
                         Name
                 </span>
+                <span className="profile">
                 <img 
                         src="" 
                         alt="personal dp">
                 </img>
+                </span>
 
             </div>
         )

@@ -67,3 +67,16 @@ code {
 .sidebar-menu{
   width:25%;
 }
+.profile{
+  position:absolute;
+}
+.account-bar{
+  position: relative;
+  top:28px;
+  border: 1px solid grey;
+  color:black;
+  font-size: 14px;
+  display:flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
