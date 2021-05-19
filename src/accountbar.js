@@ -1,6 +1,6 @@
 import { auth } from './firebase_config';
 
-function AccountBar({status,closeAccountHandler}){
+function AccountBar(){
     return(
         <div 
             className="account-bar">
