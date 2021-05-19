@@ -11,11 +11,12 @@ function Form(
     changeColorHandler,
     deadline,
     changeDeadlineHandler,
-    dateString
+    date,
+    addTaskHandler
 }){
     return(
         <form 
-        className="input-box">
+        className="input-box" onSubmit={addTaskHandler}>
         <input 
                 type="text" 
                 className="task-name" 
@@ -64,7 +65,7 @@ function Form(
                 type="date" 
                 value={deadline} 
                 onChange={changeDeadlineHandler} 
-                min={dateString}>
+                min={date}>
             </input>
         </label>
         <button type="submit" className="form-button">Add task</button>

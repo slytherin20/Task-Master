@@ -5,12 +5,13 @@ import NavBar from "./navbar";
 import Form from "./form";
 
 function App(){
-    const date = new Date()
-    const dd = date.getDate()
-    const mm = date.getMonth()
-    const yy = date.getFullYear()
-    const dateString = yy+"-"+mm+"-"+dd
-    console.log(dateString);
+    const date = new Date();
+    let dd = date.getDate();
+    let mm = date.getMonth()+1;
+    const yy = date.getFullYear();
+    if(dd<10) dd = "0"+dd;
+    if(mm<10) mm = "0"+mm;
+    let dateString = yy+"-"+mm+"-"+dd;
 
     //States
     const [menuState,setMenuState] =  useState(false);
@@ -44,7 +45,15 @@ function App(){
     function changeAccountState(){
         setAccountState(!accountState)
     }
- 
+    
+    //Working with Firebase
+    function addTask(){
+        alert("A new task has been added");
+    }
+
+
+
+
     //render to Virtual DOM
     return(
        <>
@@ -71,7 +80,8 @@ function App(){
                     changeColorHandler={setColorHandler}
                     deadline={deadline}
                     changeDeadlineHandler={setDeadlineHandler}
-                    dateString={dateString}
+                    date={dateString}
+                    addTaskHandler={addTask}
                     />
              </div>
        </>
