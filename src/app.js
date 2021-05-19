@@ -1,10 +1,12 @@
-//import { auth } from "./firebase_config";
+import db, { auth } from "./firebase_config";
+import firebase from "firebase/app"
 import { useState } from "react";
 import Sidebar from "./sidebar";
 import NavBar from "./navbar";
 import Form from "./form";
 
 function App(){
+    //Getting the current date
     const date = new Date();
     let dd = date.getDate();
     let mm = date.getMonth()+1;
@@ -12,6 +14,10 @@ function App(){
     if(dd<10) dd = "0"+dd;
     if(mm<10) mm = "0"+mm;
     let dateString = yy+"-"+mm+"-"+dd;
+
+    //Firestore
+    const userID = auth.currentUser.uid;
+    const collectionRef = db.collection(`users/${userID}/tasks`);
 
     //States
     const [menuState,setMenuState] =  useState(false);
@@ -46,12 +52,21 @@ function App(){
         setAccountState(!accountState)
     }
     
-    //Working with Firebase
+
+    //Adding data to Firestore
     function addTask(){
-        alert("A new task has been added");
+        collectionRef.add({
+            name: taskName,
+            priority: priority,
+            customLabel: label,
+            tabColor:color,
+            deadline:deadline,
+            inProgress:true,
+            addedAt : firebase.firestore.FieldValue.serverTimestamp()
+        })
     }
 
-
+    //Displaying data from Firestore
 
 
     //render to Virtual DOM

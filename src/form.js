@@ -1,7 +1,7 @@
 
 
-function Form(
-    {task,
+function Form({
+    task,
     changeNameHandler,
     priority,
     changePriorityHandler,
