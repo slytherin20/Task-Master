@@ -1,6 +1,7 @@
 import cancelIcon from './images/cancel.png';
 
-function Sidebar({status,closeMenuHandler}){
+function Sidebar({status,closeMenuHandler,labels}){
+
         return (
             <div 
                 className="sidebar-menu">
@@ -17,6 +18,20 @@ function Sidebar({status,closeMenuHandler}){
                         alt="personal dp">
                 </img>
                 </span>
+                <div className="priority-tabs">
+                        <button className="low-btn">Low</button>
+                        <button className="medium-btn">Medium</button>
+                        <button className="high-btn">High</button>
+                </div>
+                <div className="custom-labels-tabs">
+                        {
+                                labels.map((label)=>(
+                                        <button key={label.label} className="custom-labels" style={{border: `solid 1px ${label.color}`}}>
+                                                {label.label}
+                                        </button>
+                                ))
+                        }
+                </div>
 
             </div>
         )

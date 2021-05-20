@@ -1,6 +1,6 @@
 import db, { auth } from "./firebase_config";
 import firebase from "firebase/app"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Sidebar from "./sidebar";
 import NavBar from "./navbar";
 import Form from "./form";
@@ -18,6 +18,7 @@ function App(){
     //Firestore
     const userID = auth.currentUser.uid;
     const collectionRef = db.collection(`users/${userID}/tasks`);
+    const sideBarRef = db.collection(`users/${userID}/labels`)
 
     //States
     const [menuState,setMenuState] =  useState(false);
@@ -25,8 +26,32 @@ function App(){
     const [taskName,setTaskName] = useState("");
     const [priority,setPriority] = useState("Low");
     const [label,setLabel] = useState("All");
-    const [color,setColor] = useState("black");
+    const [color,setColor] = useState("#ffffff");
     const [deadline,setDeadline] = useState(dateString);
+    const [allLabels,setAllLabels] = useState([]);
+    const [display,setDisplay] = useState([]);
+
+
+    //useEffects
+    function getSideBarLabels(){
+   
+
+        sideBarRef.onSnapshot(function (querySnapshot){
+            setAllLabels(querySnapshot.docs.map((doc)=>(
+                {
+                    id:doc.id,
+                    label :doc.data().labelName,
+                    color: doc.data().color
+                }
+            )
+            ))
+        })
+    
+    }
+
+    useEffect(() => {
+        getSideBarLabels()
+    }, [])
 
 
     //Input handlers
@@ -51,20 +76,53 @@ function App(){
     function changeAccountState(){
         setAccountState(!accountState)
     }
+
+
     
 
     //Adding data to Firestore
-    function addTask(){
+    function addTask(e){
+        e.preventDefault()
         collectionRef.add({
             name: taskName,
             priority: priority,
             customLabel: label,
-            tabColor:color,
+            labelColor: color,
             deadline:deadline,
             inProgress:true,
             addedAt : firebase.firestore.FieldValue.serverTimestamp()
         })
+        //Check the labels in sidebar
+        checkLabels()
     }
+
+    function addLabels(){
+        sideBarRef.add({
+            labelName: label,
+            color: color
+        })
+    }
+
+    //Check if a custom label already exists
+    function checkLabels(){
+        if(allLabels.length>0){
+            allLabels.map((ele)=>{
+                if(ele.label.toLowerCase()===label.toLowerCase() && ele.color!==color){
+                  sideBarRef
+                  .doc(ele.id)
+                  .update(
+                      {
+                          color: color
+                      }
+                  )
+                }
+            })
+        }
+        addLabels()
+       
+    }
+
+
 
     //Displaying data from Firestore
 
@@ -79,7 +137,8 @@ function App(){
        {
            menuState?<Sidebar 
                         status = {menuState} 
-                        closeMenuHandler={setMenuState} />
+                        closeMenuHandler={setMenuState}
+                        labels = {allLabels} />
                     :null
        }
        <div 
@@ -98,6 +157,7 @@ function App(){
                     date={dateString}
                     addTaskHandler={addTask}
                     />
+                    <Display displayHandler={setDisplay}
              </div>
        </>
     )
