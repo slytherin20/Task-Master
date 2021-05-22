@@ -28,30 +28,30 @@ function App(){
     const [label,setLabel] = useState("All");
     const [color,setColor] = useState("#ffffff");
     const [deadline,setDeadline] = useState(dateString);
-    const [allLabels,setAllLabels] = useState([]);
+    const [allLabels,setAllLabels] = useState({});
     const [display,setDisplay] = useState([]);
 
 
     //useEffects
     function getSideBarLabels(){
    
-
         sideBarRef.onSnapshot(function (querySnapshot){
-            setAllLabels(querySnapshot.docs.map((doc)=>(
-                {
-                    id:doc.id,
-                    label :doc.data().labelName,
-                    color: doc.data().color
-                }
-            )
-            ))
+           querySnapshot.docs.map((doc)=>
+           (
+               setAllLabels((prevState)=>(
+                   {
+                       ...prevState,
+                       [doc.data().labelName]:[doc.id,doc.data().color]
+                   }
+               ))
+           ))
         })
-    
     }
 
-    useEffect(() => {
+
+     useEffect(() => {
         getSideBarLabels()
-    }, [])
+     }, [])
 
 
     //Input handlers
@@ -77,7 +77,6 @@ function App(){
         setAccountState(!accountState)
     }
 
-
     
 
     //Adding data to Firestore
@@ -92,9 +91,18 @@ function App(){
             inProgress:true,
             addedAt : firebase.firestore.FieldValue.serverTimestamp()
         })
+        //Append All tab in sidebar if not present already
+       // initialLabel()
+
+
         //Check the labels in sidebar
         checkLabels()
     }
+
+    /*function initialLabel(){
+        
+    }
+    */
 
     function addLabels(){
         sideBarRef.add({
@@ -106,17 +114,17 @@ function App(){
     //Check if a custom label already exists
     function checkLabels(){
         if(allLabels.length>0){
-            allLabels.map((ele)=>{
-                if(ele.label.toLowerCase()===label.toLowerCase() && ele.color!==color){
+            for(let key in allLabels){
+                if(key.toLowerCase()===label.toLowerCase() && key[1]!==color){
                   sideBarRef
-                  .doc(ele.id)
+                  .doc(key[0])
                   .update(
                       {
                           color: color
                       }
                   )
                 }
-            })
+            }
         }
         addLabels()
        
@@ -125,7 +133,10 @@ function App(){
 
 
     //Displaying data from Firestore
-
+   /* function displayTask(){
+        display.map((element)=>
+        )
+    } */
 
     //render to Virtual DOM
     return(
@@ -157,7 +168,6 @@ function App(){
                     date={dateString}
                     addTaskHandler={addTask}
                     />
-                    <Display displayHandler={setDisplay}
              </div>
        </>
     )

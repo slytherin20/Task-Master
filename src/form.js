@@ -1,5 +1,3 @@
-
-
 function Form({
     task,
     changeNameHandler,

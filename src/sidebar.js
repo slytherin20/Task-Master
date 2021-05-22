@@ -1,7 +1,11 @@
 import cancelIcon from './images/cancel.png';
 
 function Sidebar({status,closeMenuHandler,labels}){
-
+        let labelsArr = []
+        for(let key in labels){
+                labelsArr.push(<button key = {labels[key][0]} className="custom-label-tabs" style={{backgroundColor: `${labels[key][1]}`}}>{key}</button>
+                 )
+        } 
         return (
             <div 
                 className="sidebar-menu">
@@ -24,13 +28,7 @@ function Sidebar({status,closeMenuHandler,labels}){
                         <button className="high-btn">High</button>
                 </div>
                 <div className="custom-labels-tabs">
-                        {
-                                labels.map((label)=>(
-                                        <button key={label.label} className="custom-labels" style={{border: `solid 1px ${label.color}`}}>
-                                                {label.label}
-                                        </button>
-                                ))
-                        }
+                        {labelsArr}
                 </div>
 
             </div>
