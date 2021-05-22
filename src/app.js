@@ -34,7 +34,7 @@ function App(){
 
     //useEffects
     function getSideBarLabels(){
-   
+        if(Object.keys(allLabels).length===0) initialLabel()
         sideBarRef.onSnapshot(function (querySnapshot){
            querySnapshot.docs.map((doc)=>
            (
@@ -53,6 +53,12 @@ function App(){
         getSideBarLabels()
      }, [])
 
+     function initialLabel(){
+        sideBarRef.add({
+            labelName: "All",
+            color: "#f40b0b"
+        })
+    }
 
     //Input handlers
     function setNameHandler(e){
@@ -91,18 +97,13 @@ function App(){
             inProgress:true,
             addedAt : firebase.firestore.FieldValue.serverTimestamp()
         })
-        //Append All tab in sidebar if not present already
-       // initialLabel()
-
+        
 
         //Check the labels in sidebar
         checkLabels()
     }
 
-    /*function initialLabel(){
-        
-    }
-    */
+    
 
     function addLabels(){
         sideBarRef.add({
@@ -113,11 +114,11 @@ function App(){
 
     //Check if a custom label already exists
     function checkLabels(){
-        if(allLabels.length>0){
+        if(Object.keys(allLabels).length>1){
             for(let key in allLabels){
-                if(key.toLowerCase()===label.toLowerCase() && key[1]!==color){
+                if(key.toLowerCase()===label.toLowerCase() && allLabels[key][1]!==color){
                   sideBarRef
-                  .doc(key[0])
+                  .doc(allLabels[key][0])
                   .update(
                       {
                           color: color

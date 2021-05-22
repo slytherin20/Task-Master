@@ -20,6 +20,7 @@ function Form({
                 className="task-name" 
                 placeholder="Enter the task here" 
                 value={task} 
+                required
                 onChange={changeNameHandler}>
             
         </input>
