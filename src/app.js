@@ -33,8 +33,13 @@ function App(){
 
 
     //useEffects
+    function addDefaultValue(){
+        //First login
+        if(auth.currentUser.metadata.creationTime===auth.currentUser.metadata.lastSignInTime)
+          initialLabel()
+        getSideBarLabels()
+    }
     function getSideBarLabels(){
-        if(Object.keys(allLabels).length===0) initialLabel()
         sideBarRef.onSnapshot(function (querySnapshot){
            querySnapshot.docs.map((doc)=>
            (
@@ -46,12 +51,12 @@ function App(){
                ))
            ))
         })
+      
     }
+    useEffect(() => {
 
-
-     useEffect(() => {
-        getSideBarLabels()
-     }, [])
+        addDefaultValue()
+    },[])
 
      function initialLabel(){
         sideBarRef.add({
@@ -134,10 +139,12 @@ function App(){
 
 
     //Displaying data from Firestore
-   /* function displayTask(){
-        display.map((element)=>
-        )
-    } */
+   function displayTask(labelTab){
+        //For custom labels
+
+        //For priority labels
+
+    } 
 
     //render to Virtual DOM
     return(
@@ -150,7 +157,8 @@ function App(){
            menuState?<Sidebar 
                         status = {menuState} 
                         closeMenuHandler={setMenuState}
-                        labels = {allLabels} />
+                        labels = {allLabels}
+                        displayHandler={displayTask} />
                     :null
        }
        <div 
