@@ -29,7 +29,8 @@ function App(){
     const [color,setColor] = useState("#ffffff");
     const [deadline,setDeadline] = useState(dateString);
     const [allLabels,setAllLabels] = useState({});
-    const [display,setDisplay] = useState([]);
+    const [displayTitle,setDisplayTitle] = useState("All");
+    const [displayArray,setDisplayArray] = useState([]);
 
 
     //useEffects
@@ -38,6 +39,7 @@ function App(){
         if(auth.currentUser.metadata.creationTime===auth.currentUser.metadata.lastSignInTime)
           initialLabel()
         getSideBarLabels()
+        displayTask()
     }
     function getSideBarLabels(){
         sideBarRef.onSnapshot(function (querySnapshot){
@@ -86,6 +88,9 @@ function App(){
     }
     function changeAccountState(){
         setAccountState(!accountState)
+    }
+    function changeDisplayTitle(labelTab){
+        setDisplayTitle(labelTab)
     }
 
     
@@ -138,11 +143,26 @@ function App(){
 
 
 
-    //Displaying data from Firestore
-   function displayTask(labelTab){
-        //For custom labels
-
-        //For priority labels
+    //Getting data from Firestore
+   function displayTask(){
+        collectionRef.onSnapshot(function (querySnapshot){
+           querySnapshot.docs.map((doc)=>{
+               if((displayTitle.toLowerCase()===doc.data().customLabel.toLowerCase())
+               ||
+               displayTitle.toLocaleLowerCase()===doc.data().priority.toLowerCase()){
+                   setDisplayTitle(
+                       {   id: doc.id,
+                           addedAt: doc.data().addedAt,
+                           label: doc.data().customLabel,
+                           deadline: doc.data().deadline,
+                           status: doc.data().inProgress,
+                           taskName: doc.data().name,
+                           priority: doc.ata().priority
+                       }
+                   )
+               }
+            })
+        })
 
     } 
 
@@ -158,7 +178,7 @@ function App(){
                         status = {menuState} 
                         closeMenuHandler={setMenuState}
                         labels = {allLabels}
-                        displayHandler={displayTask} />
+                        displayHandler={changeDisplayTitle} />
                     :null
        }
        <div 
