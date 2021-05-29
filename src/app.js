@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Sidebar from "./sidebar";
 import NavBar from "./navbar";
 import Form from "./form";
+import Display from "./displaytasks";
 
 function App(){
     //Getting the current date
@@ -18,7 +19,8 @@ function App(){
     //Firestore
     const userID = auth.currentUser.uid;
     const collectionRef = db.collection(`users/${userID}/tasks`);
-    const sideBarRef = db.collection(`users/${userID}/labels`)
+    const sideBarRef = db.collection(`users/${userID}/labels`);
+
 
     //States
     const [menuState,setMenuState] =  useState(false);
@@ -29,9 +31,8 @@ function App(){
     const [color,setColor] = useState("#ffffff");
     const [deadline,setDeadline] = useState(dateString);
     const [allLabels,setAllLabels] = useState({});
+    const [displayArr,setDisplayArr] = useState([]);
     const [displayTitle,setDisplayTitle] = useState("All");
-    const [displayArray,setDisplayArray] = useState([]);
-
 
     //useEffects
     function addDefaultValue(){
@@ -39,7 +40,6 @@ function App(){
         if(auth.currentUser.metadata.creationTime===auth.currentUser.metadata.lastSignInTime)
           initialLabel()
         getSideBarLabels()
-        displayTask()
     }
     function getSideBarLabels(){
         sideBarRef.onSnapshot(function (querySnapshot){
@@ -53,12 +53,17 @@ function App(){
                ))
            ))
         })
-      
     }
     useEffect(() => {
 
         addDefaultValue()
     },[])
+
+    useEffect(() => {
+        
+        displayTasks()
+
+    }, [displayTitle])
 
      function initialLabel(){
         sideBarRef.add({
@@ -89,8 +94,8 @@ function App(){
     function changeAccountState(){
         setAccountState(!accountState)
     }
-    function changeDisplayTitle(labelTab){
-        setDisplayTitle(labelTab)
+    function changedisplayTitle(selectedTag){
+        setDisplayTitle(selectedTag);
     }
 
     
@@ -143,28 +148,75 @@ function App(){
 
 
 
-    //Getting data from Firestore
-   function displayTask(){
-        collectionRef.onSnapshot(function (querySnapshot){
-           querySnapshot.docs.map((doc)=>{
-               if((displayTitle.toLowerCase()===doc.data().customLabel.toLowerCase())
-               ||
-               displayTitle.toLocaleLowerCase()===doc.data().priority.toLowerCase()){
-                   setDisplayTitle(
-                       {   id: doc.id,
-                           addedAt: doc.data().addedAt,
-                           label: doc.data().customLabel,
-                           deadline: doc.data().deadline,
-                           status: doc.data().inProgress,
-                           taskName: doc.data().name,
-                           priority: doc.ata().priority
-                       }
-                   )
-               }
-            })
-        })
+    //Getting data from Firestore and displaying
+    function displayTasks(){
+        let displayTitleClicked = displayTitle.toLowerCase();
+        displayTitleClicked ==="all"?
+                displayAllTasks()
+                :((displayTitleClicked==="high" 
+                        || displayTitleClicked==="low" 
+                        || displayTitleClicked==="medium")?displayByPriority():displayByLabel(
+                        ))
+    }
 
-    } 
+    function displayAllTasks(){
+        setDisplayArr([]);
+        collectionRef
+        .onSnapshot(function (querySnapshot){
+            setDisplayArr(
+                querySnapshot.docs.map((doc)=>(
+                    {
+                        id:doc.id,
+                        taskName: doc.data().name,
+                        addedAt: doc.data().addedAt,
+                        status: doc.data().inProgress,
+                        deadline: doc.data().deadline,
+                        priority: doc.data().priority
+                    }
+                ))
+            )
+        })
+    }
+
+    function displayByPriority(){
+        setDisplayArr([]);
+        collectionRef
+        .where("priority","==",displayTitle)
+        .onSnapshot(function (querySnapshot){
+            setDisplayArr(
+                querySnapshot.docs.map((doc)=>(
+                    {
+                        id:doc.id,
+                        taskName: doc.data().name,
+                        addedAt: doc.data().addedAt,
+                        status: doc.data().inProgress,
+                        deadline: doc.data().deadline,
+                        priority: doc.data().priority
+                    }
+                ))
+            )
+        })
+    }
+    function displayByLabel(){
+        setDisplayArr([]);
+        collectionRef
+        .where("customLabel","==",displayTitle)
+        .onSnapshot(function (querySnapshot){
+            setDisplayArr(
+                querySnapshot.docs.map((doc)=>(
+                    {
+                        id:doc.id,
+                        taskName: doc.data().name,
+                        addedAt: doc.data().addedAt,
+                        status: doc.data().inProgress,
+                        deadline: doc.data().deadline,
+                        priority: doc.data().priority
+                    }
+                ))
+            )
+        })
+    }
+    
 
     //render to Virtual DOM
     return(
@@ -178,7 +230,7 @@ function App(){
                         status = {menuState} 
                         closeMenuHandler={setMenuState}
                         labels = {allLabels}
-                        displayHandler={changeDisplayTitle} />
+                        displayHandler={changedisplayTitle} />
                     :null
        }
        <div 
@@ -197,6 +249,7 @@ function App(){
                     date={dateString}
                     addTaskHandler={addTask}
                     />
+                    <Display tasks={displayArr}/>
              </div>
        </>
     )
