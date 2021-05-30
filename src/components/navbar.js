@@ -1,4 +1,4 @@
-import menuIcon from './images/menu.png';
+import menuIcon from '../images/menu.png';
 import AccountBar from "./accountbar";
 
 function NavBar({account,menuStateHandler,accountStateHandler}){

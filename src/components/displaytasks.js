@@ -1,4 +1,4 @@
-function Display({tasks}){
+function Display({tasks,completedTask,deleteTask}){
     return(
         <div className="display-container">
             {   
@@ -10,8 +10,8 @@ function Display({tasks}){
                         <p>{
                             task.deadline.split("-").reverse().join("-")
                             }</p>
-                        <button className="done">Done</button>
-                        <button className="delete">Delete</button>
+                        <button className="done" onClick={completedTask}>Done</button>
+                        <button className="delete" onClick={deleteTask}>Delete</button>
                         </div>
                 ))
                 

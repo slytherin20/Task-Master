@@ -1,4 +1,4 @@
-import { auth } from './firebase_config';
+import { auth } from '../firebase_config';
 
 function AccountBar(){
     return(

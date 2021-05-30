@@ -1,20 +1,15 @@
-import db, { auth } from "./firebase_config";
+import db, { auth } from "../firebase_config";
 import firebase from "firebase/app"
 import { useState, useEffect } from "react";
 import Sidebar from "./sidebar";
 import NavBar from "./navbar";
 import Form from "./form";
 import Display from "./displaytasks";
+import { date } from "../date";
 
 function App(){
-    //Getting the current date
-    const date = new Date();
-    let dd = date.getDate();
-    let mm = date.getMonth()+1;
-    const yy = date.getFullYear();
-    if(dd<10) dd = "0"+dd;
-    if(mm<10) mm = "0"+mm;
-    let dateString = yy+"-"+mm+"-"+dd;
+    //Current date
+    const dateString = date()
 
     //Firestore
     const userID = auth.currentUser.uid;
@@ -35,6 +30,18 @@ function App(){
     const [displayTitle,setDisplayTitle] = useState("All");
 
     //useEffects
+    //Display sidebar 
+    useEffect(() => {
+
+        addDefaultValue()
+    },[])
+    //Display tasks as per the tag clicked.
+    useEffect(() => {
+        
+        displayTasks()
+
+    }, [displayTitle])
+
     function addDefaultValue(){
         //First login
         if(auth.currentUser.metadata.creationTime===auth.currentUser.metadata.lastSignInTime)
@@ -54,16 +61,6 @@ function App(){
            ))
         })
     }
-    useEffect(() => {
-
-        addDefaultValue()
-    },[])
-
-    useEffect(() => {
-        
-        displayTasks()
-
-    }, [displayTitle])
 
      function initialLabel(){
         sideBarRef.add({
@@ -97,7 +94,12 @@ function App(){
     function changedisplayTitle(selectedTag){
         setDisplayTitle(selectedTag);
     }
-
+    function completedTaskHandler(){
+        console.log("Completed task handler")
+    }
+    function deleteTaskHandler(){
+        console.log("Delete task handler");
+    }
     
 
     //Adding data to Firestore
@@ -114,18 +116,12 @@ function App(){
         })
         
 
-        //Check the labels in sidebar
+        //Check the labels in sidebar for existing labels
         checkLabels()
     }
 
     
 
-    function addLabels(){
-        sideBarRef.add({
-            labelName: label,
-            color: color
-        })
-    }
 
     //Check if a custom label already exists
     function checkLabels(){
@@ -144,6 +140,12 @@ function App(){
         }
         addLabels()
        
+    }
+    function addLabels(){
+        sideBarRef.add({
+            labelName: label,
+            color: color
+        })
     }
 
 
@@ -249,7 +251,7 @@ function App(){
                     date={dateString}
                     addTaskHandler={addTask}
                     />
-                    <Display tasks={displayArr}/>
+                    <Display tasks={displayArr} completedTask={completedTaskHandler} deleteTask={deleteTaskHandler}/>
              </div>
        </>
     )

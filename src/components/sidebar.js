@@ -1,4 +1,4 @@
-import cancelIcon from './images/cancel.png';
+import cancelIcon from '../images/cancel.png';
 
 function Sidebar({status,closeMenuHandler,labels,displayHandler}){
         let labelsArr = []
