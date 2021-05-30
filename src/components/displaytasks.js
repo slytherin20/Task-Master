@@ -5,7 +5,16 @@ function Display({tasks,completedTask,deleteTask}){
                 tasks.map((task)=>(
                     <div key={task.id} className="task">
                         <h3>{task.taskName}</h3>
-                        <button style={{border:`solid 2px ${task.priority==="High"?"red":(task.priority==="Medium"?"yellow":"green")}`}}>{task.priority}</button>
+                        <button style={{
+                                        border:`solid 2px 
+                                        ${task.priority==="High"
+                                                                ?"red"
+                                                                :(task.priority==="Medium"
+                                                                            ?"yellow"
+                                                                            :"green")}`
+                                        }}>
+                                        {task.priority}
+                                        </button>
                         <p>{task.status}</p>
                         <p>{
                             task.deadline.split("-").reverse().join("-")

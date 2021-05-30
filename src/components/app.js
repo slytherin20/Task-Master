@@ -44,7 +44,8 @@ function App(){
 
     function addDefaultValue(){
         //First login
-        if(auth.currentUser.metadata.creationTime===auth.currentUser.metadata.lastSignInTime)
+        let userMetaData = auth.currentUser.metadata;
+        if(userMetaData.creationTime===userMetaData.lastSignInTime)
           initialLabel()
         getSideBarLabels()
     }
@@ -152,12 +153,13 @@ function App(){
 
     //Getting data from Firestore and displaying
     function displayTasks(){
+        const priorities = ["high","low","medium"];
         let displayTitleClicked = displayTitle.toLowerCase();
         displayTitleClicked ==="all"?
                 displayAllTasks()
-                :((displayTitleClicked==="high" 
-                        || displayTitleClicked==="low" 
-                        || displayTitleClicked==="medium")?displayByPriority():displayByLabel(
+                :((priorities.includes(displayTitleClicked))
+                            ?displayByPriority()
+                            :displayByLabel(
                         ))
     }
 

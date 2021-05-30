@@ -29,9 +29,24 @@ function Sidebar({status,closeMenuHandler,labels,displayHandler}){
                 </img>
                 </span>
                 <div className="priority-tabs">
-                        <button className="low-btn" onClick={()=>displayHandler("Low")}>Low</button>
-                        <button className="medium-btn" onClick={()=>displayHandler("Medium")}>Medium</button>
-                        <button className="high-btn" onClick={()=>displayHandler("High")}>High</button>
+                        <button 
+                                className="low-btn" 
+                                onClick={()=>
+                                                displayHandler("Low")}>
+                                Low
+                        </button>
+                        <button 
+                                className="medium-btn" 
+                                onClick={()=>
+                                                displayHandler("Medium")}>
+                                Medium
+                        </button>
+                        <button 
+                                className="high-btn" 
+                                onClick={()=>
+                                                displayHandler("High")}>
+                                High
+                        </button>
                 </div>
                 <div className="custom-labels-tabs">
                         {labelsArr}
