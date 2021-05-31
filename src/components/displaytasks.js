@@ -1,6 +1,6 @@
 function Display({tasks,completedTask,deleteTask}){
     return(
-        <div className="display-container">
+        <div className="display-pending-container">
             {   
                 tasks.map((task)=>(
                     <div key={task.id} className="task">
@@ -15,12 +15,12 @@ function Display({tasks,completedTask,deleteTask}){
                                         }}>
                                         {task.priority}
                                         </button>
-                        <p>{task.status}</p>
+                        <p>{task.status?"In Progress ✍🏼":"Completed  ✅"}</p>
                         <p>{
                             task.deadline.split("-").reverse().join("-")
                             }</p>
-                        <button className="done" onClick={completedTask}>Done</button>
-                        <button className="delete" onClick={deleteTask}>Delete</button>
+                        <button className="done" onClick={()=>completedTask(task.id,task.taskName,task.deadline)}>Done</button>
+                        <button className="delete" onClick={()=>deleteTask(task.id)}>Delete</button>
                         </div>
                 ))
                 

@@ -6,6 +6,7 @@ import NavBar from "./navbar";
 import Form from "./form";
 import Display from "./displaytasks";
 import { date } from "../date";
+import DisplayCompleted from "./displaycompleted";
 
 function App(){
     //Current date
@@ -15,6 +16,7 @@ function App(){
     const userID = auth.currentUser.uid;
     const collectionRef = db.collection(`users/${userID}/tasks`);
     const sideBarRef = db.collection(`users/${userID}/labels`);
+    const completedListRef = db.collection(`users/${userID}/completed`)
 
 
     //States
@@ -27,6 +29,7 @@ function App(){
     const [deadline,setDeadline] = useState(dateString);
     const [allLabels,setAllLabels] = useState({});
     const [displayArr,setDisplayArr] = useState([]);
+    const [completedArr,setCompletedArr] = useState([]);
     const [displayTitle,setDisplayTitle] = useState("All");
 
     //useEffects
@@ -34,6 +37,7 @@ function App(){
     useEffect(() => {
 
         addDefaultValue()
+
     },[])
     //Display tasks as per the tag clicked.
     useEffect(() => {
@@ -41,6 +45,11 @@ function App(){
         displayTasks()
 
     }, [displayTitle])
+
+    //Display only completed tasks
+    useEffect(() => {
+        addCompletedTasks()
+    }, [completedArr])
 
     function addDefaultValue(){
         //First login
@@ -95,11 +104,28 @@ function App(){
     function changedisplayTitle(selectedTag){
         setDisplayTitle(selectedTag);
     }
-    function completedTaskHandler(){
-        console.log("Completed task handler")
+    function completedTaskHandler(id,name,deadline){
+
+        //Delete task from task list
+        deleteTaskHandler(id);
+
+        //Put it into completed task list.
+        completedListRef.add({
+            name:name,
+            deadline: deadline.split("-").reverse().join("-")
+        })
+
     }
-    function deleteTaskHandler(){
-        console.log("Delete task handler");
+    function deleteTaskHandler(id){
+        //Delete the task
+        collectionRef
+        .doc(id)
+        .delete()
+    }
+    function deleteCompletedTaskHandler(id){
+        completedListRef
+        .doc(id)
+        .delete()
     }
     
 
@@ -139,8 +165,7 @@ function App(){
                 }
             }
         }
-        addLabels()
-       
+        addLabels()     
     }
     function addLabels(){
         sideBarRef.add({
@@ -220,6 +245,21 @@ function App(){
             )
         })
     }
+
+    //Getting completed tasks from firestore
+    function addCompletedTasks(){
+        completedListRef
+        .onSnapshot(function (querySnapshot){
+            setCompletedArr( querySnapshot.docs.map((doc=>(
+                    {
+                        id: doc.id,
+                        taskName: doc.data().name,
+                        deadline: doc.data().deadline
+                    }
+                ))))
+           
+        })
+    }
     
 
     //render to Virtual DOM
@@ -253,7 +293,17 @@ function App(){
                     date={dateString}
                     addTaskHandler={addTask}
                     />
-                    <Display tasks={displayArr} completedTask={completedTaskHandler} deleteTask={deleteTaskHandler}/>
+                    <div className="display-container">
+                        <Display 
+                            tasks={displayArr} 
+                            completedTask={completedTaskHandler} 
+                            deleteTask={deleteTaskHandler}/>
+                        <DisplayCompleted 
+                            tasks = {completedArr}
+                            deleteTask = {deleteCompletedTaskHandler} />
+                            
+                    </div>
+                    
              </div>
        </>
     )
