@@ -49,7 +49,7 @@ function App(){
     //Display only completed tasks
     useEffect(() => {
         addCompletedTasks()
-    }, [completedArr])
+    }, [])
 
     function addDefaultValue(){
         //First login
