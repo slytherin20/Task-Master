@@ -107,15 +107,18 @@ function App(){
     }
     function completedTaskHandler(id,name,deadline,label){
 
-        //Delete task from task list
-        deleteTaskHandler(id,label);
-
-        //Put it into completed task list.
-        completedListRef.add({
+         //Put it into completed task list.
+         completedListRef.add({
             name:name,
             deadline: deadline.split("-").reverse().join("-"),
             customLabel: label
         })
+        
+        //Delete task from task list
+        collectionRef
+        .doc(id)
+        .delete()
+
 
     }
     function deleteTaskHandler(id,label){
@@ -137,13 +140,14 @@ function App(){
     }
 
     function decreementCount(label){
-        let newValue = allLabels[label][2]-1
+        let newValue = allLabels[label][2]-1;
         sideBarRef.doc(allLabels[label][0]).update({
            count: newValue
        })
        .then(()=>{
            if(newValue===0){
                 sideBarRef.doc(allLabels[label][0]).delete()
+                setAllLabels(delete allLabels[label])
            }
        })
        .catch((err)=> console.log(err))
