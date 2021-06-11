@@ -6,7 +6,7 @@ function DisplayCompleted({tasks,deleteTask}){
                     <div key={task.id} className="task">
                         <h3>{task.taskName}</h3>
                         <p>{task.deadline}</p>
-                        <button className="delete" onClick={()=>deleteTask(task.id)}>Delete</button>
+                        <button className="delete" onClick={()=>deleteTask(task.id,task.customLabel)}>Delete</button>
                         </div>
                 ))
                 

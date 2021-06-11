@@ -65,7 +65,7 @@ function App(){
                setAllLabels((prevState)=>(
                    {
                        ...prevState,
-                       [doc.data().labelName]:[doc.id,doc.data().color]
+                       [doc.data().labelName]:[doc.id,doc.data().color,doc.data().count]
                    }
                ))
            ))
@@ -75,7 +75,8 @@ function App(){
      function initialLabel(){
         sideBarRef.add({
             labelName: "All",
-            color: "#f40b0b"
+            color: "#f40b0b",
+            count:1
         })
     }
 
@@ -104,28 +105,48 @@ function App(){
     function changedisplayTitle(selectedTag){
         setDisplayTitle(selectedTag);
     }
-    function completedTaskHandler(id,name,deadline){
+    function completedTaskHandler(id,name,deadline,label){
 
         //Delete task from task list
-        deleteTaskHandler(id);
+        deleteTaskHandler(id,label);
 
         //Put it into completed task list.
         completedListRef.add({
             name:name,
-            deadline: deadline.split("-").reverse().join("-")
+            deadline: deadline.split("-").reverse().join("-"),
+            customLabel: label
         })
 
     }
-    function deleteTaskHandler(id){
+    function deleteTaskHandler(id,label){
         //Delete the task
         collectionRef
         .doc(id)
         .delete()
+
+        //Decreement the sidebar label count
+        decreementCount(label)
     }
-    function deleteCompletedTaskHandler(id){
+    function deleteCompletedTaskHandler(id,label){
         completedListRef
         .doc(id)
         .delete()
+
+        //Decreement the sidebar label count
+        decreementCount(label)
+    }
+
+    function decreementCount(label){
+        let newValue = allLabels[label][2]-1
+        sideBarRef.doc(allLabels[label][0]).update({
+           count: newValue
+       })
+       .then(()=>{
+           if(newValue===0){
+                sideBarRef.doc(allLabels[label][0]).delete()
+           }
+       })
+       .catch((err)=> console.log(err))
     }
     
 
@@ -152,25 +173,43 @@ function App(){
 
     //Check if a custom label already exists
     function checkLabels(){
+        let notExists = true
         if(Object.keys(allLabels).length>1){
             for(let key in allLabels){
-                if(key.toLowerCase()===label.toLowerCase() && allLabels[key][1]!==color){
-                  sideBarRef
-                  .doc(allLabels[key][0])
-                  .update(
-                      {
-                          color: color
+                //When label already exists
+                if(key.toLowerCase()===label.toLowerCase()){
+                    notExists = false
+                    //When label color is now changed.
+                    if(allLabels[key][1]!==color){
+                        sideBarRef
+                        .doc(allLabels[key][0])
+                        .update(
+                            {
+                                color: color,
+                                count: allLabels[key][2] + 1
+                            }
+                        )
                       }
-                  )
+                      //Label color remains unchanged.
+                      else{
+                        sideBarRef
+                        .doc(allLabels[key][0])
+                        .update(
+                            {
+                                count: allLabels[key][2] + 1
+                            })
+                      }
                 }
             }
+            if(notExists) addLabels()
         }
-        addLabels()     
+         else addLabels()     
     }
     function addLabels(){
         sideBarRef.add({
             labelName: label,
-            color: color
+            color: color,
+            count:1
         })
     }
 
@@ -200,7 +239,8 @@ function App(){
                         addedAt: doc.data().addedAt,
                         status: doc.data().inProgress,
                         deadline: doc.data().deadline,
-                        priority: doc.data().priority
+                        priority: doc.data().priority,
+                        customLabel: doc.data().customLabel
                     }
                 ))
             )
@@ -220,7 +260,8 @@ function App(){
                         addedAt: doc.data().addedAt,
                         status: doc.data().inProgress,
                         deadline: doc.data().deadline,
-                        priority: doc.data().priority
+                        priority: doc.data().priority,
+                        customLabel: doc.data().customLabel
                     }
                 ))
             )
@@ -239,7 +280,8 @@ function App(){
                         addedAt: doc.data().addedAt,
                         status: doc.data().inProgress,
                         deadline: doc.data().deadline,
-                        priority: doc.data().priority
+                        priority: doc.data().priority,
+                        customLabel: doc.data().customLabel
                     }
                 ))
             )
@@ -254,7 +296,8 @@ function App(){
                     {
                         id: doc.id,
                         taskName: doc.data().name,
-                        deadline: doc.data().deadline
+                        deadline: doc.data().deadline,
+                        customLabel: doc.data().customLabel
                     }
                 ))))
            
