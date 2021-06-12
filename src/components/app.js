@@ -115,20 +115,21 @@ function App(){
         })
         
         //Delete task from task list
-        collectionRef
-        .doc(id)
-        .delete()
+        deleteItem(id)
 
 
     }
     function deleteTaskHandler(id,label){
         //Delete the task
-        collectionRef
-        .doc(id)
-        .delete()
+        deleteItem(id)
 
         //Decreement the sidebar label count
         decreementCount(label)
+    }
+    function deleteItem(id){
+        collectionRef
+        .doc(id)
+        .delete()
     }
     function deleteCompletedTaskHandler(id,label){
         completedListRef
@@ -141,12 +142,13 @@ function App(){
 
     function decreementCount(label){
         let newValue = allLabels[label][2]-1;
-        sideBarRef.doc(allLabels[label][0]).update({
+        let id = allLabels[label][0];
+        sideBarRef.doc(id).update({
            count: newValue
        })
        .then(()=>{
            if(newValue===0){
-                sideBarRef.doc(allLabels[label][0]).delete()
+                sideBarRef.doc(id).delete()
                 setAllLabels(delete allLabels[label])
            }
        })
@@ -180,27 +182,28 @@ function App(){
         let notExists = true
         if(Object.keys(allLabels).length>1){
             for(let key in allLabels){
+                let selectedLabel = allLabels[key];
                 //When label already exists
                 if(key.toLowerCase()===label.toLowerCase()){
                     notExists = false
                     //When label color is now changed.
-                    if(allLabels[key][1]!==color){
+                    if(selectedLabel[1]!==color){
                         sideBarRef
-                        .doc(allLabels[key][0])
+                        .doc(selectedLabel[0])
                         .update(
                             {
                                 color: color,
-                                count: allLabels[key][2] + 1
+                                count: selectedLabel[2] + 1
                             }
                         )
                       }
                       //Label color remains unchanged.
                       else{
                         sideBarRef
-                        .doc(allLabels[key][0])
+                        .doc(selectedLabel[0])
                         .update(
                             {
-                                count: allLabels[key][2] + 1
+                                count: selectedLabel[2] + 1
                             })
                       }
                 }
@@ -227,55 +230,29 @@ function App(){
                 displayAllTasks()
                 :((priorities.includes(displayTitleClicked))
                             ?displayByPriority()
-                            :displayByLabel(
-                        ))
+                            :displayByLabel()
+                        )
     }
 
     function displayAllTasks(){
         setDisplayArr([]);
         collectionRef
-        .onSnapshot(function (querySnapshot){
-            setDisplayArr(
-                querySnapshot.docs.map((doc)=>(
-                    {
-                        id:doc.id,
-                        taskName: doc.data().name,
-                        addedAt: doc.data().addedAt,
-                        status: doc.data().inProgress,
-                        deadline: doc.data().deadline,
-                        priority: doc.data().priority,
-                        customLabel: doc.data().customLabel
-                    }
-                ))
-            )
-        })
+        .onSnapshot(generateSnapshot())
     }
-
     function displayByPriority(){
         setDisplayArr([]);
         collectionRef
         .where("priority","==",displayTitle)
-        .onSnapshot(function (querySnapshot){
-            setDisplayArr(
-                querySnapshot.docs.map((doc)=>(
-                    {
-                        id:doc.id,
-                        taskName: doc.data().name,
-                        addedAt: doc.data().addedAt,
-                        status: doc.data().inProgress,
-                        deadline: doc.data().deadline,
-                        priority: doc.data().priority,
-                        customLabel: doc.data().customLabel
-                    }
-                ))
-            )
-        })
+        .onSnapshot(generateSnapshot())
     }
     function displayByLabel(){
         setDisplayArr([]);
         collectionRef
         .where("customLabel","==",displayTitle)
-        .onSnapshot(function (querySnapshot){
+        .onSnapshot(generateSnapshot())
+    }
+    function generateSnapshot(){
+        let snapshot = function (querySnapshot){
             setDisplayArr(
                 querySnapshot.docs.map((doc)=>(
                     {
@@ -289,7 +266,8 @@ function App(){
                     }
                 ))
             )
-        })
+        }
+        return snapshot;
     }
 
     //Getting completed tasks from firestore

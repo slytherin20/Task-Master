@@ -14,10 +14,6 @@ function NavBar({account,menuStateHandler,accountStateHandler}){
             <span>
                 Task master - A task keeping app
                 </span>
-            <span 
-                 className="coins">
-                     0 coins
-                     </span>
              <span
                  className="notification-icon">
                      0 Notification
