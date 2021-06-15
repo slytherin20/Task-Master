@@ -23,9 +23,8 @@ function NavBar({account,menuStateHandler,accountStateHandler}){
                  onClick={accountStateHandler}>
                      photo
                      {
-                         account?
-                                    <AccountBar />
-                                    :null
+                         account &&
+                                    <AccountBar /> 
                      }
                      </span>
         </nav>

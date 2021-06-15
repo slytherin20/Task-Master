@@ -7,18 +7,12 @@ import Form from "./form";
 import Display from "./displaytasks";
 import { date } from "../date";
 import DisplayCompleted from "./displaycompleted";
+import PersonalDetails from "./PersonalDetails";
 
 function App(){
     //Current date
     const dateString = date()
-
-    //Firestore
-    const userID = auth.currentUser.uid;
-    const collectionRef = db.collection(`users/${userID}/tasks`);
-    const sideBarRef = db.collection(`users/${userID}/labels`);
-    const completedListRef = db.collection(`users/${userID}/completed`)
-
-
+    
     //States
     const [menuState,setMenuState] =  useState(false);
     const [accountState,setAccountState] = useState(false);
@@ -32,7 +26,18 @@ function App(){
     const [completedArr,setCompletedArr] = useState([]);
     const [displayTitle,setDisplayTitle] = useState("All");
 
-    //useEffects
+    //Firestore
+    const userID = auth.currentUser.uid;
+    const collectionRef = db.collection(`users/${userID}/tasks`);
+    const sideBarRef = db.collection(`users/${userID}/labels`);
+    const completedListRef = db.collection(`users/${userID}/completed`)
+
+    //Authentication details
+    let userMetaData = auth.currentUser.metadata;
+    let creationTime = userMetaData.creationTime;
+    let lastLogin = userMetaData.lastSignInTime;
+
+
     //Display sidebar 
     useEffect(() => {
 
@@ -53,8 +58,7 @@ function App(){
 
     function addDefaultValue(){
         //First login
-        let userMetaData = auth.currentUser.metadata;
-        if(userMetaData.creationTime===userMetaData.lastSignInTime)
+        if(creationTime===lastLogin)
           initialLabel()
         getSideBarLabels()
     }
@@ -290,17 +294,22 @@ function App(){
     //render to Virtual DOM
     return(
        <>
+       {
+           //creationTime===lastLogin &&
+                                         <PersonalDetails userId={userID}/>
+                                
+       }
         <NavBar 
             account={accountState} 
             menuStateHandler={changeMenuState} 
             accountStateHandler={changeAccountState}/>
        {
-           menuState?<Sidebar 
+           menuState && 
+                    <Sidebar 
                         status = {menuState} 
                         closeMenuHandler={setMenuState}
                         labels = {allLabels}
                         displayHandler={changedisplayTitle} />
-                    :null
        }
        <div 
             className="main-container">
