@@ -18,6 +18,7 @@ export default function PersonalDetails({userId}){
     //Collection ref
     const userID = auth.currentUser.uid;
     const collectionRef = db.collection(`users/${userID}/name`);
+    const storage = firebase.storage();
 
     useEffect(() => {
         //Get the name from firestore
@@ -37,6 +38,17 @@ export default function PersonalDetails({userId}){
         )
     }, [])
 
+    useEffect(() => {
+       
+        storage.ref(`users/${userId}/picture`)
+        .listAll()
+        .then((res)=>{
+            if(res.items.length!==0) setStoredImage(res.items[0].name)
+        })
+        .catch((err)=> console.log("Error"+err))
+
+    }, [])
+
 
 
     //User info
@@ -52,15 +64,31 @@ export default function PersonalDetails({userId}){
     function submitDetails(e){
         e.preventDefault()
         //Store image
-        if(imageName!=="nophoto.jpg"){
-            const storageRef = firebase
-                                .storage()
-                                .ref(`users/${userId}/picture/`+imageName)
-            storageRef.put(image);
-        }
+        addImage()
         //Store name
         addName()
        
+    }
+    function addImage(){
+        if(imageName!=="nophoto.jpg"){
+            //Already exists delete first then add new image
+           if(storedImage){
+            storage.ref(`users/${userId}/picture/`+storedImage)
+            .delete()
+            .then(()=>
+                addImageToDB()
+            )
+            .catch((err)=> console.log(err))
+           }
+           //Does not exist already
+           else addImageToDB()
+        }
+    }
+    function addImageToDB(){
+        const storageRef =  storage
+                            .ref(`users/${userId}/picture/`+imageName)
+        storageRef.put(image); 
+        setStoredImage(imageName)
     }
     function addName(){
 
