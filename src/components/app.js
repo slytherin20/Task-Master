@@ -25,6 +25,7 @@ function App(){
     const [displayArr,setDisplayArr] = useState([]);
     const [completedArr,setCompletedArr] = useState([]);
     const [displayTitle,setDisplayTitle] = useState("All");
+    const [accountTab,setAccountTab] = useState(false);
 
     //Firestore
     const userID = auth.currentUser.uid;
@@ -44,6 +45,7 @@ function App(){
         addDefaultValue()
 
     },[])
+
     //Display tasks as per the tag clicked.
     useEffect(() => {
         
@@ -58,8 +60,10 @@ function App(){
 
     function addDefaultValue(){
         //First login
-        if(creationTime===lastLogin)
-          initialLabel()
+        if(creationTime===lastLogin){
+            initialLabel()
+            setAccountTab(true)
+        }
         getSideBarLabels()
     }
     function getSideBarLabels(){
@@ -109,6 +113,11 @@ function App(){
     function changedisplayTitle(selectedTag){
         setDisplayTitle(selectedTag);
     }
+    function closeTab(){
+        setAccountTab(!accountTab);
+
+    }
+
     function completedTaskHandler(id,name,deadline,label){
 
          //Put it into completed task list.
@@ -295,14 +304,18 @@ function App(){
     return(
        <>
        {
-           //creationTime===lastLogin &&
-                                         <PersonalDetails userId={userID}/>
+           creationTime===lastLogin &&
+            accountTab &&
+            <PersonalDetails 
+                userId={userID} 
+                accountHandler={closeTab} />
                                 
        }
         <NavBar 
             account={accountState} 
             menuStateHandler={changeMenuState} 
-            accountStateHandler={changeAccountState}/>
+            accountStateHandler={changeAccountState}
+            accountHandler = {closeTab}/>
        {
            menuState && 
                     <Sidebar 
@@ -339,6 +352,12 @@ function App(){
                     </div>
                     
              </div>
+        {
+            accountTab && 
+                <PersonalDetails
+                userId={userID} 
+                accountHandler={closeTab}/>
+        }
        </>
     )
 }

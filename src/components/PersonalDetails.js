@@ -4,7 +4,7 @@ import noPhoto from '../images/nophoto.jpg';
 import closeBtn from "../images/cancel.png";
 import db, { auth } from "../firebase_config";
 
-export default function PersonalDetails({userId}){
+export default function PersonalDetails({userId,accountHandler}){
     //States
     const [firstName,setFirstName] = useState("");
     const [lastName,setLastName] = useState("");
@@ -39,7 +39,7 @@ export default function PersonalDetails({userId}){
     }, [])
 
     useEffect(() => {
-       
+       //Get the image from database if already exists
         storage.ref(`users/${userId}/picture`)
         .listAll()
         .then((res)=>{
@@ -67,9 +67,13 @@ export default function PersonalDetails({userId}){
         addImage()
         //Store name
         addName()
+
+        //Close the tab.
+        accountHandler()
        
     }
     function addImage(){
+        //User has selected an image
         if(imageName!=="nophoto.jpg"){
             //Already exists delete first then add new image
            if(storedImage){
@@ -84,12 +88,14 @@ export default function PersonalDetails({userId}){
            else addImageToDB()
         }
     }
+
     function addImageToDB(){
-        const storageRef =  storage
-                            .ref(`users/${userId}/picture/`+imageName)
-        storageRef.put(image); 
+        const storageRef =  storage.ref(`users/${userId}/picture/`+imageName)
+        storageRef.put(image)
+        //Add a promise `then` part which notifies that data stored successfully!
         setStoredImage(imageName)
     }
+
     function addName(){
 
         if(firstName && lastName){
@@ -148,7 +154,7 @@ export default function PersonalDetails({userId}){
                             <img 
                                 src={closeBtn} 
                                 alt="close-tab"
-                                onClick={()=>console.log("Close tab")}>
+                                onClick={accountHandler}>
                             </img>
                         </button>
                     }

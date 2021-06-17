@@ -1,11 +1,11 @@
 import { auth } from '../firebase_config';
 
-function AccountBar(){
+function AccountBar({accountHandler}){
     return(
         <div 
             className="account-bar">
             <span 
-                className="profile-button">
+                className="profile-button" onClick={accountHandler}>
                     Account Details
             </span>
             <button 

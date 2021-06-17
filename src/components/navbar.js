@@ -1,7 +1,7 @@
 import menuIcon from '../images/menu.png';
 import AccountBar from "./accountbar";
 
-function NavBar({account,menuStateHandler,accountStateHandler}){
+function NavBar({account,menuStateHandler,accountStateHandler,accountHandler}){
 
 
     return(
@@ -24,7 +24,7 @@ function NavBar({account,menuStateHandler,accountStateHandler}){
                      photo
                      {
                          account &&
-                                    <AccountBar /> 
+                                    <AccountBar accountHandler = {accountHandler}/> 
                      }
                      </span>
         </nav>

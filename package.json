@@ -12,6 +12,7 @@
     "react-firebase-hooks": "^3.0.3",
     "react-firebaseui": "^5.0.2",
     "react-scripts": "4.0.3",
+    "react-toastify": "^7.0.4",
     "web-vitals": "^1.1.1"
   },
   "scripts": {
