@@ -16,8 +16,8 @@ function Display({tasks,completedTask,deleteTask}){
                                         {task.priority}
                                         </button>
                         <p>{task.status?"In Progress ✍🏼":"Completed  ✅"}</p>
-                        <p>{
-                            task.deadline.split("-").reverse().join("-")
+                        <p>Deadline: {
+                             task.deadline.split("-").reverse().join("-")
                             }</p>
                         <button className="done" onClick={()=>completedTask(task.id,task.taskName,task.deadline,task.customLabel)}>Done</button>
                         <button className="delete" onClick={()=>deleteTask(task.id,task.customLabel)}>Delete</button>

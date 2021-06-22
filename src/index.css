@@ -39,7 +39,7 @@ code {
   content:"";
   position: absolute;
   z-index:-1;
-  background-image: url('./images/mainpage.jpg');
+  background-image: url('./utilities/images/mainpage.jpg');
   background-size: cover;
   opacity: 0.2;
   top: 0;
@@ -79,4 +79,9 @@ code {
   display:flex;
   flex-direction: column;
   justify-content: space-between;
+}
+.nav-profile-pic{
+  width:40px;
+  height:40px;
+  border-radius: 50%;
 }

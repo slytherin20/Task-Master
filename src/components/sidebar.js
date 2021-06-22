@@ -1,6 +1,6 @@
-import cancelIcon from '../images/cancel.png';
+import cancelIcon from '../utilities/images/cancel.png';
 
-function Sidebar({status,closeMenuHandler,labels,displayHandler}){
+function Sidebar({closeMenuHandler,labels,displayHandler}){
         let labelsArr = []
         for(let key in labels){
                 labelsArr.push(<button 
@@ -18,7 +18,7 @@ function Sidebar({status,closeMenuHandler,labels,displayHandler}){
                 <img src={cancelIcon} 
                         className="cancel-icon" 
                         alt="close" 
-                        onClick={()=>closeMenuHandler(!status)}/>
+                        onClick={()=>closeMenuHandler()}/>
                 <span>
                         Name
                 </span>
@@ -32,19 +32,19 @@ function Sidebar({status,closeMenuHandler,labels,displayHandler}){
                         <button 
                                 className="low-btn" 
                                 onClick={()=>
-                                                displayHandler("Low")}>
+                                        displayHandler("Low")}>
                                 Low
                         </button>
                         <button 
                                 className="medium-btn" 
                                 onClick={()=>
-                                                displayHandler("Medium")}>
+                                        displayHandler("Medium")}>
                                 Medium
                         </button>
                         <button 
                                 className="high-btn" 
                                 onClick={()=>
-                                                displayHandler("High")}>
+                                        displayHandler("High")}>
                                 High
                         </button>
                 </div>

@@ -1,11 +1,11 @@
-import db, { auth } from "../firebase_config";
+import db, { auth } from "../utilities/functions/firebase_config";
 import firebase from "firebase/app"
 import { useState, useEffect } from "react";
 import Sidebar from "./sidebar";
 import NavBar from "./navbar";
 import Form from "./form";
 import Display from "./displaytasks";
-import { date } from "../date";
+import { date } from "../utilities/functions/date";
 import DisplayCompleted from "./displaycompleted";
 import PersonalDetails from "./PersonalDetails";
 
@@ -310,19 +310,22 @@ function App(){
                 userId={userID} 
                 accountHandler={closeTab} />
                                 
-       }
-        <NavBar 
-            account={accountState} 
-            menuStateHandler={changeMenuState} 
-            accountStateHandler={changeAccountState}
-            accountHandler = {closeTab}/>
+        }
+           <NavBar 
+           account={accountState} 
+           menuStateHandler={changeMenuState} 
+           accountStateHandler={changeAccountState}
+           accountHandler = {closeTab}
+           uploadStatus={accountTab}
+            />
        {
            menuState && 
                     <Sidebar 
-                        status = {menuState} 
-                        closeMenuHandler={setMenuState}
+                        closeMenuHandler={changeMenuState}
                         labels = {allLabels}
-                        displayHandler={changedisplayTitle} />
+                        displayHandler={changedisplayTitle} 
+                        uploadStatus = {accountTab}/>
+
        }
        <div 
             className="main-container">
@@ -340,18 +343,18 @@ function App(){
                     date={dateString}
                     addTaskHandler={addTask}
                     />
-                    <div className="display-container">
-                        <Display 
-                            tasks={displayArr} 
-                            completedTask={completedTaskHandler} 
-                            deleteTask={deleteTaskHandler}/>
-                        <DisplayCompleted 
-                            tasks = {completedArr}
-                            deleteTask = {deleteCompletedTaskHandler} />
+                <div className="display-container">
+                    <Display 
+                        tasks={displayArr} 
+                        completedTask={completedTaskHandler} 
+                        deleteTask={deleteTaskHandler}/>
+                    <DisplayCompleted 
+                        tasks = {completedArr}
+                        deleteTask = {deleteCompletedTaskHandler} />
                             
-                    </div>
+                </div>
                     
-             </div>
+        </div>
         {
             accountTab && 
                 <PersonalDetails

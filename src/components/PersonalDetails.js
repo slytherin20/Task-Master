@@ -1,49 +1,60 @@
 import { useState, useEffect } from "react";
 import firebase from "firebase/app";
-import noPhoto from '../images/nophoto.jpg';
-import closeBtn from "../images/cancel.png";
-import db, { auth } from "../firebase_config";
+import noPhoto from '../utilities/images/nophoto.jpg';
+import closeBtn from "../utilities/images/cancel.png";
+import db, { auth } from "../utilities/functions/firebase_config";
 
 export default function PersonalDetails({userId,accountHandler}){
-    //States
+   
     const [firstName,setFirstName] = useState("");
     const [lastName,setLastName] = useState("");
     const [image,setImage] = useState(noPhoto);
-    const [imageName,setImageName] = useState("nophoto.jpg");
+    const [imagePrefix,setImagePrefix] = useState("nophoto.jpg");
     const [imageText,setImageText] = useState("");
     const [imageSrc,setImageSrc] = useState(noPhoto);
     const [storedName,setStoredName] = useState({});
     const [storedImage,setStoredImage] = useState(null);
 
-    //Collection ref
+    
     const userID = auth.currentUser.uid;
     const collectionRef = db.collection(`users/${userID}/name`);
     const storage = firebase.storage();
 
     useEffect(() => {
         //Get the name from firestore
-        collectionRef.onSnapshot(function (querySnapshot){
-                querySnapshot.docs.map((doc)=>{
-                    setStoredName({
-                        id: doc.id,
-                        first: doc.data().first,
-                        last: doc.data().last
-                    }
-                    )
-                })
+        let unsubscribe = 
+            collectionRef
+            .onSnapshot(function (querySnapshot){
+                            querySnapshot.docs.map((doc)=>{
+                                return setStoredName({
+                                    id: doc.id,
+                                    first: doc.data().first,
+                                    last: doc.data().last
+                                }
+                                )
+                            })
         },
         (error)=>{
-            console.log("Name does not exist:",error)
+            console.log(error)
         }
         )
+        return ()=>{
+            unsubscribe()
+        }
+
     }, [])
 
     useEffect(() => {
+
        //Get the image from database if already exists
-        storage.ref(`users/${userId}/picture`)
+        storage
+        .ref(`users/${userId}/picture`)
         .listAll()
         .then((res)=>{
-            if(res.items.length!==0) setStoredImage(res.items[0].name)
+            if(res.items.length!==0) 
+                {
+                    setStoredImage(res.items[0].name)
+                }
         })
         .catch((err)=> console.log("Error"+err))
 
@@ -58,7 +69,7 @@ export default function PersonalDetails({userId,accountHandler}){
 
     function changeName(e,name){
         name==="first"?setFirstName(e.target.value)
-                        :setLastName(e.target.value)
+                      :setLastName(e.target.value)
     }
 
     function submitDetails(e){
@@ -74,7 +85,7 @@ export default function PersonalDetails({userId,accountHandler}){
     }
     function addImage(){
         //User has selected an image
-        if(imageName!=="nophoto.jpg"){
+        if(("profile."+imagePrefix)!=="nophoto.jpg"){
             //Already exists delete first then add new image
            if(storedImage){
             storage.ref(`users/${userId}/picture/`+storedImage)
@@ -90,10 +101,12 @@ export default function PersonalDetails({userId,accountHandler}){
     }
 
     function addImageToDB(){
-        const storageRef =  storage.ref(`users/${userId}/picture/`+imageName)
+        const storageRef =  
+                storage
+                .ref(`users/${userId}/picture/profile.`+imagePrefix)
         storageRef.put(image)
         //Add a promise `then` part which notifies that data stored successfully!
-        setStoredImage(imageName)
+        setStoredImage("profile."+imagePrefix)
     }
 
     function addName(){
@@ -124,10 +137,12 @@ export default function PersonalDetails({userId,accountHandler}){
         if(e.target.files[0]){
 
             let file = e.target.files[0];
-            let fileName = file.name;
-            if(fileName.search(/.png/i)>=0 ||
-                fileName.search(/.jpeg/i)>=0   ||
-                fileName.search(/.jpg/i)>=0 )
+            let prefix = file.name.split(".").pop()
+            console.log(prefix)
+            if(prefix.toLowerCase()==="png"||
+            prefix.toLowerCase()==="jpeg"||
+            prefix.toLowerCase()==="jpg"||
+            prefix.toLowerCase()==="svn")
                                 {
                                     let reader = new FileReader()
                                     reader.readAsDataURL(file)
@@ -135,12 +150,12 @@ export default function PersonalDetails({userId,accountHandler}){
                                                 setImageSrc(reader.result)
                                                 setImage(file)
                                                 setImageText("");
-                                                setImageName(fileName)
+                                                setImagePrefix(prefix)
                                              }
                                 }
                                 
             else {
-                setImageText("*Please upload a picture(png/jpeg/jpg)")
+                setImageText("*Please upload a picture(png/jpeg/jpg/svn)")
             }
 
         }
@@ -168,7 +183,7 @@ export default function PersonalDetails({userId,accountHandler}){
                         <input 
                             type="file" 
                             onChange={uploadImage} 
-                            accept=".png,.jpeg,.jpg">
+                            accept=".png,.jpeg,.jpg,.svn">
                         </input>
                         <span 
                             style={{color: "red"}}>

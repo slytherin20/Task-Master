@@ -1,4 +1,4 @@
-import { auth } from "../firebase_config";
+import { auth } from "../utilities/functions/firebase_config";
 import { useAuthState } from "react-firebase-hooks/auth";
 import firebase from "firebase/app";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";

@@ -1,3 +1,4 @@
+
 function DisplayCompleted({tasks,deleteTask}){
     return(
         <div className="display-completed-container">
@@ -5,7 +6,8 @@ function DisplayCompleted({tasks,deleteTask}){
                 tasks.map((task)=>(
                     <div key={task.id} className="task">
                         <h3>{task.taskName}</h3>
-                        <p>{task.deadline}</p>
+                        <p>Completed ✅</p>
+                        <p>Deadline: {task.deadline}</p>
                         <button className="delete" onClick={()=>deleteTask(task.id,task.customLabel)}>Delete</button>
                         </div>
                 ))
