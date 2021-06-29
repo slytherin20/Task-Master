@@ -4,7 +4,7 @@ import noPhoto from '../utilities/images/nophoto.jpg';
 import closeBtn from "../utilities/images/cancel.png";
 import db, { auth } from "../utilities/functions/firebase_config";
 
-export default function PersonalDetails({userId,accountHandler}){
+export default function PersonalDetails({userId,accountHandler,changeStatus}){
    
     const [firstName,setFirstName] = useState("");
     const [lastName,setLastName] = useState("");
@@ -81,6 +81,9 @@ export default function PersonalDetails({userId,accountHandler}){
 
         //Close the tab.
         accountHandler()
+
+        //Update saved details status.
+        changeStatus(true)
        
     }
     function addImage(){
@@ -174,8 +177,9 @@ export default function PersonalDetails({userId,accountHandler}){
                         </button>
                     }
                 <form 
-                    onSubmit={submitDetails}>
+                    onSubmit={submitDetails} className="form-details">
                         <img 
+                            className="submit-image"
                             src={imageSrc} 
                             alt="display"/>
                     <label>

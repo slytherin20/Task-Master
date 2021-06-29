@@ -26,12 +26,15 @@ function App(){
     const [completedArr,setCompletedArr] = useState([]);
     const [displayTitle,setDisplayTitle] = useState("All");
     const [accountTab,setAccountTab] = useState(false);
+    const [savedStatus,setSavedStatus] = useState(false);
 
     //Firestore
     const userID = auth.currentUser.uid;
     const collectionRef = db.collection(`users/${userID}/tasks`);
     const sideBarRef = db.collection(`users/${userID}/labels`);
     const completedListRef = db.collection(`users/${userID}/completed`)
+    //Storage
+    const storage = firebase.storage();
 
     //Authentication details
     let userMetaData = auth.currentUser.metadata;
@@ -115,7 +118,9 @@ function App(){
     }
     function closeTab(){
         setAccountTab(!accountTab);
-
+    }
+    function changeSavedStatus(status){
+        setSavedStatus(status)
     }
 
     function completedTaskHandler(id,name,deadline,label){
@@ -308,58 +313,65 @@ function App(){
             accountTab &&
             <PersonalDetails 
                 userId={userID} 
-                accountHandler={closeTab} />
+                accountHandler={closeTab}
+                changeStatus = {changeSavedStatus} />
                                 
         }
-           <NavBar 
-           account={accountState} 
-           menuStateHandler={changeMenuState} 
-           accountStateHandler={changeAccountState}
-           accountHandler = {closeTab}
-           uploadStatus={accountTab}
-            />
-       {
-           menuState && 
-                    <Sidebar 
-                        closeMenuHandler={changeMenuState}
-                        labels = {allLabels}
-                        displayHandler={changedisplayTitle} 
-                        uploadStatus = {accountTab}/>
+        <div className="box">
+            <NavBar 
+            account={accountState} 
+            menuStateHandler={changeMenuState} 
+            accountStateHandler={changeAccountState}
+            accountHandler = {closeTab}
+            userId = {userID}
+            storage={storage}
+            changeStatus={changeSavedStatus}
+            saveDetails={savedStatus}
+                />
+        {
+            menuState && 
+                        <Sidebar 
+                            closeMenuHandler={changeMenuState}
+                            labels = {allLabels}
+                            displayHandler={changedisplayTitle} 
+                            uploadStatus = {accountTab}/>
 
-       }
-       <div 
-            className="main-container">
-                <Form 
-                    task= {taskName} 
-                    changeNameHandler={setNameHandler}
-                    priority={priority}
-                    changePriorityHandler={setPriorityHandler}
-                    label={label}
-                    changeLabelHandler={setLabelHandler}
-                    color={color}
-                    changeColorHandler={setColorHandler}
-                    deadline={deadline}
-                    changeDeadlineHandler={setDeadlineHandler}
-                    date={dateString}
-                    addTaskHandler={addTask}
-                    />
-                <div className="display-container">
-                    <Display 
-                        tasks={displayArr} 
-                        completedTask={completedTaskHandler} 
-                        deleteTask={deleteTaskHandler}/>
-                    <DisplayCompleted 
-                        tasks = {completedArr}
-                        deleteTask = {deleteCompletedTaskHandler} />
-                            
-                </div>
-                    
-        </div>
+        }
+        <div 
+                className="main-container">
+                    <Form 
+                        task= {taskName} 
+                        changeNameHandler={setNameHandler}
+                        priority={priority}
+                        changePriorityHandler={setPriorityHandler}
+                        label={label}
+                        changeLabelHandler={setLabelHandler}
+                        color={color}
+                        changeColorHandler={setColorHandler}
+                        deadline={deadline}
+                        changeDeadlineHandler={setDeadlineHandler}
+                        date={dateString}
+                        addTaskHandler={addTask}
+                        />
+                    <div className="display-container">
+                        <Display 
+                            tasks={displayArr} 
+                            completedTask={completedTaskHandler} 
+                            deleteTask={deleteTaskHandler}/>
+                        <DisplayCompleted 
+                            tasks = {completedArr}
+                            deleteTask = {deleteCompletedTaskHandler} />
+                                
+                    </div>
+                        
+            </div>
+        </div> 
         {
             accountTab && 
                 <PersonalDetails
                 userId={userID} 
-                accountHandler={closeTab}/>
+                accountHandler={closeTab}
+                changeStatus = {changeSavedStatus}/>
         }
        </>
     )

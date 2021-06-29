@@ -85,3 +85,28 @@ code {
   height:40px;
   border-radius: 50%;
 }
+.nav-profile-pic:active{
+  border: solid 2px white;
+}
+.submit-image{
+  width: 200px;
+  height:200px;
+  border-radius: 50%;
+}
+.personal-details{
+  position: absolute;
+  z-index:1000;
+  top: 15%;
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  max-height: 400px;
+  padding: 20px;
+  box-shadow: -3px 2px 10px 3px grey;
+  background-color: white;
+}
+.form-details{
+  display: flex;
+  flex-direction:column;
+  align-content: space-between;
+}

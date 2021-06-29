@@ -1,25 +1,43 @@
 import menuIcon from '../utilities/images/menu.png';
 import AccountBar from "./accountbar";
 import getImage from "../utilities/functions/GetImage";
-import useAsyncState from "../utilities/functions/asyncState";
 import { useState, useEffect } from "react";
+import noPhoto from "../utilities/images/nophoto.jpg"
 
-function NavBar({account,menuStateHandler,accountStateHandler,accountHandler,uploadStatus}){
+function NavBar({account,
+                menuStateHandler,
+                accountStateHandler,
+                accountHandler,
+                userId,
+                storage,
+                changeStatus,
+                saveDetails    
+            }){
 
-    const [image,setImage] = useAsyncState(null)
-   // const [imageStatus,setImageStatus] = useState(false)
+    const [image,setImage] = useState(noPhoto)
 
     useEffect(() => {
+        imageUpload()
+    }, [])
 
-        getImage()
-        .then((url)=>
-        {   if(url){
-            setImage(url)
-            }
+    useEffect(() => {
+        if(saveDetails){
+            imageUpload()
+            changeStatus(false)
         }
-        )
-        console.log("Status:",uploadStatus)
-    }, [uploadStatus])
+    }, [saveDetails])
+
+   async function imageUpload(){
+
+    let url = await getImage(userId,storage)
+    console.log(url)
+
+    if(url){
+
+      setImage(url)
+        console.log("Image downloaded!")
+      }
+    }
 
     return(
         <nav 
@@ -37,7 +55,7 @@ function NavBar({account,menuStateHandler,accountStateHandler,accountHandler,upl
                 <img className = "nav-profile-pic" 
                      src={image} 
                      alt="profile-pic"
-                     loading="eager"/>
+                     loading="lazy"/>
                      {
                         account &&
                         <AccountBar accountHandler = {accountHandler}/> 
