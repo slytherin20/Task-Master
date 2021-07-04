@@ -4,7 +4,10 @@ import noPhoto from '../utilities/images/nophoto.jpg';
 import closeBtn from "../utilities/images/cancel.png";
 import db, { auth } from "../utilities/functions/firebase_config";
 
-export default function PersonalDetails({userId,accountHandler,changeStatus}){
+export default function PersonalDetails({userId,
+                                        accountHandler,
+                                        changeLoading,
+                                        changeUrl}){
    
     const [firstName,setFirstName] = useState("");
     const [lastName,setLastName] = useState("");
@@ -81,9 +84,6 @@ export default function PersonalDetails({userId,accountHandler,changeStatus}){
 
         //Close the tab.
         accountHandler()
-
-        //Update saved details status.
-        changeStatus(true)
        
     }
     function addImage(){
@@ -107,7 +107,24 @@ export default function PersonalDetails({userId,accountHandler,changeStatus}){
         const storageRef =  
                 storage
                 .ref(`users/${userId}/picture/profile.`+imagePrefix)
-        storageRef.put(image)
+        
+       let upload =  storageRef.put(image)
+
+       //Check when is upload completed.
+       upload.on('state_changed',
+               ()=>{
+                   changeLoading(true)
+                },
+                (error)=>{
+                    console.log("Error while uploading image:",error)
+                },
+                ()=>{
+                    upload.snapshot.ref.getDownloadURL().then((url)=>
+                        {
+                            changeUrl(url)
+                        }
+                    )}
+                )
         //Add a promise `then` part which notifies that data stored successfully!
         setStoredImage("profile."+imagePrefix)
     }

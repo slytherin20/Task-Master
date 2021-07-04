@@ -66,10 +66,23 @@ code {
 
 .sidebar-menu{
   width:25%;
+  background-color: grey;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
-.profile{
-  position:absolute;
+.cancel-icon{
+  width: 25px;
+  height:25px;
+  float: right;
 }
+.sidebar-profile-pic{
+  width: 150px;
+  height:150px;
+  border-radius: 50%;
+}
+
 .account-bar{
   position: relative;
   top:28px;

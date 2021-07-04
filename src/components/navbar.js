@@ -1,43 +1,15 @@
 import menuIcon from '../utilities/images/menu.png';
 import AccountBar from "./accountbar";
-import getImage from "../utilities/functions/GetImage";
-import { useState, useEffect } from "react";
-import noPhoto from "../utilities/images/nophoto.jpg"
+import Loader from "react-loader-spinner";
 
 function NavBar({account,
                 menuStateHandler,
                 accountStateHandler,
                 accountHandler,
-                userId,
-                storage,
-                changeStatus,
-                saveDetails    
+                loading,
+                imgUrl
             }){
 
-    const [image,setImage] = useState(noPhoto)
-
-    useEffect(() => {
-        imageUpload()
-    }, [])
-
-    useEffect(() => {
-        if(saveDetails){
-            imageUpload()
-            changeStatus(false)
-        }
-    }, [saveDetails])
-
-   async function imageUpload(){
-
-    let url = await getImage(userId,storage)
-    console.log(url)
-
-    if(url){
-
-      setImage(url)
-        console.log("Image downloaded!")
-      }
-    }
 
     return(
         <nav 
@@ -52,10 +24,19 @@ function NavBar({account,
             <span 
                 className="account-img"
                 onClick={accountStateHandler}>
-                <img className = "nav-profile-pic" 
-                     src={image} 
-                     alt="profile-pic"
-                     loading="lazy"/>
+                {
+                    loading? <Loader
+                                type="TailSpin"
+                                color="#00BFFF"
+                                height={20}
+                                width={20}
+                                />
+                            : <img className = "nav-profile-pic" 
+                                src={imgUrl} 
+                                alt="profile-pic"
+                               />
+                        
+                } 
                      {
                         account &&
                         <AccountBar accountHandler = {accountHandler}/> 

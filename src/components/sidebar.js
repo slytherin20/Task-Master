@@ -1,6 +1,7 @@
 import cancelIcon from '../utilities/images/cancel.png';
+import Loader from "react-loader-spinner";
 
-function Sidebar({closeMenuHandler,labels,displayHandler}){
+function Sidebar({closeMenuHandler,labels,displayHandler,loading,imgUrl}){
         let labelsArr = []
         for(let key in labels){
                 labelsArr.push(<button 
@@ -23,10 +24,20 @@ function Sidebar({closeMenuHandler,labels,displayHandler}){
                         Name
                 </span>
                 <span className="profile">
-                <img 
-                        src="" 
-                        alt="personal dp">
-                </img>
+                {
+                    loading? <Loader
+                                type="TailSpin"
+                                color="#00BFFF"
+                                height={100}
+                                width={100}
+                                />
+                            : <img className = "sidebar-profile-pic" 
+                                src={imgUrl} 
+                                alt="profile-pic"
+                               />
+                        
+                } 
+                
                 </span>
                 <div className="priority-tabs">
                         <button 

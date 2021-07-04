@@ -8,6 +8,9 @@ import Display from "./displaytasks";
 import { date } from "../utilities/functions/date";
 import DisplayCompleted from "./displaycompleted";
 import PersonalDetails from "./PersonalDetails";
+import getImage from "../utilities/functions/GetImage";
+import noPhoto from "../utilities/images/nophoto.jpg";
+import useAsyncState from "../utilities/functions/asyncState";
 
 function App(){
     //Current date
@@ -26,7 +29,8 @@ function App(){
     const [completedArr,setCompletedArr] = useState([]);
     const [displayTitle,setDisplayTitle] = useState("All");
     const [accountTab,setAccountTab] = useState(false);
-    const [savedStatus,setSavedStatus] = useState(false);
+    const [loading,setLoading] = useState(true);
+    const [url,setUrl] = useAsyncState(null);
 
     //Firestore
     const userID = auth.currentUser.uid;
@@ -60,6 +64,22 @@ function App(){
     useEffect(() => {
         addCompletedTasks()
     }, [])
+
+     //Getting image when app opened for first time.
+        useEffect(() => {
+            imageUpload()
+         }, [])
+
+    async function imageUpload(){
+    let url = await getImage(userID,storage)
+        if(url){
+            changeUrl(url)
+            console.log("Image downloaded!")
+        }
+        else{
+            setUrl(noPhoto)
+        }
+    }
 
     function addDefaultValue(){
         //First login
@@ -119,8 +139,16 @@ function App(){
     function closeTab(){
         setAccountTab(!accountTab);
     }
-    function changeSavedStatus(status){
-        setSavedStatus(status)
+    function changeLoading(loadingValue){
+        setLoading(loadingValue)
+    }
+    function changeUrl(newUrl){
+
+        setUrl(newUrl)
+        .then(()=>
+        changeLoading(false)
+        )
+        .catch((err)=>console.log("Error getting url:",err))
     }
 
     function completedTaskHandler(id,name,deadline,label){
@@ -314,7 +342,8 @@ function App(){
             <PersonalDetails 
                 userId={userID} 
                 accountHandler={closeTab}
-                changeStatus = {changeSavedStatus} />
+                changeLoading={changeLoading}
+                changeUrl={changeUrl} />
                                 
         }
         <div className="box">
@@ -323,10 +352,8 @@ function App(){
             menuStateHandler={changeMenuState} 
             accountStateHandler={changeAccountState}
             accountHandler = {closeTab}
-            userId = {userID}
-            storage={storage}
-            changeStatus={changeSavedStatus}
-            saveDetails={savedStatus}
+            loading={loading}
+            imgUrl = {url}
                 />
         {
             menuState && 
@@ -334,7 +361,9 @@ function App(){
                             closeMenuHandler={changeMenuState}
                             labels = {allLabels}
                             displayHandler={changedisplayTitle} 
-                            uploadStatus = {accountTab}/>
+                            uploadStatus = {accountTab}
+                            loading={loading}
+                            imgUrl={url}/>
 
         }
         <div 
@@ -371,7 +400,8 @@ function App(){
                 <PersonalDetails
                 userId={userID} 
                 accountHandler={closeTab}
-                changeStatus = {changeSavedStatus}/>
+                changeLoading={changeLoading}
+                changeUrl={changeUrl}/>
         }
        </>
     )
