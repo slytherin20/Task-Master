@@ -24,7 +24,7 @@ function App(){
     const [taskName,setTaskName] = useState("");
     const [priority,setPriority] = useState("Low");
     const [label,setLabel] = useState("All");
-    const [color,setColor] = useState("#ffffff");
+    const [color,setColor] = useState("#003333");
     const [deadline,setDeadline] = useState(dateString);
     const [allLabels,setAllLabels] = useState({});
     const [displayArr,setDisplayArr] = useState([]);
@@ -83,9 +83,11 @@ function App(){
     function displayName(){
         
         nameRef.onSnapshot(function (querySnapshot){
-            let data = querySnapshot.docs[0].data()
-            let [firstName,lastName] = [data.first,data.last]
-            setName(firstName+" "+lastName)
+            if(querySnapshot.docs.length!=0){
+                let data = querySnapshot.docs[0].data()
+                let [firstName,lastName] = [data.first,data.last]
+                setName(firstName+" "+lastName)
+            }
         })
     }
 
@@ -371,8 +373,10 @@ function App(){
             loading={loading}
             imgUrl = {url}
                 />
-        {
-            menuState && 
+        <div 
+                className="main-container">
+                    {
+                        menuState && 
                         <Sidebar 
                             closeMenuHandler={changeMenuState}
                             labels = {allLabels}
@@ -381,10 +385,8 @@ function App(){
                             loading={loading}
                             imgUrl={url}
                             name={name}/>
-
-        }
-        <div 
-                className="main-container">
+                     }
+                    <div className="box-2">
                     <Form 
                         task= {taskName} 
                         changeNameHandler={setNameHandler}
@@ -412,7 +414,7 @@ function App(){
                             notify={notify} />
                                 
                     </div>
-                        
+                    </div>           
             </div>
         </div> 
         {
