@@ -83,7 +83,7 @@ function App(){
     function displayName(){
         
         nameRef.onSnapshot(function (querySnapshot){
-            if(querySnapshot.docs.length!=0){
+            if(querySnapshot.docs.length!==0){
                 let data = querySnapshot.docs[0].data()
                 let [firstName,lastName] = [data.first,data.last]
                 setName(firstName+" "+lastName)
