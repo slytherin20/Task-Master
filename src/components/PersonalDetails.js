@@ -8,7 +8,8 @@ export default function PersonalDetails({userId,
                                         accountHandler,
                                         changeLoading,
                                         changeUrl,
-                                        nameHandler}){
+                                        nameHandler,
+                                        notify}){
    
     const [firstName,setFirstName] = useState("");
     const [lastName,setLastName] = useState("");
@@ -231,7 +232,7 @@ export default function PersonalDetails({userId,
                             onChange={(e)=>changeName(e,"last")}>
                         </input>
                     </div>
-                    <button>Save</button>
+                    <button onClick={()=>notify("Details saved successfully!")}>Save</button>
                 </form>
             </div>
         )

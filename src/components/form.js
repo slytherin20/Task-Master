@@ -10,7 +10,8 @@ function Form({
     deadline,
     changeDeadlineHandler,
     date,
-    addTaskHandler
+    addTaskHandler,
+    notify
 }){
     return(
         <form 
@@ -67,7 +68,7 @@ function Form({
                 min={date}>
             </input>
         </label>
-        <button type="submit" className="form-button">Add task</button>
+        <button type="submit" className="form-button" onClick={()=>notify("New task added!")}>Add task</button>
     </form>
 
     )

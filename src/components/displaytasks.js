@@ -1,4 +1,12 @@
-function Display({tasks,completedTask,deleteTask}){
+function Display({tasks,completedTask,deleteTask,notify}){
+    function updateCompletedStatus(task){
+        completedTask(task.id,task.taskName,task.deadline,task.customLabel)
+        notify("Task Completed!")
+    }
+    function updateDeleteTask(task){
+        deleteTask(task.id,task.customLabel)
+        notify("Task Removed")
+    }
     return(
         <div className="display-pending-container">
             {   
@@ -19,8 +27,8 @@ function Display({tasks,completedTask,deleteTask}){
                         <p>Deadline: {
                              task.deadline.split("-").reverse().join("-")
                             }</p>
-                        <button className="done" onClick={()=>completedTask(task.id,task.taskName,task.deadline,task.customLabel)}>Done</button>
-                        <button className="delete" onClick={()=>deleteTask(task.id,task.customLabel)}>Delete</button>
+                        <button className="done" onClick={()=>updateCompletedStatus(task)}>Done</button>
+                        <button className="delete" onClick={()=>updateDeleteTask(task)}>Delete</button>
                         </div>
                 ))
                 

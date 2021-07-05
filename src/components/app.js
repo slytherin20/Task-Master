@@ -11,6 +11,8 @@ import PersonalDetails from "./PersonalDetails";
 import getImage from "../utilities/functions/GetImage";
 import noPhoto from "../utilities/images/nophoto.jpg";
 import useAsyncState from "../utilities/functions/asyncState";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App(){
     //Current date
@@ -147,6 +149,9 @@ function App(){
     }
     function changeLoading(loadingValue){
         setLoading(loadingValue)
+    }
+    function notify(message){
+        toast(message)
     }
     function changeUrl(newUrl){
 
@@ -353,7 +358,8 @@ function App(){
                 accountHandler={closeTab}
                 changeLoading={changeLoading}
                 changeUrl={changeUrl}
-                nameHandler={changeName} />
+                nameHandler={changeName}
+                notify={notify} />
                                 
         }
         <div className="box">
@@ -392,15 +398,18 @@ function App(){
                         changeDeadlineHandler={setDeadlineHandler}
                         date={dateString}
                         addTaskHandler={addTask}
+                        notify={notify}
                         />
                     <div className="display-container">
                         <Display 
                             tasks={displayArr} 
                             completedTask={completedTaskHandler} 
-                            deleteTask={deleteTaskHandler}/>
+                            deleteTask={deleteTaskHandler}
+                            notify={notify}/>
                         <DisplayCompleted 
                             tasks = {completedArr}
-                            deleteTask = {deleteCompletedTaskHandler} />
+                            deleteTask = {deleteCompletedTaskHandler}
+                            notify={notify} />
                                 
                     </div>
                         
@@ -413,8 +422,10 @@ function App(){
                 accountHandler={closeTab}
                 changeLoading={changeLoading}
                 changeUrl={changeUrl}
-                nameHandler={changeName}/>
+                nameHandler={changeName}
+                notify={notify} />
         }
+        <ToastContainer/>
        </>
     )
 }

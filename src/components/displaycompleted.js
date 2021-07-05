@@ -1,5 +1,9 @@
 
-function DisplayCompleted({tasks,deleteTask}){
+function DisplayCompleted({tasks,deleteTask,notify}){
+    function updateDeleteStatus(task){
+        deleteTask(task.id,task.customLabel)
+        notify("Task Removed")
+    }
     return(
         <div className="display-completed-container">
             {   
@@ -8,7 +12,7 @@ function DisplayCompleted({tasks,deleteTask}){
                         <h3>{task.taskName}</h3>
                         <p>Completed ✅</p>
                         <p>Deadline: {task.deadline}</p>
-                        <button className="delete" onClick={()=>deleteTask(task.id,task.customLabel)}>Delete</button>
+                        <button className="delete" onClick={()=>updateDeleteStatus(task)}>Delete</button>
                         </div>
                 ))
                 
