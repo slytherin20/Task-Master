@@ -46,12 +46,14 @@ function Form({
         </label>
         <label>
             Choose Custom Label:
-            <input 
+            <input  
                     type="text" 
                     placeholder="Enter a custom label" 
                     value={label} 
                     onChange={changeLabelHandler}>
             </input>
+        </label>
+        <label>
             Pick Label Color:
             <input 
                     type="color" 

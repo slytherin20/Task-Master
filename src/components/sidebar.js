@@ -15,7 +15,7 @@ function Sidebar({closeMenuHandler,labels,displayHandler,loading,imgUrl,name}){
         } 
         return (
             <div 
-                className="sidebar-menu">
+                className="sidebar-menu box-1">
                 <img src={cancelIcon} 
                         className="cancel-icon" 
                         alt="close" 

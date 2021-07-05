@@ -7,7 +7,6 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  height:100%;
 }
 
 code {
@@ -23,7 +22,7 @@ code {
   justify-content: space-between;
   height: 50px;
   color:white;
-  background-color:rebeccapurple;
+  background-color:#003333;
   font-size: 1.6em;
   font-weight: bold;
   padding:7px;
@@ -65,12 +64,11 @@ code {
 }
 
 .sidebar-menu{
-  width:25%;
-  background-color: grey;
-  position: absolute;
+  background-color: rgba(0, 51, 51,0.9);
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 100vh;
+  color: white;
 }
 .cancel-icon{
   width: 25px;
@@ -122,4 +120,58 @@ code {
   display: flex;
   flex-direction:column;
   align-content: space-between;
+}
+.display-container{
+  display: flex;
+  flex-direction: row;
+  width:96%;
+  padding:2%;
+}
+.display-pending-container,.display-completed-container{
+  width: 50%;
+}
+.input-box{
+  max-height: 200px;
+  margin: 5% auto;
+  padding:2%;
+  width:65%;
+  background-color: rgba( 204, 153, 255,1);
+  border-radius: 2%;
+  display:flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content:stretch;
+}
+.main-container{
+  display:flex;
+  flex-direction:row;
+  width:100%;
+}
+.box-1{
+  width:25%;
+}
+.form-button{
+  background-color:rgba(0, 51, 51,1);
+  color:white;
+  width:100px;
+  height: 40px;
+  border-radius:5%;
+  border: none;
+}
+input,select{
+  padding:1%;
+  border: solid 1px grey;
+  border-radius: 5%;
+  width: 150px;
+  background-color: white;
+  margin:5px;
+}
+input[type=color]{
+  border:none;
+}
+input.task-name{
+  width: 50%;
+}
+label{
+  display:inline;
 }
