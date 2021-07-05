@@ -31,12 +31,14 @@ function App(){
     const [accountTab,setAccountTab] = useState(false);
     const [loading,setLoading] = useState(true);
     const [url,setUrl] = useAsyncState(null);
+    const [name,setName] = useState("");
 
     //Firestore
     const userID = auth.currentUser.uid;
     const collectionRef = db.collection(`users/${userID}/tasks`);
     const sideBarRef = db.collection(`users/${userID}/labels`);
     const completedListRef = db.collection(`users/${userID}/completed`)
+    const nameRef = db.collection(`users/${userID}/name`)
     //Storage
     const storage = firebase.storage();
 
@@ -45,13 +47,10 @@ function App(){
     let creationTime = userMetaData.creationTime;
     let lastLogin = userMetaData.lastSignInTime;
 
-
-    //Display sidebar 
-    useEffect(() => {
-
-        addDefaultValue()
-
-    },[])
+    //Get the data from database
+    useEffect(()=>
+        displayElements()
+    ,[])
 
     //Display tasks as per the tag clicked.
     useEffect(() => {
@@ -59,17 +58,7 @@ function App(){
         displayTasks()
 
     }, [displayTitle])
-
-    //Display only completed tasks
-    useEffect(() => {
-        addCompletedTasks()
-    }, [])
-
-     //Getting image when app opened for first time.
-        useEffect(() => {
-            imageUpload()
-         }, [])
-
+    
     async function imageUpload(){
     let url = await getImage(userID,storage)
         if(url){
@@ -79,6 +68,23 @@ function App(){
         else{
             setUrl(noPhoto)
         }
+    }
+    function displayElements(){
+
+        addDefaultValue()
+        addCompletedTasks()
+        imageUpload()
+        displayName()
+
+    }
+
+    function displayName(){
+        
+        nameRef.onSnapshot(function (querySnapshot){
+            let data = querySnapshot.docs[0].data()
+            let [firstName,lastName] = [data.first,data.last]
+            setName(firstName+" "+lastName)
+        })
     }
 
     function addDefaultValue(){
@@ -149,6 +155,9 @@ function App(){
         changeLoading(false)
         )
         .catch((err)=>console.log("Error getting url:",err))
+    }
+    function changeName(name){
+        setName(name)
     }
 
     function completedTaskHandler(id,name,deadline,label){
@@ -343,7 +352,8 @@ function App(){
                 userId={userID} 
                 accountHandler={closeTab}
                 changeLoading={changeLoading}
-                changeUrl={changeUrl} />
+                changeUrl={changeUrl}
+                nameHandler={changeName} />
                                 
         }
         <div className="box">
@@ -363,7 +373,8 @@ function App(){
                             displayHandler={changedisplayTitle} 
                             uploadStatus = {accountTab}
                             loading={loading}
-                            imgUrl={url}/>
+                            imgUrl={url}
+                            name={name}/>
 
         }
         <div 
@@ -401,7 +412,8 @@ function App(){
                 userId={userID} 
                 accountHandler={closeTab}
                 changeLoading={changeLoading}
-                changeUrl={changeUrl}/>
+                changeUrl={changeUrl}
+                nameHandler={changeName}/>
         }
        </>
     )

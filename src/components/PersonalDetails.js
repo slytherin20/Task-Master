@@ -7,7 +7,8 @@ import db, { auth } from "../utilities/functions/firebase_config";
 export default function PersonalDetails({userId,
                                         accountHandler,
                                         changeLoading,
-                                        changeUrl}){
+                                        changeUrl,
+                                        nameHandler}){
    
     const [firstName,setFirstName] = useState("");
     const [lastName,setLastName] = useState("");
@@ -120,8 +121,9 @@ export default function PersonalDetails({userId,
                 },
                 ()=>{
                     upload.snapshot.ref.getDownloadURL().then((url)=>
-                        {
+                        {   let name=firstName+" "+lastName
                             changeUrl(url)
+                            nameHandler(name)
                         }
                     )}
                 )
