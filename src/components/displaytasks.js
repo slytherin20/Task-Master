@@ -13,8 +13,10 @@ function Display({tasks,completedTask,deleteTask,notify}){
                 tasks.map((task)=>(
                     <div key={task.id} className="task">
                         <h3>{task.taskName}</h3>
-                        <button style={{
-                                        border:`solid 2px 
+                        <button 
+                                className="display-priority-btn"
+                                style={{
+                                        border:`solid 4px 
                                         ${task.priority==="High"
                                                                 ?"red"
                                                                 :(task.priority==="Medium"

@@ -233,7 +233,7 @@ function App(){
         
         //Notify
         notify("New task added!")
-        
+
         //Check the labels in sidebar for existing labels
         checkLabels()
     }

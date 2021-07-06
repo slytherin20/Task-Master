@@ -5,7 +5,7 @@ function AccountBar({accountHandler}){
         <div 
             className="account-bar">
             <span 
-                className="profile-button" onClick={accountHandler}>
+                className="profile-btn" onClick={accountHandler}>
                     Account Details
             </span>
             <button 

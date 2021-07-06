@@ -4,14 +4,26 @@ import Loader from "react-loader-spinner";
 function Sidebar({closeMenuHandler,labels,displayHandler,loading,imgUrl,name}){
         let labelsArr = []
         for(let key in labels){
-                labelsArr.push(<button 
-                                        key = {labels[key][0]} 
-                                        className="custom-label-tabs" 
-                                        style={{backgroundColor: `${labels[key][1]}`}}
-                                        onClick={()=>displayHandler(key)}
-                                        >
-                                                {key}</button>
-                 )
+                if(key.toLowerCase()==="all"){
+                        labelsArr.push(<button 
+                                key = {labels[key][0]} 
+                                className="custom-label-tabs all-btn" 
+                                style={{backgroundColor: `${labels[key][1]}`}}
+                                onClick={()=>displayHandler(key)}
+                                >
+                                        {key}</button>
+                                )
+                }
+                else{
+                        labelsArr.push(<button 
+                                key = {labels[key][0]} 
+                                className="custom-label-tabs" 
+                                style={{backgroundColor: `${labels[key][1]}`}}
+                                onClick={()=>displayHandler(key)}
+                                >
+                                        {key}</button>
+         )
+                }
         } 
         return (
             <div 

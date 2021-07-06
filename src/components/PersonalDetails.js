@@ -188,13 +188,12 @@ export default function PersonalDetails({userId,
             <div 
                 className="personal-details">
                     {   firstLogin!==lastLogin &&
-                        <button>
-                            <img 
+                            <img
+                                className="cancel-icon"
                                 src={closeBtn} 
                                 alt="close-tab"
                                 onClick={accountHandler}>
                             </img>
-                        </button>
                     }
                 <form 
                     onSubmit={submitDetails} className="form-details">
@@ -232,7 +231,7 @@ export default function PersonalDetails({userId,
                             onChange={(e)=>changeName(e,"last")}>
                         </input>
                     </div>
-                    <button onClick={()=>notify("Details saved successfully!")}>Save</button>
+                    <button className="details-btn">Save</button>
                 </form>
             </div>
         )
