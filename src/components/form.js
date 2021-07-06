@@ -16,6 +16,7 @@ function Form({
     return(
         <form 
         className="input-box" onSubmit={addTaskHandler}>
+        <div className="input-fields">
         <input 
                 type="text" 
                 className="task-name" 
@@ -70,7 +71,9 @@ function Form({
                 min={date}>
             </input>
         </label>
-        <button type="submit" className="form-button" onClick={()=>notify("New task added!")}>Add task</button>
+      
+        </div>
+      <button type="submit" className="form-button" onClick={()=>notify("New task added!")}>Add task</button>
     </form>
 
     )
