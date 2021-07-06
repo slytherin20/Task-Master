@@ -73,7 +73,7 @@ function Form({
         </label>
       
         </div>
-      <button type="submit" className="form-button" onClick={()=>notify("New task added!")}>Add task</button>
+      <button type="submit" className="form-button">Add task</button>
     </form>
 
     )
