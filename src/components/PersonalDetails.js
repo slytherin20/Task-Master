@@ -79,13 +79,19 @@ export default function PersonalDetails({userId,
 
     function submitDetails(e){
         e.preventDefault()
+
         //Store image
+        if(image!==noPhoto)
         addImage()
+
         //Store name
         addName()
 
         //Close the tab.
         accountHandler()
+
+        //Notification
+        notify("Details saved successfully!")
        
     }
     function addImage(){
@@ -206,7 +212,7 @@ export default function PersonalDetails({userId,
                         <input 
                             type="file" 
                             onChange={uploadImage} 
-                            accept=".png,.jpeg,.jpg,.svn">
+                            accept=".png,.jpeg,.jpg,.svn" required>
                         </input>
                         <span 
                             style={{color: "red"}}>
