@@ -23,7 +23,7 @@ function App(){
     const [accountState,setAccountState] = useState(false);
     const [taskName,setTaskName] = useState("");
     const [priority,setPriority] = useState("Low");
-    const [label,setLabel] = useState("All");
+    const [label,setLabel] = useState("");
     const [color,setColor] = useState("#003333");
     const [deadline,setDeadline] = useState(dateString);
     const [allLabels,setAllLabels] = useState({});
@@ -129,7 +129,13 @@ function App(){
         setPriority(e.target.value)
     }
     function setLabelHandler(e){
-        setLabel(e.target.value)
+        //Label should not be All or null.
+        if(e.target.value && e.target.value.toLowerCase()!=="all"){
+            setLabel(e.target.value)
+        }
+        else{
+            setLabel("")
+        }
     }
     function setDeadlineHandler(e){
         setDeadline(e.target.value)
@@ -155,6 +161,7 @@ function App(){
     function notify(message){
         toast(message)
     }
+
     function changeUrl(newUrl){
 
         setUrl(newUrl)
@@ -163,18 +170,21 @@ function App(){
         )
         .catch((err)=>console.log("Error getting url:",err))
     }
+
     function changeName(name){
         setName(name)
     }
 
     function completedTaskHandler(id,name,deadline,label){
-
-         //Put it into completed task list.
-         completedListRef.add({
+        let taskObj = {
             name:name,
-            deadline: deadline.split("-").reverse().join("-"),
-            customLabel: label
-        })
+            deadline: deadline.split("-").reverse().join("-")
+        }
+        if(label){
+            taskObj["customLabel"] = label
+        }
+         //Put it into completed task list.
+         completedListRef.add(taskObj)
         
         //Delete task from task list
         deleteItem(id)
@@ -186,6 +196,7 @@ function App(){
         deleteItem(id)
 
         //Decreement the sidebar label count
+        if(label)
         decreementCount(label)
     }
     function deleteItem(id){
@@ -199,6 +210,7 @@ function App(){
         .delete()
 
         //Decreement the sidebar label count
+        if(label)
         decreementCount(label)
     }
 
@@ -221,21 +233,24 @@ function App(){
     //Adding data to Firestore
     function addTask(e){
         e.preventDefault()
-        collectionRef.add({
-            name: taskName,
-            priority: priority,
-            customLabel: label,
-            labelColor: color,
-            deadline:deadline,
-            inProgress:true,
-            addedAt : firebase.firestore.FieldValue.serverTimestamp()
-        })
+        let taskObj = {
+                name: taskName,
+                priority: priority,
+                deadline:deadline,
+                inProgress:true,
+                addedAt : firebase.firestore.FieldValue.serverTimestamp()
+        }
+        if(label){
+            taskObj["customLabel"] = label;
+            taskObj["labelColor"] = color;
+            //Check the labels in sidebar for existing labels
+            checkLabels()
+        }
+        collectionRef.add(taskObj)
         
         //Notify
         notify("New task added!")
 
-        //Check the labels in sidebar for existing labels
-        checkLabels()
     }
 
     
@@ -276,6 +291,7 @@ function App(){
         }
          else addLabels()     
     }
+
     function addLabels(){
         sideBarRef.add({
             labelName: label,
@@ -318,17 +334,20 @@ function App(){
     function generateSnapshot(){
         let snapshot = function (querySnapshot){
             setDisplayArr(
-                querySnapshot.docs.map((doc)=>(
-                    {
+                querySnapshot.docs.map((doc)=>{
+                    let taskObj = {
                         id:doc.id,
                         taskName: doc.data().name,
                         addedAt: doc.data().addedAt,
                         status: doc.data().inProgress,
                         deadline: doc.data().deadline,
                         priority: doc.data().priority,
-                        customLabel: doc.data().customLabel
                     }
-                ))
+                    if(doc.data().customLabel){
+                        taskObj["customLabel"] = doc.data().customLabel
+                    }
+                   return taskObj;
+                 })
             )
         }
         return snapshot;
@@ -338,14 +357,17 @@ function App(){
     function addCompletedTasks(){
         completedListRef
         .onSnapshot(function (querySnapshot){
-            setCompletedArr( querySnapshot.docs.map((doc=>(
-                    {
-                        id: doc.id,
-                        taskName: doc.data().name,
-                        deadline: doc.data().deadline,
-                        customLabel: doc.data().customLabel
+            setCompletedArr( querySnapshot.docs.map((doc=>{
+                let taskObj = {
+                    id: doc.id,
+                    taskName: doc.data().name,
+                    deadline: doc.data().deadline
                     }
-                ))))
+                    if(doc.data().customLabel){
+                        taskObj["customLabel"] = doc.data().customLabel
+                    }
+                    return taskObj;
+            })))
            
         })
     }

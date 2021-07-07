@@ -1,6 +1,8 @@
 import cancelIcon from '../utilities/images/cancel.png';
 import Loader from "react-loader-spinner";
 
+
+
 function Sidebar({closeMenuHandler,labels,displayHandler,loading,imgUrl,name}){
         let labelsArr = []
         for(let key in labels){
@@ -55,19 +57,19 @@ function Sidebar({closeMenuHandler,labels,displayHandler,loading,imgUrl,name}){
                         <button 
                                 className="low-btn" 
                                 onClick={()=>
-                                        displayHandler("Low")}>
+                                displayHandler("Low")}>
                                 Low
                         </button>
                         <button 
                                 className="medium-btn" 
                                 onClick={()=>
-                                        displayHandler("Medium")}>
+                                displayHandler("Medium")}>
                                 Medium
                         </button>
                         <button 
                                 className="high-btn" 
                                 onClick={()=>
-                                        displayHandler("High")}>
+                                displayHandler("High")}>
                                 High
                         </button>
                 </div>
