@@ -1,6 +1,6 @@
 import db, { auth } from "../utilities/functions/firebase_config";
 import firebase from "firebase/app"
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 import Sidebar from "./sidebar";
 import NavBar from "./navbar";
 import Form from "./form";
@@ -17,6 +17,10 @@ import 'react-toastify/dist/ReactToastify.css';
 function App(){
     //Current date
     const dateString = date()
+   /* const timeString = time()
+    console.log("Current time:",timeString);
+    console.log("Current date:",dateString);
+    */
     
     //States
     const [menuState,setMenuState] =  useState(false);
@@ -33,7 +37,7 @@ function App(){
     const [accountTab,setAccountTab] = useState(false);
     const [loading,setLoading] = useState(true);
     const [url,setUrl] = useAsyncState(null);
-    const [name,setName] = useState("");
+    const [name,setName] = useState(undefined);
 
     //Firestore
     const userID = auth.currentUser.uid;
@@ -45,9 +49,31 @@ function App(){
     const storage = firebase.storage();
 
     //Authentication details
+   /* const months={
+        "jan":"01",
+        "feb":"02",
+        "mar":"03",
+        "apr":"04",
+        "may":"05",
+        "jun":"06",
+        "jul":"07",
+        "aug":"08",
+        "sep":"09",
+        "oct":"10",
+        "nov":"11",
+        "dec":"12"
+    }
+    */
     let userMetaData = auth.currentUser.metadata;
-    let creationTime = userMetaData.creationTime;
+    let creationDay = userMetaData.creationTime;
+   /* let creationDate = creationDay.slice(5,16);
+    let creationTime = creationDay.slice(17,25);
+    let creationMonth = creationDate.slice(3,6);
+    creationMonth = months[creationMonth.toLowerCase()]
+    creationDate = creationDate.slice(0,2)+"-"+ creationMonth+ "-"+creationDate.slice(7);
+    */
     let lastLogin = userMetaData.lastSignInTime;
+    console.log("Last sign in:",lastLogin)
 
     //Get the data from database
     useEffect(()=>
@@ -60,6 +86,8 @@ function App(){
         displayTasks()
 
     }, [displayTitle])
+
+
     
     async function imageUpload(){
     let url = await getImage(userID,storage)
@@ -82,7 +110,7 @@ function App(){
 
     function displayName(){
         
-        nameRef.onSnapshot(function (querySnapshot){
+         nameRef.onSnapshot(function (querySnapshot){
             if(querySnapshot.docs.length!==0){
                 let data = querySnapshot.docs[0].data()
                 let [firstName,lastName] = [data.first,data.last]
@@ -93,9 +121,9 @@ function App(){
 
     function addDefaultValue(){
         //First login
-        if(creationTime===lastLogin){
-            initialLabel()
-            setAccountTab(true)
+        if(creationDay===lastLogin){
+                initialLabel()
+              //  setAccountTab(true)
         }
         getSideBarLabels()
     }
@@ -376,9 +404,8 @@ function App(){
     //render to Virtual DOM
     return(
        <>
-       {
-           creationTime===lastLogin &&
-            accountTab &&
+       {   
+            creationDay===lastLogin && name===undefined && 
             <PersonalDetails 
                 userId={userID} 
                 accountHandler={closeTab}
@@ -442,7 +469,7 @@ function App(){
             </div>
         </div> 
         {
-            accountTab && 
+                accountTab && 
                 <PersonalDetails
                 userId={userID} 
                 accountHandler={closeTab}
