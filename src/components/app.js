@@ -1,6 +1,6 @@
 import db, { auth } from "../utilities/functions/firebase_config";
 import firebase from "firebase/app"
-import { useState, useEffect, useLayoutEffect } from "react";
+import { useState, useEffect } from "react";
 import Sidebar from "./sidebar";
 import NavBar from "./navbar";
 import Form from "./form";
@@ -17,11 +17,7 @@ import 'react-toastify/dist/ReactToastify.css';
 function App(){
     //Current date
     const dateString = date()
-   /* const timeString = time()
-    console.log("Current time:",timeString);
-    console.log("Current date:",dateString);
-    */
-    
+
     //States
     const [menuState,setMenuState] =  useState(false);
     const [accountState,setAccountState] = useState(false);
@@ -37,7 +33,7 @@ function App(){
     const [accountTab,setAccountTab] = useState(false);
     const [loading,setLoading] = useState(true);
     const [url,setUrl] = useAsyncState(null);
-    const [name,setName] = useState(undefined);
+    const [name,setName] = useState("");
 
     //Firestore
     const userID = auth.currentUser.uid;
@@ -49,31 +45,9 @@ function App(){
     const storage = firebase.storage();
 
     //Authentication details
-   /* const months={
-        "jan":"01",
-        "feb":"02",
-        "mar":"03",
-        "apr":"04",
-        "may":"05",
-        "jun":"06",
-        "jul":"07",
-        "aug":"08",
-        "sep":"09",
-        "oct":"10",
-        "nov":"11",
-        "dec":"12"
-    }
-    */
     let userMetaData = auth.currentUser.metadata;
     let creationDay = userMetaData.creationTime;
-   /* let creationDate = creationDay.slice(5,16);
-    let creationTime = creationDay.slice(17,25);
-    let creationMonth = creationDate.slice(3,6);
-    creationMonth = months[creationMonth.toLowerCase()]
-    creationDate = creationDate.slice(0,2)+"-"+ creationMonth+ "-"+creationDate.slice(7);
-    */
     let lastLogin = userMetaData.lastSignInTime;
-    console.log("Last sign in:",lastLogin)
 
     //Get the data from database
     useEffect(()=>
@@ -93,14 +67,12 @@ function App(){
     let url = await getImage(userID,storage)
         if(url){
             changeUrl(url)
-            console.log("Image downloaded!")
         }
         else{
             setUrl(noPhoto)
         }
     }
     function displayElements(){
-
         addDefaultValue()
         addCompletedTasks()
         imageUpload()
@@ -119,19 +91,26 @@ function App(){
         })
     }
 
-    function addDefaultValue(){
+     async function addDefaultValue(){
+        await getSideBarLabels()
         //First login
-        if(creationDay===lastLogin){
-                initialLabel()
-              //  setAccountTab(true)
-        }
-        getSideBarLabels()
+        addAllLabel()
     }
-    function getSideBarLabels(){
-        sideBarRef.onSnapshot(function (querySnapshot){
+    function addAllLabel(){
+        
+        if(creationDay===lastLogin){
+            if(!allLabels["All"]){
+                initialLabel()
+                getSideBarLabels()
+            }
+          //  setAccountTab(true)
+    }
+    }
+   function getSideBarLabels(){
+            sideBarRef.onSnapshot(function (querySnapshot){
            querySnapshot.docs.map((doc)=>
            (
-               setAllLabels((prevState)=>(
+                setAllLabels((prevState)=>(
                    {
                        ...prevState,
                        [doc.data().labelName]:[doc.id,doc.data().color,doc.data().count]
@@ -401,11 +380,10 @@ function App(){
     }
     
 
-    //render to Virtual DOM
     return(
        <>
        {   
-            creationDay===lastLogin && name===undefined && 
+            creationDay===lastLogin && !name && 
             <PersonalDetails 
                 userId={userID} 
                 accountHandler={closeTab}

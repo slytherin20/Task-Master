@@ -79,17 +79,13 @@ export default function PersonalDetails({userId,
 
     function submitDetails(e){
         e.preventDefault()
-
         //Store image
         if(image!==noPhoto)
-        addImage()
-
+            addImage()
         //Store name
         addName()
-
-        //Close the tab.
+         //Close the tab.
         accountHandler()
-
         //Notification
         notify("Details saved successfully!")
        
