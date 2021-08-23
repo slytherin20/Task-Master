@@ -9,7 +9,8 @@ export default function PersonalDetails({userId,
                                         changeLoading,
                                         changeUrl,
                                         nameHandler,
-                                        notify}){
+                                        notify,
+                                        notFirstTime}){
    
     const [firstName,setFirstName] = useState("");
     const [lastName,setLastName] = useState("");
@@ -189,7 +190,8 @@ export default function PersonalDetails({userId,
         return(
             <div 
                 className="personal-details">
-                    {   firstLogin!==lastLogin &&
+                    {   firstLogin!==lastLogin && 
+                        notFirstTime &&
                             <img
                                 className="cancel-icon"
                                 src={closeBtn} 

@@ -383,14 +383,15 @@ function App(){
     return(
               <>
        {   
-            creationDay===lastLogin && !name && 
+            creationDay===lastLogin && accountTab &&
             <PersonalDetails 
                 userId={userID} 
                 accountHandler={closeTab}
                 changeLoading={changeLoading}
                 changeUrl={changeUrl}
                 nameHandler={changeName}
-                notify={notify} />
+                notify={notify}
+                notFirstTime = {false} />
                                 
         }
         <div className="box">
@@ -454,7 +455,8 @@ function App(){
                 changeLoading={changeLoading}
                 changeUrl={changeUrl}
                 nameHandler={changeName}
-                notify={notify} />
+                notify={notify}
+                notFirstTime = {true} />
         }
         <ToastContainer/>
        </>
