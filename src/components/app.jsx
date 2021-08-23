@@ -17,13 +17,13 @@ import 'react-toastify/dist/ReactToastify.css';
 function App(){
     //Current date
     const dateString = date()
-    
+
     //States
     const [menuState,setMenuState] =  useState(false);
     const [accountState,setAccountState] = useState(false);
     const [taskName,setTaskName] = useState("");
     const [priority,setPriority] = useState("Low");
-    const [label,setLabel] = useState("All");
+    const [label,setLabel] = useState("");
     const [color,setColor] = useState("#003333");
     const [deadline,setDeadline] = useState(dateString);
     const [allLabels,setAllLabels] = useState({});
@@ -46,7 +46,7 @@ function App(){
 
     //Authentication details
     let userMetaData = auth.currentUser.metadata;
-    let creationTime = userMetaData.creationTime;
+    let creationDay = userMetaData.creationTime;
     let lastLogin = userMetaData.lastSignInTime;
 
     //Get the data from database
@@ -60,19 +60,19 @@ function App(){
         displayTasks()
 
     }, [displayTitle])
+
+
     
     async function imageUpload(){
     let url = await getImage(userID,storage)
         if(url){
             changeUrl(url)
-            console.log("Image downloaded!")
         }
         else{
             setUrl(noPhoto)
         }
     }
     function displayElements(){
-
         addDefaultValue()
         addCompletedTasks()
         imageUpload()
@@ -82,7 +82,7 @@ function App(){
 
     function displayName(){
         
-        nameRef.onSnapshot(function (querySnapshot){
+         nameRef.onSnapshot(function (querySnapshot){
             if(querySnapshot.docs.length!==0){
                 let data = querySnapshot.docs[0].data()
                 let [firstName,lastName] = [data.first,data.last]
@@ -91,19 +91,26 @@ function App(){
         })
     }
 
-    function addDefaultValue(){
+     async function addDefaultValue(){
+        await getSideBarLabels()
         //First login
-        if(creationTime===lastLogin){
-            initialLabel()
-            setAccountTab(true)
-        }
-        getSideBarLabels()
+        addAllLabel()
     }
-    function getSideBarLabels(){
-        sideBarRef.onSnapshot(function (querySnapshot){
+    function addAllLabel(){
+        
+        if(creationDay===lastLogin){
+            if(!allLabels["All"]){
+                initialLabel()
+                getSideBarLabels()
+            }
+          //  setAccountTab(true)
+    }
+    }
+   function getSideBarLabels(){
+            sideBarRef.onSnapshot(function (querySnapshot){
            querySnapshot.docs.map((doc)=>
            (
-               setAllLabels((prevState)=>(
+                setAllLabels((prevState)=>(
                    {
                        ...prevState,
                        [doc.data().labelName]:[doc.id,doc.data().color,doc.data().count]
@@ -129,7 +136,13 @@ function App(){
         setPriority(e.target.value)
     }
     function setLabelHandler(e){
-        setLabel(e.target.value)
+        //Label should not be All or null.
+        if(e.target.value && e.target.value.toLowerCase()!=="all"){
+            setLabel(e.target.value)
+        }
+        else{
+            setLabel("")
+        }
     }
     function setDeadlineHandler(e){
         setDeadline(e.target.value)
@@ -155,6 +168,7 @@ function App(){
     function notify(message){
         toast(message)
     }
+
     function changeUrl(newUrl){
 
         setUrl(newUrl)
@@ -163,18 +177,21 @@ function App(){
         )
         .catch((err)=>console.log("Error getting url:",err))
     }
+
     function changeName(name){
         setName(name)
     }
 
     function completedTaskHandler(id,name,deadline,label){
-
-         //Put it into completed task list.
-         completedListRef.add({
+        let taskObj = {
             name:name,
-            deadline: deadline.split("-").reverse().join("-"),
-            customLabel: label
-        })
+            deadline: deadline.split("-").reverse().join("-")
+        }
+        if(label){
+            taskObj["customLabel"] = label
+        }
+         //Put it into completed task list.
+         completedListRef.add(taskObj)
         
         //Delete task from task list
         deleteItem(id)
@@ -186,6 +203,7 @@ function App(){
         deleteItem(id)
 
         //Decreement the sidebar label count
+        if(label)
         decreementCount(label)
     }
     function deleteItem(id){
@@ -199,6 +217,7 @@ function App(){
         .delete()
 
         //Decreement the sidebar label count
+        if(label)
         decreementCount(label)
     }
 
@@ -221,21 +240,24 @@ function App(){
     //Adding data to Firestore
     function addTask(e){
         e.preventDefault()
-        collectionRef.add({
-            name: taskName,
-            priority: priority,
-            customLabel: label,
-            labelColor: color,
-            deadline:deadline,
-            inProgress:true,
-            addedAt : firebase.firestore.FieldValue.serverTimestamp()
-        })
+        let taskObj = {
+                name: taskName,
+                priority: priority,
+                deadline:deadline,
+                inProgress:true,
+                addedAt : firebase.firestore.FieldValue.serverTimestamp()
+        }
+        if(label){
+            taskObj["customLabel"] = label;
+            taskObj["labelColor"] = color;
+            //Check the labels in sidebar for existing labels
+            checkLabels()
+        }
+        collectionRef.add(taskObj)
         
         //Notify
         notify("New task added!")
 
-        //Check the labels in sidebar for existing labels
-        checkLabels()
     }
 
     
@@ -276,6 +298,7 @@ function App(){
         }
          else addLabels()     
     }
+
     function addLabels(){
         sideBarRef.add({
             labelName: label,
@@ -318,17 +341,20 @@ function App(){
     function generateSnapshot(){
         let snapshot = function (querySnapshot){
             setDisplayArr(
-                querySnapshot.docs.map((doc)=>(
-                    {
+                querySnapshot.docs.map((doc)=>{
+                    let taskObj = {
                         id:doc.id,
                         taskName: doc.data().name,
                         addedAt: doc.data().addedAt,
                         status: doc.data().inProgress,
                         deadline: doc.data().deadline,
                         priority: doc.data().priority,
-                        customLabel: doc.data().customLabel
                     }
-                ))
+                    if(doc.data().customLabel){
+                        taskObj["customLabel"] = doc.data().customLabel
+                    }
+                   return taskObj;
+                 })
             )
         }
         return snapshot;
@@ -338,32 +364,34 @@ function App(){
     function addCompletedTasks(){
         completedListRef
         .onSnapshot(function (querySnapshot){
-            setCompletedArr( querySnapshot.docs.map((doc=>(
-                    {
-                        id: doc.id,
-                        taskName: doc.data().name,
-                        deadline: doc.data().deadline,
-                        customLabel: doc.data().customLabel
+            setCompletedArr( querySnapshot.docs.map((doc=>{
+                let taskObj = {
+                    id: doc.id,
+                    taskName: doc.data().name,
+                    deadline: doc.data().deadline
                     }
-                ))))
+                    if(doc.data().customLabel){
+                        taskObj["customLabel"] = doc.data().customLabel
+                    }
+                    return taskObj;
+            })))
            
         })
     }
     
 
-    //render to Virtual DOM
     return(
-       <>
-       {
-           creationTime===lastLogin &&
-            accountTab &&
+              <>
+       {   
+            creationDay===lastLogin && accountTab &&
             <PersonalDetails 
                 userId={userID} 
                 accountHandler={closeTab}
                 changeLoading={changeLoading}
                 changeUrl={changeUrl}
                 nameHandler={changeName}
-                notify={notify} />
+                notify={notify}
+                notFirstTime = {false} />
                                 
         }
         <div className="box">
@@ -405,32 +433,34 @@ function App(){
                         notify={notify}
                         />
                     <div className="display-container">
-                        <Display 
-                            tasks={displayArr} 
-                            completedTask={completedTaskHandler} 
-                            deleteTask={deleteTaskHandler}
-                            notify={notify}/>
-                        <DisplayCompleted 
-                            tasks = {completedArr}
-                            deleteTask = {deleteCompletedTaskHandler}
-                            notify={notify} />
-                                
+                            <Display 
+                                tasks={displayArr} 
+                                completedTask={completedTaskHandler} 
+                                deleteTask={deleteTaskHandler}
+                                notify={notify}/>
+                            <DisplayCompleted 
+                                tasks = {completedArr}
+                                deleteTask = {deleteCompletedTaskHandler}
+                                notify={notify} />
+                                    
                     </div>
                     </div>           
             </div>
         </div> 
         {
-            accountTab && 
+                accountTab && 
                 <PersonalDetails
                 userId={userID} 
                 accountHandler={closeTab}
                 changeLoading={changeLoading}
                 changeUrl={changeUrl}
                 nameHandler={changeName}
-                notify={notify} />
+                notify={notify}
+                notFirstTime = {true} />
         }
         <ToastContainer/>
        </>
+     
     )
 }
 

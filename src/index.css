@@ -203,6 +203,10 @@ label{
   border-radius: 7%;
   font-weight: bold;
 }
+.custom-label-tabs{
+  display:inline;
+  width:auto;
+}
 .done:hover,.delete:hover,.details-btn:hover,.form-button:hover,.custom-label-tabs:hover,.low-btn:hover,.medium-btn:hover,.high-btn:hover{
   cursor:pointer;
   transform: scale(1.1);

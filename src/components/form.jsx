@@ -10,8 +10,7 @@ function Form({
     deadline,
     changeDeadlineHandler,
     date,
-    addTaskHandler,
-    notify
+    addTaskHandler
 }){
     return(
         <form 
@@ -49,7 +48,7 @@ function Form({
             Choose Custom Label:
             <input  
                     type="text" 
-                    placeholder="Enter a custom label" 
+                    placeholder="Work/School etc." 
                     value={label} 
                     onChange={changeLabelHandler}>
             </input>

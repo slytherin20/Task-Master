@@ -9,7 +9,8 @@ export default function PersonalDetails({userId,
                                         changeLoading,
                                         changeUrl,
                                         nameHandler,
-                                        notify}){
+                                        notify,
+                                        notFirstTime}){
    
     const [firstName,setFirstName] = useState("");
     const [lastName,setLastName] = useState("");
@@ -79,17 +80,13 @@ export default function PersonalDetails({userId,
 
     function submitDetails(e){
         e.preventDefault()
-
         //Store image
         if(image!==noPhoto)
-        addImage()
-
+            addImage()
         //Store name
         addName()
-
-        //Close the tab.
+         //Close the tab.
         accountHandler()
-
         //Notification
         notify("Details saved successfully!")
        
@@ -193,7 +190,8 @@ export default function PersonalDetails({userId,
         return(
             <div 
                 className="personal-details">
-                    {   firstLogin!==lastLogin &&
+                    {   firstLogin!==lastLogin && 
+                        notFirstTime &&
                             <img
                                 className="cancel-icon"
                                 src={closeBtn} 

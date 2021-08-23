@@ -1,6 +1,9 @@
 import { auth } from '../utilities/functions/firebase_config';
 
 function AccountBar({accountHandler}){
+    function signOut(){
+        auth.signOut()
+    }
     return(
         <div 
             className="account-bar">
@@ -10,7 +13,7 @@ function AccountBar({accountHandler}){
             </span>
             <button 
                 className="sign-out" 
-                onClick={()=>auth.signOut()}>
+                onClick={signOut}>
                     Sign Out
             </button>
         </div>
