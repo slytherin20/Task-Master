@@ -437,16 +437,11 @@ function App(){
                                 completedTask={completedTaskHandler} 
                                 deleteTask={deleteTaskHandler}
                                 notify={notify}/>
-                            <Display 
-                                tasks={displayArr} 
-                                completedTask={completedTaskHandler} 
-                                deleteTask={deleteTaskHandler}
-                                notify={notify}/>
-                        <DisplayCompleted 
-                            tasks = {completedArr}
-                            deleteTask = {deleteCompletedTaskHandler}
-                            notify={notify} />
-                                
+                            <DisplayCompleted 
+                                tasks = {completedArr}
+                                deleteTask = {deleteCompletedTaskHandler}
+                                notify={notify} />
+                                    
                     </div>
                     </div>           
             </div>
