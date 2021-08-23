@@ -381,7 +381,7 @@ function App(){
     
 
     return(
-       <>
+              <>
        {   
             creationDay===lastLogin && !name && 
             <PersonalDetails 
@@ -432,11 +432,16 @@ function App(){
                         notify={notify}
                         />
                     <div className="display-container">
-                        <Display 
-                            tasks={displayArr} 
-                            completedTask={completedTaskHandler} 
-                            deleteTask={deleteTaskHandler}
-                            notify={notify}/>
+                            <Display 
+                                tasks={displayArr} 
+                                completedTask={completedTaskHandler} 
+                                deleteTask={deleteTaskHandler}
+                                notify={notify}/>
+                            <Display 
+                                tasks={displayArr} 
+                                completedTask={completedTaskHandler} 
+                                deleteTask={deleteTaskHandler}
+                                notify={notify}/>
                         <DisplayCompleted 
                             tasks = {completedArr}
                             deleteTask = {deleteCompletedTaskHandler}
@@ -458,6 +463,7 @@ function App(){
         }
         <ToastContainer/>
        </>
+     
     )
 }
 

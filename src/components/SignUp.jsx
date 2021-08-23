@@ -2,6 +2,7 @@ import { auth } from "../utilities/functions/firebase_config";
 import firebase from "firebase/app";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 
+
 function SignUp(){
     const uiConfig = {
         signInFlow: 'popup',
