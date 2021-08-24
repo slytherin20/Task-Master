@@ -67,12 +67,6 @@ export default function PersonalDetails({userId,
     }, [])
 
 
-
-    //User info
-    const metadata = auth.currentUser.metadata;
-    const firstLogin = metadata.creationTime;
-    const lastLogin = metadata.lastSignInTime;
-
     function changeName(e,name){
         name==="first"?setFirstName(e.target.value)
                       :setLastName(e.target.value)
@@ -86,9 +80,14 @@ export default function PersonalDetails({userId,
         //Store name
         addName()
          //Close the tab.
-        accountHandler()
+       // accountHandler()
         //Notification
         notify("Details saved successfully!")
+
+        //Store cashe for storing loogedIn flag.
+        if(localStorage.getItem("logIn")!=="true"){
+            localStorage.setItem("logIn","true")
+        }
        
     }
     function addImage(){
@@ -190,7 +189,7 @@ export default function PersonalDetails({userId,
         return(
             <div 
                 className="personal-details">
-                    {   firstLogin!==lastLogin && 
+                    {  
                         notFirstTime &&
                             <img
                                 className="cancel-icon"
