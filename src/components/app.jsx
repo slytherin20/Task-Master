@@ -72,6 +72,7 @@ function App(){
             setUrl(noPhoto)
         }
     }
+
     function displayElements(){
         addDefaultValue()
         addCompletedTasks()
@@ -91,8 +92,8 @@ function App(){
         })
     }
 
-     async function addDefaultValue(){
-        await getSideBarLabels()
+     function addDefaultValue(){
+        getSideBarLabels()
         //First login
         addAllLabel()
     }
@@ -103,7 +104,7 @@ function App(){
                 initialLabel()
                 getSideBarLabels()
             }
-          //  setAccountTab(true)
+           // setAccountTab(true)
     }
     }
    function getSideBarLabels(){
@@ -383,7 +384,8 @@ function App(){
     return(
               <>
        {   
-            creationDay===lastLogin && accountTab &&
+            creationDay===lastLogin && 
+            !(localStorage.getItem("logIn")==="true") &&
             <PersonalDetails 
                 userId={userID} 
                 accountHandler={closeTab}
@@ -391,8 +393,7 @@ function App(){
                 changeUrl={changeUrl}
                 nameHandler={changeName}
                 notify={notify}
-                notFirstTime = {false} />
-                                
+                notFirstTime = {false} />               
         }
         <div className="box">
             <NavBar 
