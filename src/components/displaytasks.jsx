@@ -1,4 +1,15 @@
-function Display({tasks,completedTask,deleteTask,notify}){
+import { useState } from "react";
+import DisplayFilter from "./DisplayFilter";
+
+function Display({tasks,
+                  completedTask,
+                  deleteTask,
+                  notify,
+                  updateDisplayArr}){
+                      
+    const [openFilter,setOpenFilter] = useState(false);
+    let taskArr = [];
+
     function updateCompletedStatus(task){
         completedTask(task.id,task.taskName,task.deadline,task.customLabel)
         notify("Task Completed!")
@@ -7,8 +18,39 @@ function Display({tasks,completedTask,deleteTask,notify}){
         deleteTask(task.id,task.customLabel)
         notify("Task Removed")
     }
+
+    function openFilterMenu(){
+        setOpenFilter(true)
+    }
+    function filterByName(){
+        let temp = tasks.sort((a,b)=>
+                                (a.taskName.toLowerCase()>b.taskName.toLowerCase())
+                                ?1:-1)
+        taskArr = [...temp];
+        updateDisplayArr(taskArr)
+    }
+    function filterByDeadline(){
+        
+    }
+    function filterByPriority(){
+        console.log()
+    }
     return(
         <div className="display-pending-container">
+            <div className="filter-container">
+                <img src="https://i.imgur.com/UoicdUh.png"
+                alt="filter icon" 
+                className="filter-icon" 
+                onClick={openFilterMenu} />
+                {
+                    openFilter &&
+                    <DisplayFilter
+                    nameHandler = {filterByName}
+                    deadlineHandler = {filterByDeadline}
+                    priorityHandler = {filterByPriority} />
+                }
+            </div>
+            <div className="display-pending-tasks">
             {   
                 tasks.map((task)=>(
                     <div key={task.id} className="task">
@@ -35,6 +77,7 @@ function Display({tasks,completedTask,deleteTask,notify}){
                 ))
                 
             }
+            </div>
         </div>
     )
 }

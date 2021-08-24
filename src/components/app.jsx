@@ -169,6 +169,9 @@ function App(){
     function notify(message){
         toast(message)
     }
+    function updateHandler(arr){
+        setDisplayArr(arr)
+    }
 
     function changeUrl(newUrl){
 
@@ -438,7 +441,8 @@ function App(){
                                 tasks={displayArr} 
                                 completedTask={completedTaskHandler} 
                                 deleteTask={deleteTaskHandler}
-                                notify={notify}/>
+                                notify={notify}
+                                updateDisplayArr = {updateHandler}/>
                             <DisplayCompleted 
                                 tasks = {completedArr}
                                 deleteTask = {deleteCompletedTaskHandler}
