@@ -250,3 +250,9 @@ label{
 .profile-btn{
   border-bottom: solid 1px gray;
 }
+.completed-label{
+  border: solid 4px black;
+  border-radius: 10px;
+  display: inline;
+  padding: 5px;
+}

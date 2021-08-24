@@ -10,6 +10,9 @@ function DisplayCompleted({tasks,deleteTask,notify}){
                 tasks.map((task)=>(
                     <div key={task.id} className="task">
                         <h3>{task.taskName}</h3>
+                        {task.customLabel &&
+                        <p className="completed-label">{task.customLabel}</p>
+                        }
                         <p>Completed ✅</p>
                         <p>Deadline: {task.deadline}</p>
                         <button className="delete" onClick={()=>updateDeleteStatus(task)}>Delete</button>
