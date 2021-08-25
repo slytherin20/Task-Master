@@ -22,4 +22,4 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-src/firebase_config.js
+src/utilities/functions/firebase_config.js
