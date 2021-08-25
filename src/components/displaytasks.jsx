@@ -11,7 +11,6 @@ function Display({tasks,
     let taskArr = [];
     let temp = date()
     temp = temp.split("-");
-    console.log(temp)
     let currentDate = temp[1]+"/"+temp[2]+"/"+temp[0];
 
     function updateCompletedStatus(task){
