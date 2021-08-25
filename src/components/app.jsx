@@ -105,9 +105,7 @@ function App(){
                 initialLabel()
                 getSideBarLabels()
             }
-           // setAccountTab(true)
     }
-    console.log(allLabels)
     }
    function getSideBarLabels(){
             sideBarRef.onSnapshot(function (querySnapshot){
@@ -445,7 +443,8 @@ function App(){
                                 completedTask={completedTaskHandler} 
                                 deleteTask={deleteTaskHandler}
                                 notify={notify}
-                                updateDisplayArr = {updateHandler}/>
+                                updateDisplayArr = {updateHandler}
+                                displayTasks = {displayTasks} />
                             <DisplayCompleted 
                                 tasks = {completedArr}
                                 deleteTask = {deleteCompletedTaskHandler}

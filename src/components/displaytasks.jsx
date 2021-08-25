@@ -6,7 +6,8 @@ function Display({tasks,
                   completedTask,
                   deleteTask,
                   notify,
-                  updateDisplayArr}){
+                  updateDisplayArr,
+                  displayTasks}){
     const [openFilter,setOpenFilter] = useState(false);
     let taskArr = [];
     let temp = date()
@@ -24,6 +25,10 @@ function Display({tasks,
 
     function openFilterMenu(){
         setOpenFilter(true)
+    }
+
+    function closeFilterMenu(){
+        setOpenFilter(false)
     }
 
     function filterByName(){
@@ -53,7 +58,7 @@ function Display({tasks,
 
     function filterByPriority(){
         let tempArr = []
-        let highCount  =0;
+        let highCount = 0;
         tasks.forEach((item)=>{
             switch(item.priority){
                 case "High":tempArr.unshift(item)
@@ -89,7 +94,10 @@ function Display({tasks,
                     <DisplayFilter
                     nameHandler = {filterByName}
                     deadlineHandler = {filterByDeadline}
-                    priorityHandler = {filterByPriority} />
+                    priorityHandler = {filterByPriority}
+                    displayTasks = {displayTasks}
+                    closeFilter = {closeFilterMenu}
+                    notify={notify} />
                 }
             </div>
             <div className="display-pending-tasks">

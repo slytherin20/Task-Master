@@ -80,12 +80,13 @@ export default function PersonalDetails({userId,
 
         //Store name
         addName()
-        
+
         //Notification
         notify("Details saved successfully!")
+        notify("You can close the pop up now.")
 
         //Store cashe for storing loogedIn flag.
-        if(localStorage.getItem("firstLogIn")!=="true"){
+        if(localStorage.getItem("firstLogIn")!=="true" && !notFirstTime){
             localStorage.setItem("firstLogIn","true")
         }
        
