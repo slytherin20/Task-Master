@@ -26,6 +26,7 @@ function Display({tasks,
     function openFilterMenu(){
         setOpenFilter(true)
     }
+
     function filterByName(){
         let temp = tasks.sort((a,b)=>
                                 (a.taskName.toLowerCase()>b.taskName.toLowerCase())
@@ -33,6 +34,7 @@ function Display({tasks,
         taskArr = [...temp];
         updateDisplayArr(taskArr)
     }
+
     function filterByDeadline(){
         let temp = tasks.sort((a,b)=>{
             if(a===b) return -1
@@ -49,8 +51,25 @@ function Display({tasks,
         taskArr = [...temp];
         updateDisplayArr(taskArr)
     }
+
     function filterByPriority(){
+        let tempArr = []
+        let highCount  =0;
+        tasks.forEach((item)=>{
+            switch(item.priority){
+                case "High":tempArr.unshift(item)
+                            highCount++;
+                            break;
+                case "Medium":tempArr.splice(highCount,0,item)
+                                break;
+                case "Low":tempArr.push(item)
+                            break;
+                default:break;
+            }
+        })
+        updateDisplayArr(tempArr)
     }
+
     function noOfDays(deadline){
         let date1 = new Date(currentDate)
         let date2 = new Date(deadline)
@@ -58,6 +77,7 @@ function Display({tasks,
         let daysDifference = timeDifference/(1000*3600*24);
         return daysDifference;
     }
+
     return(
         <div className="display-pending-container">
             <div className="filter-container">
