@@ -5,20 +5,6 @@ function Sidebar({closeMenuHandler,labels,displayHandler,loading,imgUrl,name}){
         // Setting all the custom labels to sidebar
         let labelsArr = []
         for(let key in labels){
-                //When "All" tag is encountered
-                if(key.toLowerCase()==="all"){
-                        labelsArr.push(
-                                <button 
-                                key = {labels[key][0]} 
-                                className="custom-label-tabs all-btn" 
-                                style={{backgroundColor: `${labels[key][1]}`}}
-                                onClick={()=>displayHandler(key)}
-                                >
-                                        {key}</button>
-                                )
-                }
-                //When the custom label other than "all" is encountered.
-                else{
                         labelsArr.push(
                                 <button 
                                 key = {labels[key][0]} 
@@ -27,9 +13,7 @@ function Sidebar({closeMenuHandler,labels,displayHandler,loading,imgUrl,name}){
                                 onClick={()=>displayHandler(key)}
                                 >
                                         {key}</button>
-         )
-                }
-        } 
+         ) } 
         return (
                 <div 
                         className="sidebar-menu box-1">
@@ -57,6 +41,7 @@ function Sidebar({closeMenuHandler,labels,displayHandler,loading,imgUrl,name}){
                         
                         </span>
                         <div className="priority-tabs">
+                                <span>Priority Levels</span>
                                 <button 
                                         className="low-btn" 
                                         onClick={()=>
@@ -76,7 +61,17 @@ function Sidebar({closeMenuHandler,labels,displayHandler,loading,imgUrl,name}){
                                         High
                                 </button>
                         </div>
+                        <hr></hr>
                         <div className="custom-labels-tabs">
+                                <span>Custom Labels</span>
+                                <button 
+                                key = "All" 
+                                className="custom-label-tabs all-btn" 
+                                style={{backgroundColor: "Red"}}
+                                onClick={()=>displayHandler("All")}
+                                >
+                                All</button>
+                                
                                 {labelsArr}
                         </div>
 

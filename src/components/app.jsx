@@ -94,19 +94,8 @@ function App(){
 
      function addDefaultValue(){
         getSideBarLabels()
-        //First login
-        addAllLabel()
     }
-    function addAllLabel(){
-        
-        if(creationDay===lastLogin && 
-            localStorage.getItem("firstLogIn")!=="true"){
-            if(!allLabels["All"]){
-                initialLabel()
-                getSideBarLabels()
-            }
-    }
-    }
+   
    function getSideBarLabels(){
             sideBarRef.onSnapshot(function (querySnapshot){
            querySnapshot.docs.map((doc)=>
@@ -118,14 +107,6 @@ function App(){
                    }
                ))
            ))
-        })
-    }
-
-     function initialLabel(){
-        sideBarRef.add({
-            labelName: "All",
-            color: "#f40b0b",
-            count:1
         })
     }
 
@@ -263,8 +244,6 @@ function App(){
         notify("New task added!")
 
     }
-
-    
 
 
     //Check if a custom label already exists
