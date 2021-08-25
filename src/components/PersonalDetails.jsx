@@ -77,16 +77,16 @@ export default function PersonalDetails({userId,
         //Store image
         if(image!==noPhoto)
             addImage()
+
         //Store name
         addName()
-         //Close the tab.
-       // accountHandler()
+        
         //Notification
         notify("Details saved successfully!")
 
         //Store cashe for storing loogedIn flag.
-        if(localStorage.getItem("logIn")!=="true"){
-            localStorage.setItem("logIn","true")
+        if(localStorage.getItem("firstLogIn")!=="true"){
+            localStorage.setItem("firstLogIn","true")
         }
        
     }

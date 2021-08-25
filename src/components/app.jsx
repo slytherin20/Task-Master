@@ -99,13 +99,15 @@ function App(){
     }
     function addAllLabel(){
         
-        if(creationDay===lastLogin){
+        if(creationDay===lastLogin && 
+            localStorage.getItem("firstLogIn")!=="true"){
             if(!allLabels["All"]){
                 initialLabel()
                 getSideBarLabels()
             }
            // setAccountTab(true)
     }
+    console.log(allLabels)
     }
    function getSideBarLabels(){
             sideBarRef.onSnapshot(function (querySnapshot){
@@ -388,7 +390,7 @@ function App(){
               <>
        {   
             creationDay===lastLogin && 
-            !(localStorage.getItem("logIn")==="true") &&
+            !(localStorage.getItem("firstLogIn")==="true") &&
             <PersonalDetails 
                 userId={userID} 
                 accountHandler={closeTab}
@@ -396,7 +398,8 @@ function App(){
                 changeUrl={changeUrl}
                 nameHandler={changeName}
                 notify={notify}
-                notFirstTime = {false} />               
+                notFirstTime = {false}
+                />               
         }
         <div className="box">
             <NavBar 
@@ -461,7 +464,8 @@ function App(){
                 changeUrl={changeUrl}
                 nameHandler={changeName}
                 notify={notify}
-                notFirstTime = {true} />
+                notFirstTime = {true}
+                />
         }
         <ToastContainer/>
        </>
