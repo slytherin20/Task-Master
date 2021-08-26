@@ -1,3 +1,6 @@
+*{
+  color: gainsboro;
+}
 html{
   height:100%;
   font-family: sans-serif;
@@ -7,6 +10,8 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color:#dfdbdb;
+  min-height:100vh;
 }
 
 code {
@@ -14,15 +19,14 @@ code {
     monospace;
 }
 #root{
-  height:100%;
+  min-height:100vh;
 }
 .nav-bar{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   height: 50px;
-  color:white;
-  background-color:#003333;
+  background-color: #130f0f;
   font-size: 1.6em;
   font-weight: bold;
   padding:7px;
@@ -32,31 +36,33 @@ code {
 .main-page{
   position:relative;
   height:100%;
+  background-color: white;
+  height:100vh;
 }
-
-.main-page::after{
-  content:"";
-  position: absolute;
-  z-index:-1;
-  background-image: url('./utilities/images/mainpage.jpg');
-  background-size: cover;
-  opacity: 0.2;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-
+.signup-page{
+  height: calc(100vh -111px);
+  display:flex;
+  flex-direction: row;
+  padding: 30px 10%;
+}
+.signup-img{
+  width:50%;
+  height:80vh;
 }
 
 .sign-in-options,.firebaseui-card-content{
   background-color: white;
   display:inline;
-  height: 800px;
-  width:600px;
+}
+.firebaseui-container
+.firebaseui-page-provider-sign-in
+.firebaseui-id-page-provider-sign-in
+.firebaseui-use-spinner{
+padding:0;
+top:100px;
 }
 
 .menu-icon{
-  color: white;
   height:24px;
 }
 .menu-icon:hover,.cancel-icon:hover,.account-img:hover{
@@ -64,11 +70,11 @@ code {
 }
 
 .sidebar-menu{
-  background-color: rgba(0, 51, 51,0.9);
+  background-color:rgb(27, 27, 27);
   display: flex;
   flex-direction: column;
   height: 100vh;
-  color: white;
+  padding:2%;
 }
 .cancel-icon{
   width: 25px;
@@ -83,9 +89,8 @@ code {
 
 .account-bar{
   position: relative;
-  top:28px;
-  border: 1px solid grey;
-  color:black;
+  top:11px;
+  left:7px;
   font-size: 14px;
   display:flex;
   flex-direction: column;
@@ -140,7 +145,7 @@ input[type=file]{
 .input-box{
   margin: 5% auto;
   padding:2%;
-  background-color: rgba( 204, 153, 255,1);
+  background-color:#130f0f;
   border-radius: 2%;
   display: flex;
   flex-direction: column;
@@ -160,8 +165,7 @@ input[type=file]{
   width:25%;
 }
 .form-button,.details-btn{
-  background-color:rgba(0, 51, 51,1);
-  color:white;
+  background-color:#db4c3f;
   width:100px;
   height: 40px;
   border-radius:5%;
@@ -203,9 +207,11 @@ label{
   border-radius: 7%;
   font-weight: bold;
 }
+
 .custom-label-tabs{
   display:inline;
   width:auto;
+  background-color: rgb(27, 27, 27);
 }
 .done:hover,.delete:hover,.details-btn:hover,.form-button:hover,.custom-label-tabs:hover,.low-btn:hover,.medium-btn:hover,.high-btn:hover{
   cursor:pointer;
@@ -219,40 +225,48 @@ label{
 }
 .delete{
   background-color: red;
-  color:white;
 }
 .custom-label-tabs,.low-btn,.medium-btn,.high-btn{
-  border:solid 1px white;
+  background-color: rgb(27, 27, 27);
 }
 .low-btn{
-  background-color: green;
+  border: solid 5px green;
 }
 .high-btn{
-  background-color: red;
+  border: solid 5px red;
 }
 .medium-btn{
-  background-color: yellow;
+  border: solid 5px yellow;
 }
 .all-btn{
   width:80%;
 }
 .account-bar{
   width:200px;
-  background-color: rgba(0, 51, 51,0.9);
 }
 .profile-btn,.sign-out{
   padding:10px;
-  background-color: rgba(0, 51, 51,0.9);
+  background-color: rgb(27, 27, 27);
   border:none;
-  color:white;
   font-weight: bold;
-}
-.profile-btn{
-  border-bottom: solid 1px gray;
 }
 .completed-label{
   border: solid 4px black;
   border-radius: 5px;
   display: inline;
   padding: 5px;
+}
+hr{
+  width:90%;
+}
+
+@media screen and (max-width:450px){
+  .nav-bar{
+    height:40px;
+    font-size: 1.3em;
+    padding:2%;
+  }
+  .signup-page{
+    height: calc(100vh - 45px);
+  }
 }

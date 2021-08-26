@@ -9,7 +9,7 @@ function Sidebar({closeMenuHandler,labels,displayHandler,loading,imgUrl,name}){
                                 <button 
                                 key = {labels[key][0]} 
                                 className="custom-label-tabs" 
-                                style={{backgroundColor: `${labels[key][1]}`}}
+                                style={{border: `solid 5px ${labels[key][1]}`}}
                                 onClick={()=>displayHandler(key)}
                                 >
                                         {key}</button>
@@ -67,7 +67,7 @@ function Sidebar({closeMenuHandler,labels,displayHandler,loading,imgUrl,name}){
                                 <button 
                                 key = "All" 
                                 className="custom-label-tabs all-btn" 
-                                style={{backgroundColor: "Red"}}
+                                style={{border: "solid 5px Red"}}
                                 onClick={()=>displayHandler("All")}
                                 >
                                 All</button>
