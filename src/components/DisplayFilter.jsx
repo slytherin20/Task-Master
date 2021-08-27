@@ -6,7 +6,7 @@ function DisplayFilter({nameHandler,
                         displayTasks,
                         closeFilter,
                         notify}){
-const [filter,setFilter] = useState("Filter By:");
+const [filter,setFilter] = useState("---");
 
 function changeValue(e){
     setFilter(e.target.value)
@@ -40,7 +40,8 @@ function clearFilter(){
 }
 
 return(
-    <>
+    <div className="filter-menu">
+    Filter By:
     <form onSubmit={filterResult}>
         <select value={filter} onChange={changeValue}>
             <option value="1">Name</option>
@@ -50,7 +51,7 @@ return(
         <button className="filter-btn" type="submit">Ok</button>
     </form>
     <button className="clear-filter" onClick={clearFilter}>Clear</button>
-    </>
+    </div>
 )
 }
 
