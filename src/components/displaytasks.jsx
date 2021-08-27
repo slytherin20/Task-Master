@@ -2,6 +2,7 @@ import { useState } from "react";
 import DisplayFilter from "./DisplayFilter";
 import { date } from "../utilities/functions/date";
 import Sort from "../utilities/images/sort.png";
+import Relax from "../utilities/images/090-reading-corner-monochrome.svg";
 
 function Display({tasks,
                   completedTask,
@@ -88,24 +89,34 @@ function Display({tasks,
         <span>Pending Tasks</span>
         <hr></hr>
         <div className="display-pending-container">
-            <div className="filter-container">
-                <img src={Sort}
-                alt="filter icon" 
-                className="filter-icon" 
-                onClick={openFilterMenu} />
-                {
-                    openFilter &&
-                    <DisplayFilter
-                    nameHandler = {filterByName}
-                    deadlineHandler = {filterByDeadline}
-                    priorityHandler = {filterByPriority}
-                    displayTasks = {displayTasks}
-                    closeFilter = {closeFilterMenu}
-                    notify={notify} />
-                }
-            </div>
+            {    tasks.length!==0 &&
+                 <div className="filter-container">
+                 <img src={Sort}
+                 alt="filter icon" 
+                 className="filter-icon" 
+                 onClick={openFilterMenu} />
+                 {
+                     openFilter &&
+                     <DisplayFilter
+                     nameHandler = {filterByName}
+                     deadlineHandler = {filterByDeadline}
+                     priorityHandler = {filterByPriority}
+                     displayTasks = {displayTasks}
+                     closeFilter = {closeFilterMenu}
+                     notify={notify} />
+                 }
+             </div>
+            
+            }
             <div className="display-pending-tasks">
-            {   
+            { tasks.length===0&&
+                <div className="no-task">
+                <h3 className="no-task-title">Relax! You don't have any pending tasks now.</h3>
+                <img src={Relax} alt="" className="no-task-img"/>
+                </div>
+             }
+            {
+
                 tasks.map((task)=>(
                     <div key={task.id} className="task">
                         <h3>{task.taskName}</h3>
