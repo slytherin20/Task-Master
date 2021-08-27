@@ -1,6 +1,7 @@
 import { useState } from "react";
 import DisplayFilter from "./DisplayFilter";
 import { date } from "../utilities/functions/date";
+import Sort from "../utilities/images/sort.png";
 
 function Display({tasks,
                   completedTask,
@@ -83,9 +84,12 @@ function Display({tasks,
     }
 
     return(
+        <div className="display-pending">
+        <span>Pending Tasks</span>
+        <hr></hr>
         <div className="display-pending-container">
             <div className="filter-container">
-                <img src="https://i.imgur.com/UoicdUh.png"
+                <img src={Sort}
                 alt="filter icon" 
                 className="filter-icon" 
                 onClick={openFilterMenu} />
@@ -128,6 +132,7 @@ function Display({tasks,
                 
             }
             </div>
+        </div>
         </div>
     )
 }

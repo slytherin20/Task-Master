@@ -5,7 +5,10 @@ function DisplayCompleted({tasks,deleteTask,notify}){
         notify("Task Removed")
     }
     return(
-        <div className="display-completed-container">
+        <div className="display-completed">
+            <span>Completed Tasks</span>
+            <hr></hr>
+            <div className="display-completed-container">
             {   
                 tasks.map((task)=>(
                     <div key={task.id} className="task">
@@ -21,7 +24,9 @@ function DisplayCompleted({tasks,deleteTask,notify}){
                 
             }
         </div>
-    )
+  
+        </div>
+          )
 }
 
 export default DisplayCompleted;

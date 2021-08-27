@@ -9,14 +9,14 @@ function Sidebar({closeMenuHandler,labels,displayHandler,loading,imgUrl,name}){
                                 <button 
                                 key = {labels[key][0]} 
                                 className="custom-label-tabs" 
-                                style={{border: `solid 5px ${labels[key][1]}`}}
+                                style={{border: `solid 3px ${labels[key][1]}`}}
                                 onClick={()=>displayHandler(key)}
                                 >
                                         {key}</button>
          ) } 
         return (
                 <div 
-                        className="sidebar-menu box-1">
+                        className="sidebar-menu">
                         <img src={cancelIcon} 
                                 className="cancel-icon" 
                                 alt="close" 
@@ -42,6 +42,7 @@ function Sidebar({closeMenuHandler,labels,displayHandler,loading,imgUrl,name}){
                         </span>
                         <div className="priority-tabs">
                                 <span>Priority Levels</span>
+                                <div className="buttons">
                                 <button 
                                         className="low-btn" 
                                         onClick={()=>
@@ -60,6 +61,7 @@ function Sidebar({closeMenuHandler,labels,displayHandler,loading,imgUrl,name}){
                                         displayHandler("High")}>
                                         High
                                 </button>
+                                </div>
                         </div>
                         <hr></hr>
                         <div className="custom-labels-tabs">
@@ -67,12 +69,13 @@ function Sidebar({closeMenuHandler,labels,displayHandler,loading,imgUrl,name}){
                                 <button 
                                 key = "All" 
                                 className="custom-label-tabs all-btn" 
-                                style={{border: "solid 5px Red"}}
+                                style={{border: "solid 3px Red"}}
                                 onClick={()=>displayHandler("All")}
                                 >
                                 All</button>
-                                
+                                <div className="buttons">
                                 {labelsArr}
+                                </div>
                         </div>
 
                 </div>

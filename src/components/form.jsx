@@ -16,7 +16,9 @@ function Form({
         <form 
         className="input-box" onSubmit={addTaskHandler}>
         <div className="input-fields">
-        <input 
+        <label>
+            Task Name:
+            <input 
                 type="text" 
                 className="task-name" 
                 placeholder="Enter the task here" 
@@ -25,6 +27,7 @@ function Form({
                 onChange={changeNameHandler}>
             
         </input>
+        </label>
         <label>
             Priority level:
         <select 

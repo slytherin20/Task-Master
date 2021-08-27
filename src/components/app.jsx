@@ -148,7 +148,7 @@ function App(){
         setLoading(loadingValue)
     }
     function notify(message){
-        toast(message)
+        toast.dark(message)
     }
     function updateHandler(arr){
         setDisplayArr(arr)
@@ -389,6 +389,7 @@ function App(){
                 />
         <div 
                 className="main-container">
+                    <div className="box-1">
                     {
                         menuState && 
                         <Sidebar 
@@ -400,6 +401,7 @@ function App(){
                             imgUrl={url}
                             name={name}/>
                      }
+                    </div>
                     <div className="box-2">
                     <Form 
                         task= {taskName} 
@@ -445,7 +447,7 @@ function App(){
                 notFirstTime = {true}
                 />
         }
-        <ToastContainer/>
+        <ToastContainer />
        </>
      
     )
