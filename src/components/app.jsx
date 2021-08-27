@@ -370,7 +370,7 @@ function App(){
     return(
               <>
               <div className="visible-screen" ref={appRef}>
-                  </div>
+                </div>
               {   
             creationDay===lastLogin && 
             !(localStorage.getItem("firstLogIn")==="true") &&
