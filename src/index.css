@@ -8,7 +8,7 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color:#dfdbdb;
+  background-color:#ffffff;
   min-height:100vh;
 }
 
@@ -64,6 +64,9 @@ top:100px;
 .menu-icon{
   height:24px;
 }
+.account-img{
+  width:200px;
+}
 .menu-icon:hover,.cancel-icon:hover,.account-img:hover{
   cursor: pointer;
 }
@@ -86,6 +89,7 @@ top:100px;
   width: 150px;
   height:150px;
   border-radius: 50%;
+  border:solid 5px white;
 }
 .filter-container{
   display:flex;
@@ -95,7 +99,7 @@ top:100px;
 }
 .account-bar{
   position: relative;
-  top:11px;
+  top:4px;
   left:7px;
   font-size: 14px;
   display:flex;
@@ -107,6 +111,8 @@ top:100px;
   width:40px;
   height:40px;
   border-radius: 50%;
+  border: solid 3px white;
+  right:10px;
 }
 .submit-image{
   width: 200px;
@@ -145,7 +151,7 @@ input[type=file]{
 }
 .input-box{
   padding:2%;
-  background-color:#cac4c4;
+  background-color:rgb(233, 231, 231);
   border-radius: 2%;
   display: flex;
   flex-direction: column;
@@ -279,6 +285,19 @@ hr{
 }
 .display-completed,.display-pending{
   width:50%;
+  padding:2%;
+}
+.incomplete-img,.no-task-img{
+  width:250px;
+  height:250px;
+}
+.incomplete-title,.no-task-title{
+  margin:5px;
+}
+.incomplete,.no-task{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 @media screen and (max-width:450px){
