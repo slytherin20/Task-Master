@@ -13,6 +13,7 @@ import noPhoto from "../utilities/images/nophoto.jpg";
 import useAsyncState from "../utilities/functions/asyncState";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useRef } from "react";
 
 function App(){
     //Current date
@@ -34,6 +35,9 @@ function App(){
     const [loading,setLoading] = useState(true);
     const [url,setUrl] = useAsyncState(null);
     const [name,setName] = useState("");
+
+    //App Ref
+    const appRef = useRef();
 
     //Firestore
     const userID = auth.currentUser.uid;
@@ -365,7 +369,9 @@ function App(){
 
     return(
               <>
-       {   
+              <div className="visible-screen" ref={appRef}>
+                  </div>
+              {   
             creationDay===lastLogin && 
             !(localStorage.getItem("firstLogIn")==="true") &&
             <PersonalDetails 
@@ -376,6 +382,7 @@ function App(){
                 nameHandler={changeName}
                 notify={notify}
                 notFirstTime = {false}
+                appRef = {appRef}
                 />               
         }
         <div className="box">
@@ -445,6 +452,7 @@ function App(){
                 nameHandler={changeName}
                 notify={notify}
                 notFirstTime = {true}
+                appRef = {appRef}
                 />
         }
         <ToastContainer />

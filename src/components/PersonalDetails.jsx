@@ -10,7 +10,8 @@ export default function PersonalDetails({userId,
                                         changeUrl,
                                         nameHandler,
                                         notify,
-                                        notFirstTime}){
+                                        notFirstTime,
+                                        appRef}){
    
     const [firstName,setFirstName] = useState("");
     const [lastName,setLastName] = useState("");
@@ -26,7 +27,14 @@ export default function PersonalDetails({userId,
     const collectionRef = db.collection(`users/${userID}/name`);
     const storage = firebase.storage();
 
+    //Freeze screen behind
+    freezeScreen()
+    function freezeScreen(){
+        appRef.current.classList.add("freeze-screen");
+    }
+
     useEffect(() => {
+
         //Get the name from firestore
         let unsubscribe = 
             collectionRef
@@ -53,6 +61,12 @@ export default function PersonalDetails({userId,
     useEffect(() => {
 
        //Get the image from database if already exists
+       getImageFromDB()
+       
+    }, [])
+
+    function getImageFromDB(){
+
         storage
         .ref(`users/${userId}/picture`)
         .listAll()
@@ -64,8 +78,7 @@ export default function PersonalDetails({userId,
         })
         .catch((err)=> console.log("Error"+err))
 
-    }, [])
-
+    }
 
     function changeName(e,name){
         name==="first"?setFirstName(e.target.value)
@@ -89,7 +102,7 @@ export default function PersonalDetails({userId,
         if(localStorage.getItem("firstLogIn")!=="true" && !notFirstTime){
             localStorage.setItem("firstLogIn","true")
         }
-       
+
     }
     function addImage(){
         //User has selected an image
@@ -187,6 +200,12 @@ export default function PersonalDetails({userId,
         }
 
     }
+
+    function closePopUp(){
+        appRef.current.classList.remove("freeze-screen");
+        accountHandler()
+    }
+    
         return(
             <div 
                 className="personal-details">
@@ -196,7 +215,7 @@ export default function PersonalDetails({userId,
                                 className="cancel-icon"
                                 src={closeBtn} 
                                 alt="close-tab"
-                                onClick={accountHandler}>
+                                onClick={closePopUp}>
                             </img>
                     }
                 <form 
