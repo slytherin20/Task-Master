@@ -26,11 +26,7 @@ function Display({tasks,
     }
 
     function openFilterMenu(){
-        setOpenFilter(true)
-    }
-
-    function closeFilterMenu(){
-        setOpenFilter(false)
+        setOpenFilter(!openFilter)
     }
 
     function filterByName(){
@@ -102,7 +98,7 @@ function Display({tasks,
                      deadlineHandler = {filterByDeadline}
                      priorityHandler = {filterByPriority}
                      displayTasks = {displayTasks}
-                     closeFilter = {closeFilterMenu}
+                     closeFilter = {openFilterMenu}
                      notify={notify} />
                  }
              </div>
@@ -111,7 +107,7 @@ function Display({tasks,
             <div className="display-pending-tasks">
             { tasks.length===0&&
                 <div className="no-task">
-                <h3 className="no-task-title">Relax! You don't have any pending tasks now.</h3>
+                <h3 className="no-task-title">Relax! You do not have pending tasks here.</h3>
                 <img src={Relax} alt="" className="no-task-img"/>
                 </div>
              }

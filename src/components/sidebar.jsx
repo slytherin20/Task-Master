@@ -26,8 +26,8 @@ function Sidebar({closeMenuHandler,labels,displayHandler,loading,imgUrl,name}){
                         loading? <Loader
                                         type="TailSpin"
                                         color="#00BFFF"
-                                        height={100}
-                                        width={100}
+                                        height={70}
+                                        width={70}
                                         />
                                 : <img className = "sidebar-profile-pic" 
                                         src={imgUrl} 
