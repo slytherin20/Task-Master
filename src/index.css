@@ -15,6 +15,37 @@ body {
   min-height:100vh;
   position:relative;
 }
+.main-page{
+  width:80%;
+  display:flex;
+  height:100vh;
+  margin:auto;
+}
+.app-name{
+  background-image: url('../src/utilities/images/050-choices-monochrome.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width:50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content:center;
+  padding-bottom:5%;
+  color:rgb(45, 59, 255);
+}
+.app-name-main{
+  font-size:5em;
+  margin:0;
+}
+.app-name-sub{
+  font-size: 3em;
+  margin:0;
+}
+.sign-in-options{
+  padding-top: 8%;
+}
+
 .freeze-screen{
   position:absolute;
   background-color: rgba(255,255,255,0.4);
@@ -35,27 +66,6 @@ body {
   color: gainsboro;
 }
 
-.main-page{
-  position:relative;
-  height:100%;
-  background-color: white;
-  height:100vh;
-}
-.signup-page{
-  height: calc(100vh -111px);
-  display:flex;
-  flex-direction: row;
-  padding: 30px 10%;
-}
-.signup-img{
-  width:50%;
-  height:80vh;
-}
-
-.sign-in-options,.firebaseui-card-content{
-  background-color: white;
-  display:inline;
-}
 .firebaseui-container
 .firebaseui-page-provider-sign-in
 .firebaseui-id-page-provider-sign-in
@@ -78,7 +88,7 @@ top:100px;
   background-color:rgb(27, 27, 27);
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
   padding:3%;
   width:90%;
   color: gainsboro;
@@ -87,7 +97,7 @@ top:100px;
   width: 25px;
   height:25px;
   position:relative;
-  left:90%;
+  left:calc(100% - 25px);
   background-color: white;
   border-radius:50%;
 }
@@ -209,6 +219,19 @@ input[type=file]{
   flex-direction: row;
   flex-wrap: wrap;
 }
+.row-1,.row-2{
+  display:flex;
+  flex-wrap:wrap;
+  width: 45%;
+  margin:5px;
+  justify-content: flex-start;
+}
+.row-3{
+  display:flex;
+  width:50%;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
 .main-container{
   display:flex;
   flex-direction:row;
@@ -244,8 +267,12 @@ input[type=color i]{
   border:none;
   width:30px;
 }
-input.task-name{
-  width: 50%;
+.task-name,.custom-label,.date-field{
+  height:30px;
+  border:none;
+}
+.task-name{
+  width:200px;
 }
 label{
   display:flex;
@@ -301,6 +328,9 @@ label{
 .medium-btn{
   border: solid 3px yellow;
 }
+h3{
+  text-align: center;
+}
 .all-btn{
   width:80%;
 }
@@ -348,14 +378,59 @@ hr{
   flex-direction: column;
   align-items: center;
 }
-
+@media screen and (max-width:750px){
+  .sidebar-profile-pic{
+    width:120px;
+    height:120px;
+  }
+}
 @media screen and (max-width:450px){
   .nav-bar{
     height:40px;
     font-size: 1.3em;
     padding:2%;
   }
-  .signup-page{
-    height: calc(100vh - 45px);
+  .sidebar-profile-pic{
+    width:75px;
+    height:75px;
+  }
+  .display-container{
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .display-pending,.display-completed{
+    width:92%;
+  }
+  .personal-details{
+    width:95%;
+    left:0;
+  }
+  .main-page{
+    width:100%;
+   flex-wrap:wrap;
+  }
+  .app-name{
+    width:100%;
+    background-image:none;
+    background-color: gainsboro;
+    text-align:center;
+
+  }
+  .sign-in-options{
+    width:100%;
+    background-image:url("../src/utilities/images/050-choices-monochrome.svg");
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  .app-name-main{
+    font-size:3em;
+  }
+  .app-name-sub{
+    font-size:1.5em;
+  }
+}
+@media screen and (max-width:300px){
+  .app-name-main{
+    font-size: 2.5em;
   }
 }

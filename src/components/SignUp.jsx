@@ -17,11 +17,11 @@ function SignUp(){
     }
     return(
         <div className="main-page">
-        <nav className="nav-bar">Task Master - A to do tracking app</nav>
-        <div className="signup-page">
-        <img src={Image} className="signup-img" alt="" />
-        <StyledFirebaseAuth className = "sign-in-options" uiCallback = {ui=>ui.disableAutoSignIn()} uiConfig = {uiConfig} firebaseAuth = {auth} />
+        <div className="app-name">
+            <h1 className="app-name-main">Task Master:</h1>
+            <h2 className="app-name-sub">A task managing app</h2>
         </div>
+        <StyledFirebaseAuth className = "sign-in-options" uiCallback = {ui=>ui.disableAutoSignIn()} uiConfig = {uiConfig} firebaseAuth = {auth} />
         </div>
     )
 }
