@@ -15,6 +15,10 @@ body {
   min-height:100vh;
   position:relative;
 }
+h3{
+  text-align: center;
+}
+/*Signup page*/
 .main-page{
   width:80%;
   display:flex;
@@ -46,6 +50,30 @@ body {
   padding-top: 8%;
 }
 
+.firebaseui-container
+.firebaseui-page-provider-sign-in
+.firebaseui-id-page-provider-sign-in
+.firebaseui-use-spinner{
+padding:0;
+top:100px;
+}
+
+/* App page layout */
+.main-container{
+  display:flex;
+  flex-direction:row;
+  width:100%;
+  margin: auto auto;
+}
+.box-1{
+  width:25%;
+}
+.box-2{
+  width:65%;
+  padding: 20px;
+}
+
+/* Freeze screen */
 .freeze-screen{
   position:absolute;
   background-color: rgba(255,255,255,0.4);
@@ -53,6 +81,7 @@ body {
   height:100%;
   z-index: 100;
 }
+/*Navbar */
 .nav-bar{
   display: flex;
   flex-direction: row;
@@ -65,25 +94,45 @@ body {
   text-align:center;
   color: gainsboro;
 }
-
-.firebaseui-container
-.firebaseui-page-provider-sign-in
-.firebaseui-id-page-provider-sign-in
-.firebaseui-use-spinner{
-padding:0;
-top:100px;
+.app-title{
+  display:flex;
+  align-items: center;
+  font-size: 1.2em;
 }
-
 .menu-icon{
   height:24px;
 }
 .account-img{
+  width:62px;
+}
+.account-bar{
+  position: relative;
+  top:4px;
+  right: 131px;
+  font-size: 14px;
+  display:flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: gainsboro;
   width:200px;
 }
-.menu-icon:hover,.cancel-icon:hover,.account-img:hover{
-  cursor: pointer;
+.nav-profile-pic{
+  width:40px;
+  height:40px;
+  border-radius: 50%;
+  border: solid 3px white;
+  right:10px;
 }
 
+/*Hover effect */
+.menu-icon:hover,.cancel-icon:hover,.account-img:hover.sign-out:hover,.nav-profile-pic:hover{
+  cursor: pointer;
+}
+.done:hover,.delete:hover,.details-btn:hover,.form-button:hover,.custom-label-tabs:hover,.low-btn:hover,.medium-btn:hover,.high-btn:hover{
+  cursor:pointer;
+  transform: scale(1.1);
+}
+/*Side Menu*/
 .sidebar-menu{
   background-color:rgb(27, 27, 27);
   display: flex;
@@ -107,6 +156,23 @@ top:100px;
   border-radius: 50%;
   border:solid 5px white;
 }
+.custom-label-tabs{
+  display:inline;
+  width:auto;
+  background-color: rgb(27, 27, 27);
+}
+.profile{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+}
+.buttons{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+/*Filter option */
 .filter-container{
   display:flex;
   position:relative;
@@ -132,7 +198,6 @@ top:100px;
   border-radius: 10px;
 }
 select,option{
-  width:150px;
   height:30px;
 }
 .filter-btn,.clear-filter{
@@ -144,23 +209,7 @@ select,option{
   background-color: gainsboro;
   cursor: pointer;
 }
-.account-bar{
-  position: relative;
-  top:4px;
-  left:7px;
-  font-size: 14px;
-  display:flex;
-  flex-direction: column;
-  justify-content: space-between;
-  color: gainsboro;
-}
-.nav-profile-pic{
-  width:40px;
-  height:40px;
-  border-radius: 50%;
-  border: solid 3px white;
-  right:10px;
-}
+/* Personal Details Popup */
 .submit-image{
   width: 150px;
   height:150px;
@@ -206,45 +255,28 @@ input[type=file]{
   width:96%;
   padding:2%;
 }
+.details-btn{
+  background-color: white;
+  color:rgb(27, 27, 27);
+  margin: 10px auto;
+}
+/* Task Input Form */
 .input-box{
   padding:2%;
   background-color:rgb(233, 231, 231);
   border-radius: 2%;
   display: flex;
   flex-direction: column;
-  width:90%;
+  width:95%;
+  margin:auto;
 }
 .input-fields{
   display:flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-.row-1,.row-2{
-  display:flex;
-  flex-wrap:wrap;
-  width: 45%;
-  margin:5px;
-  justify-content: flex-start;
-}
-.row-3{
-  display:flex;
-  width:50%;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-}
-.main-container{
-  display:flex;
-  flex-direction:row;
-  width:100%;
-  margin: auto auto;
-}
-.box-1{
-  width:25%;
-}
-.box-2{
+  flex-direction: column;
   width:65%;
-  padding: 20px;
+  margin:auto;
 }
+
 .form-button,.details-btn{
   background-color: rgb(27, 27, 27);
   width:100px;
@@ -258,27 +290,22 @@ input[type=file]{
   height:28px;
   border-radius:5px;
 }
-.details-btn{
-  background-color: white;
-  color:rgb(27, 27, 27);
-  margin: 10px auto;
-}
-input[type=color i]{
-  border:none;
-  width:30px;
-}
-.task-name,.custom-label,.date-field{
+
+.task-name,.custom-label,.date-field,select,input[type=color i]{
   height:30px;
   border:none;
-}
-.task-name{
   width:200px;
+  background-color:white;
+}
+input[type=color i]{
+  width: 195px;
 }
 label{
   display:flex;
   flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  margin:5px;
+  justify-content:space-between;
   align-items: center;
 }
 .display-priority-btn{
@@ -287,6 +314,8 @@ label{
   border-radius: 7%;
   background-color: white;
 }
+
+/*All buttons common styling */
 .done,.delete,.custom-label-tabs,.low-btn,.high-btn,.medium-btn,.details-btn{
   height:30px;
   width:80px;
@@ -294,22 +323,6 @@ label{
   border:none;
   border-radius: 7%;
   font-weight: bold;
-}
-
-.custom-label-tabs{
-  display:inline;
-  width:auto;
-  background-color: rgb(27, 27, 27);
-}
-.done:hover,.delete:hover,.details-btn:hover,.form-button:hover,.custom-label-tabs:hover,.low-btn:hover,.medium-btn:hover,.high-btn:hover{
-  cursor:pointer;
-  transform: scale(1.1);
-}
-.sign-out{
-  color: gainsboro;
-}
-.sign-out:hover{
-  cursor: pointer;
 }
 .delete,.done{
   background-color: rgb(27, 27, 27);
@@ -328,21 +341,10 @@ label{
 .medium-btn{
   border: solid 3px yellow;
 }
-h3{
-  text-align: center;
-}
 .all-btn{
   width:80%;
 }
-.account-bar{
-  width:200px;
-}
 .priority-tabs,.custom-labels-tabs{
-  display:flex;
-  flex-direction: column;
-  align-items: center;
-}
-.profile{
   display:flex;
   flex-direction: column;
   align-items: center;
@@ -353,11 +355,18 @@ h3{
   border:none;
   font-weight: bold;
 }
+/*Completed and Pending Tasks */
 .completed-label{
   border: solid 3px black;
   border-radius: 5px;
   display: inline;
   padding: 5px;
+}
+.task-type{
+  font-weight: 700;
+  width:100%;
+  display:block;
+  text-align: center;
 }
 hr{
   width:95%;
@@ -378,21 +387,38 @@ hr{
   flex-direction: column;
   align-items: center;
 }
-@media screen and (max-width:750px){
+/*Signout option */
+.sign-out{
+  color: gainsboro;
+}
+
+@media screen and (max-width:780px){
   .sidebar-profile-pic{
     width:120px;
     height:120px;
   }
+  .input-fields{
+    width:100%;
+  }
 }
 @media screen and (max-width:450px){
-  .nav-bar{
-    height:40px;
-    font-size: 1.3em;
-    padding:2%;
-  }
   .sidebar-profile-pic{
-    width:75px;
-    height:75px;
+    width:100px;
+    height:100px;
+  }
+  .main-container{
+    flex-wrap: wrap;
+  }
+  .box-1,.box-2{
+    width:100%;
+  }
+  .box-1{
+    position:absolute;
+    z-index:5;
+  }
+  .sidebar-menu{
+    width:94%;
+    min-height:100vh;
   }
   .display-container{
     flex-wrap: wrap;
@@ -402,8 +428,11 @@ hr{
     width:92%;
   }
   .personal-details{
-    width:95%;
+    width:96%;
+    padding:2%;
     left:0;
+    box-shadow: none;
+    top:5%;
   }
   .main-page{
     width:100%;
@@ -429,8 +458,12 @@ hr{
     font-size:1.5em;
   }
 }
-@media screen and (max-width:300px){
+
+@media screen and (max-width:320px){
   .app-name-main{
     font-size: 2.5em;
+  }
+  label{
+    justify-content: center;
   }
 }

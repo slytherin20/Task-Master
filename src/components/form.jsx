@@ -16,7 +16,8 @@ function Form({
         <form 
         className="input-box" onSubmit={addTaskHandler}>
         <div className="input-fields">
-        <label>
+        <div className="row-1">
+        <label className="task-name-field">
             Task Name:
             <input 
                 type="text" 
@@ -28,7 +29,7 @@ function Form({
             
         </input>
         </label>
-        <label>
+        <label className="priority-field">
             Priority level:
         <select 
             value={priority} 
@@ -47,33 +48,37 @@ function Form({
             </option>
         </select>
         </label>
-        <label>
-            Choose Custom Label:
+        </div>
+        <div className="row-2">
+        <label className="label-field">
+            Custom Label:
             <input  
                     type="text" 
                     placeholder="Work/School etc." 
                     value={label} 
+                    className="custom-label"
                     onChange={changeLabelHandler}>
             </input>
         </label>
-        <label>
-            Pick Label Color:
+        <label className="color-field">
+            Label Color:
             <input 
                     type="color" 
                     value={color} 
                     onChange={changeColorHandler}>
             </input>
         </label>
-        <label>
+        <label className="deadline-field">
             Deadline:
             <input 
                 type="date" 
                 value={deadline} 
+                className="date-field"
                 onChange={changeDeadlineHandler} 
                 min={date}>
             </input>
         </label>
-      
+        </div>
         </div>
       <button type="submit" className="form-button">Add task</button>
     </form>

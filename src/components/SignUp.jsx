@@ -1,7 +1,6 @@
 import { auth } from "../utilities/functions/firebase_config";
 import firebase from "firebase/app";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
-import Image from "../utilities/images/050-choices-monochrome.svg";
 
 
 function SignUp(){

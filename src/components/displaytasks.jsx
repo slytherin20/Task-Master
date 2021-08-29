@@ -82,7 +82,7 @@ function Display({tasks,
 
     return(
         <div className="display-pending">
-        <span>Pending Tasks</span>
+        <span className="task-type">Pending Tasks</span>
         <hr></hr>
         <div className="display-pending-container">
             {    tasks.length!==0 &&

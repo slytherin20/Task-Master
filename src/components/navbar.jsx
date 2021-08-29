@@ -18,8 +18,8 @@ function NavBar({account,
                 src={menuIcon} 
                 alt="menu icon" 
                 onClick={menuStateHandler} />
-            <span>
-                Task master - A task keeping app
+            <span className="app-title">
+                Task Master
             </span>
             <span 
                 className="account-img"

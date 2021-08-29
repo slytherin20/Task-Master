@@ -8,7 +8,7 @@ function DisplayCompleted({tasks,deleteTask,notify}){
     }
     return(
         <div className="display-completed">
-            <span>Completed Tasks</span>
+            <span className="task-type">Completed Tasks</span>
             <hr></hr>
             <div className="display-completed-container">
             {   tasks.length===0 &&
