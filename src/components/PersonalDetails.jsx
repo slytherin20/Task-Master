@@ -96,7 +96,6 @@ export default function PersonalDetails({userId,
 
         //Notification
         notify("Details saved successfully!")
-        notify("You can close the pop up now.")
 
         //Store cashe for storing loogedIn flag.
         if(localStorage.getItem("firstLogIn")!=="true" && !notFirstTime){
@@ -205,7 +204,7 @@ export default function PersonalDetails({userId,
         appRef.current.classList.remove("freeze-screen");
         accountHandler()
     }
-    
+
         return(
             <div 
                 className="personal-details">
@@ -220,11 +219,12 @@ export default function PersonalDetails({userId,
                     }
                 <form 
                     onSubmit={submitDetails} className="form-details">
+                        <h3 className="personal-details-title">Personal Details</h3>
                         <img 
                             className="submit-image"
                             src={imageSrc} 
                             alt="display"/>
-                    <label>
+                    <label className="personal-details-form">
                             Please provide your picture:
                         <input 
                             type="file" 
@@ -236,7 +236,7 @@ export default function PersonalDetails({userId,
                                 {imageText}
                         </span>
                     </label>
-                    <label>
+                    <label className="names">
                         Enter your name:
                     </label>
                     <div 
@@ -244,12 +244,14 @@ export default function PersonalDetails({userId,
                         <input 
                             type="text" 
                             placeholder="First Name" 
+                            className="name-field"
                             required 
                             onChange={(e)=>changeName(e,"first")}>
                         </input>
                         <input 
                             type="text" 
                             placeholder="Last Name" 
+                            className="name-field"
                             required 
                             onChange={(e)=>changeName(e,"last")}>
                         </input>

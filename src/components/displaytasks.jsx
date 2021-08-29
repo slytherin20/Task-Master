@@ -87,6 +87,7 @@ function Display({tasks,
         <div className="display-pending-container">
             {    tasks.length!==0 &&
                  <div className="filter-container">
+                    Sort By
                  <img src={Sort}
                  alt="filter icon" 
                  className="filter-icon" 

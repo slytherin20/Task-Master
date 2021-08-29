@@ -41,7 +41,7 @@ function clearFilter(){
 
 return(
     <div className="filter-menu">
-    Filter By:
+    Sort By:
     <form onSubmit={filterResult}>
         <select value={filter} onChange={changeValue}>
             <option value="1">Name</option>

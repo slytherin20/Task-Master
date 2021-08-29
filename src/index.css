@@ -103,6 +103,7 @@ top:100px;
   width:100%;
   flex-direction: row;
   justify-content: flex-end;
+  align-items:center;
 }
 .filter-icon:hover{
   cursor: pointer;
@@ -119,11 +120,6 @@ top:100px;
   color: gainsboro;
   padding:15px;
   border-radius: 10px;
-}
-form{
-  display:flex;
-  flex-direction: column;
-  align-items: flex-end;
 }
 select,option{
   width:150px;
@@ -156,10 +152,9 @@ select,option{
   right:10px;
 }
 .submit-image{
-  width: 200px;
-  height:200px;
+  width: 150px;
+  height:150px;
   border-radius: 50%;
-  margin: auto;
 }
 input[type=file]{
   border:none;
@@ -172,18 +167,28 @@ input[type=file]{
   display: flex;
   flex-direction: column;
   width: 400px;
-  max-height: 400px;
-  padding: 20px;
+  height: 400px;
+  padding: 10px;
   background-color: rgb(27, 27, 27);
   color:rgb(255, 255, 255);
-  box-shadow:0px ​2px 15px 8px rgb(15 15 15);
+  box-shadow:0 2px 15px 7px rgb(27,27,27);
   left: calc((100% - 400px)/2);
-  justify-content: center;
+}
+.form-details,.personal-details-form{
+  display: flex;
+  flex-direction: column;
+  align-items:center;
+}
+.personal-details-title{
+  margin:5px;
 }
 .form-details{
-  display: flex;
-  flex-direction:column;
-  align-content: space-between;
+  height: 360px;
+  justify-content: space-between;
+}
+.names{
+  display:flex;
+  flex-direction: row;
 }
 .display-container{
   display: flex;
@@ -226,12 +231,14 @@ input[type=file]{
   margin: 5px auto;
   color: gainsboro;
 }
-input,select{
-  border: solid 1px grey;
-  width: 150px;
+.name-field{
+  height:28px;
+  border-radius:5px;
+}
+.details-btn{
   background-color: white;
-  margin:5px;
-  height:30px;
+  color:rgb(27, 27, 27);
+  margin: 10px auto;
 }
 input[type=color i]{
   border:none;
