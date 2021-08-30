@@ -229,6 +229,7 @@ export default function PersonalDetails({userId,
                         <input 
                             type="file" 
                             onChange={uploadImage} 
+                            className="file-inp"
                             accept=".png,.jpeg,.jpg,.svn" required>
                         </input>
                         <span 
@@ -238,24 +239,24 @@ export default function PersonalDetails({userId,
                     </label>
                     <label className="names">
                         Enter your name:
-                    </label>
                     <div 
                         className="name-field">
                         <input 
                             type="text" 
                             placeholder="First Name" 
-                            className="name-field"
+                            className="first-name"
                             required 
                             onChange={(e)=>changeName(e,"first")}>
                         </input>
                         <input 
                             type="text" 
                             placeholder="Last Name" 
-                            className="name-field"
+                            className="last-name"
                             required 
                             onChange={(e)=>changeName(e,"last")}>
                         </input>
                     </div>
+                    </label>
                     <button className="details-btn">Save</button>
                 </form>
             </div>

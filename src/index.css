@@ -15,9 +15,6 @@ body {
   min-height:100vh;
   position:relative;
 }
-h3{
-  text-align: center;
-}
 /*Signup page*/
 .main-page{
   width:80%;
@@ -125,10 +122,21 @@ top:100px;
 }
 
 /*Hover effect */
-.menu-icon:hover,.cancel-icon:hover,.account-img:hover.sign-out:hover,.nav-profile-pic:hover{
+.menu-icon:hover,
+.cancel-icon:hover,
+.account-img:hover,
+.sign-out:hover,
+.nav-profile-pic:hover{
   cursor: pointer;
 }
-.done:hover,.delete:hover,.details-btn:hover,.form-button:hover,.custom-label-tabs:hover,.low-btn:hover,.medium-btn:hover,.high-btn:hover{
+.done:hover,
+.delete:hover,
+.details-btn:hover,
+.form-button:hover,
+.custom-label-tabs:hover,
+.low-btn:hover,
+.medium-btn:hover,
+.high-btn:hover{
   cursor:pointer;
   transform: scale(1.1);
 }
@@ -215,10 +223,6 @@ select,option{
   height:150px;
   border-radius: 50%;
 }
-input[type=file]{
-  border:none;
-  margin:auto auto;
-}
 .personal-details{
   position: absolute;
   z-index:1000;
@@ -238,6 +242,9 @@ input[type=file]{
   flex-direction: column;
   align-items:center;
 }
+.file-inp{
+  align-items: center;
+}
 .personal-details-title{
   margin:5px;
 }
@@ -248,17 +255,13 @@ input[type=file]{
 .names{
   display:flex;
   flex-direction: row;
+  justify-content: center;
 }
 .display-container{
   display: flex;
   flex-direction: row;
   width:96%;
   padding:2%;
-}
-.details-btn{
-  background-color: white;
-  color:rgb(27, 27, 27);
-  margin: 10px auto;
 }
 /* Task Input Form */
 .input-box{
@@ -277,7 +280,7 @@ input[type=file]{
   margin:auto;
 }
 
-.form-button,.details-btn{
+.form-button{
   background-color: rgb(27, 27, 27);
   width:100px;
   height: 40px;
@@ -287,8 +290,17 @@ input[type=file]{
   color: gainsboro;
 }
 .name-field{
-  height:28px;
-  border-radius:5px;
+  display:flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+.first-name,.last-name{
+  height:25px;
+  text-align: center;
+  border:none;
+  margin:3px;
 }
 
 .task-name,.custom-label,.date-field,select,input[type=color i]{
@@ -314,9 +326,16 @@ label{
   border-radius: 7%;
   background-color: white;
 }
-
+.details-btn{
+  background-color:rgb(27, 27, 27);
+  border: solid 3px gainsboro;
+  border-radius: 5px;
+  color: gainsboro;
+  width:50px;
+  height:30px;
+}
 /*All buttons common styling */
-.done,.delete,.custom-label-tabs,.low-btn,.high-btn,.medium-btn,.details-btn{
+.done,.delete,.custom-label-tabs,.low-btn,.high-btn,.medium-btn{
   height:30px;
   width:80px;
   margin:5px;
@@ -362,6 +381,7 @@ label{
   display: inline;
   padding: 5px;
 }
+
 .task-type{
   font-weight: 700;
   width:100%;
@@ -406,6 +426,10 @@ hr{
     width:100px;
     height:100px;
   }
+  .nav-bar{
+    position: fixed;
+    width:96%;
+  }
   .main-container{
     flex-wrap: wrap;
   }
@@ -413,12 +437,13 @@ hr{
     width:100%;
   }
   .box-1{
-    position:absolute;
+    position:fixed;
     z-index:5;
   }
   .sidebar-menu{
     width:94%;
     min-height:100vh;
+    position: fixed;
   }
   .display-container{
     flex-wrap: wrap;
