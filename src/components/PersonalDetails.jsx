@@ -27,11 +27,8 @@ export default function PersonalDetails({userId,
     const collectionRef = db.collection(`users/${userID}/name`);
     const storage = firebase.storage();
 
-    //Freeze screen behind
-    freezeScreen()
-    function freezeScreen(){
-        appRef.current.classList.add("freeze-screen");
-    }
+    //Reference
+    let currentRef = null;
 
     useEffect(() => {
 
@@ -59,11 +56,21 @@ export default function PersonalDetails({userId,
     }, [])
 
     useEffect(() => {
+        showContent()
 
-       //Get the image from database if already exists
-       getImageFromDB()
-       
+        return ()=>{
+            currentRef.classList.remove("freeze-screen");
+        }
     }, [])
+
+    function showContent(){
+        // Freeze screen 
+             appRef.current.classList.add("freeze-screen");
+             currentRef = appRef.current;
+
+         //Get the image from database if already exists
+            getImageFromDB()
+    }
 
     function getImageFromDB(){
 
@@ -176,7 +183,6 @@ export default function PersonalDetails({userId,
 
             let file = e.target.files[0];
             let prefix = file.name.split(".").pop()
-            console.log(prefix)
             if(prefix.toLowerCase()==="png"||
             prefix.toLowerCase()==="jpeg"||
             prefix.toLowerCase()==="jpg"||
@@ -199,12 +205,6 @@ export default function PersonalDetails({userId,
         }
 
     }
-
-    function closePopUp(){
-        appRef.current.classList.remove("freeze-screen");
-        accountHandler()
-    }
-
         return(
             <div 
                 className="personal-details">
@@ -214,7 +214,7 @@ export default function PersonalDetails({userId,
                                 className="cancel-icon"
                                 src={closeBtn} 
                                 alt="close-tab"
-                                onClick={closePopUp}>
+                                onClick={accountHandler}>
                             </img>
                     }
                 <form 

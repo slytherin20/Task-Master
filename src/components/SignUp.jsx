@@ -12,7 +12,6 @@ function SignUp(){
                 firebase.auth.TwitterAuthProvider.PROVIDER_ID,
                 firebase.auth.GithubAuthProvider.PROVIDER_ID,
                 ]
-
     }
     return(
         <div className="main-page">

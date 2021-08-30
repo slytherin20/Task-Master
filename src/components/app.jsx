@@ -37,7 +37,7 @@ function App(){
     const [name,setName] = useState("");
 
     //App Ref
-    const appRef = useRef();
+    const appRef = useRef(null);
 
     //Firestore
     const userID = auth.currentUser.uid;
