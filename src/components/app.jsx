@@ -1,4 +1,4 @@
-import db, { auth } from "../utilities/functions/firebase_config";
+import db, { auth, storage } from "../utilities/functions/firebase_config";
 import firebase from "firebase/app"
 import { useState, useEffect } from "react";
 import Sidebar from "./sidebar";
@@ -37,7 +37,7 @@ function App(){
     const [name,setName] = useState("");
 
     //App Ref
-    const appRef = useRef(null);
+    const appRef = useRef();
 
     //Firestore
     const userID = auth.currentUser.uid;
@@ -45,8 +45,6 @@ function App(){
     const sideBarRef = db.collection(`users/${userID}/labels`);
     const completedListRef = db.collection(`users/${userID}/completed`)
     const nameRef = db.collection(`users/${userID}/name`)
-    //Storage
-    const storage = firebase.storage();
 
     //Authentication details
     let userMetaData = auth.currentUser.metadata;
