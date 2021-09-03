@@ -6,11 +6,9 @@ import { auth } from "../utilities/functions/firebase_config";
 function Main(){
     const [user] = useAuthState(auth);
 
-    return (user?
+    return user?
             <App />
             :<SignUp />
-            
-    )
 }
 
 export default Main;
