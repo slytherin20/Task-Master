@@ -23,7 +23,7 @@ export default function PersonalDetails({userId,
     const [storedImage,setStoredImage] = useState(null);
 
     
-    const userID = auth.currentUser.uid;
+    const userID = auth.currentUser.uid;  //null shows in error as user has already signed out.
     const collectionRef = db.collection(`users/${userID}/name`);
     const storage = firebase.storage();
 
@@ -62,14 +62,17 @@ export default function PersonalDetails({userId,
             currentRef.classList.remove("freeze-screen");
         }
     }, [])
+    
+    useEffect(()=>{
+        //Get the image from database if already exists
+        getImageFromDB()
+    },[])
 
     function showContent(){
-        // Freeze screen 
+             // Freeze screen 
              appRef.current.classList.add("freeze-screen");
              currentRef = appRef.current;
 
-         //Get the image from database if already exists
-            getImageFromDB()
     }
 
     function getImageFromDB(){
