@@ -14,6 +14,7 @@ import useAsyncState from "../utilities/functions/asyncState";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRef } from "react";
+import Loader from "react-loader-spinner";
 
 function App(){
     //Current date
@@ -38,6 +39,7 @@ function App(){
 
     //App Ref
     const appRef = useRef();
+    const loaderRef = useRef();
 
     //Firestore
     const userID = auth.currentUser.uid;
@@ -154,6 +156,9 @@ function App(){
     }
     function updateHandler(arr){
         setDisplayArr(arr)
+    }
+    function showLoader(){
+        loaderRef.current.classList.remove("hidden");
     }
 
     function changeUrl(newUrl){
@@ -368,7 +373,15 @@ function App(){
     return(
               <>
               <div className="visible-screen" ref={appRef}>
-                </div>
+            </div>
+            <div className="loading hidden" ref={loaderRef}>
+                                <Loader
+                                type="TailSpin"
+                                color="rgb(45, 59, 255)"
+                                height={100}
+                                width={100}
+                                />
+            </div>
               {   
             creationDay===lastLogin && 
             !(localStorage.getItem("firstLogIn")==="true") &&
@@ -391,6 +404,7 @@ function App(){
             accountHandler = {closeTab}
             loading={loading}
             imgUrl = {url}
+            loader={showLoader}
                 />
         <div 
                 className="main-container">

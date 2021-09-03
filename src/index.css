@@ -411,7 +411,20 @@ hr{
 .sign-out{
   color: gainsboro;
 }
-
+/*Loading screen */
+.loading{
+  position:fixed;
+  width:100vw;
+  height:100vh;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(255, 255, 255,0.8);
+  z-index: 1500;
+}
+.hidden{
+  display: none;
+}
 @media screen and (max-width:780px){
   .sidebar-profile-pic{
     width:120px;
@@ -483,7 +496,6 @@ hr{
     font-size:1.5em;
   }
 }
-
 @media screen and (max-width:320px){
   .app-name-main{
     font-size: 2.5em;

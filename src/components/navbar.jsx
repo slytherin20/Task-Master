@@ -7,7 +7,8 @@ function NavBar({account,
                 accountStateHandler,
                 accountHandler,
                 loading,
-                imgUrl
+                imgUrl,
+                loader
             }){
 
 
@@ -39,7 +40,7 @@ function NavBar({account,
                 } 
                      {
                         account &&
-                        <AccountBar accountHandler = {accountHandler}/> 
+                        <AccountBar accountHandler = {accountHandler} loader={loader}/> 
                      }
             </span>
         </nav>

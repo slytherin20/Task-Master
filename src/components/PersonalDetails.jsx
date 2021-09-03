@@ -62,14 +62,14 @@ export default function PersonalDetails({userId,
             currentRef.classList.remove("freeze-screen");
         }
     }, [])
-
+    
     function showContent(){
-        // Freeze screen 
+             // Freeze screen 
              appRef.current.classList.add("freeze-screen");
              currentRef = appRef.current;
-
-         //Get the image from database if already exists
+             //Get the image from database if already exists
             getImageFromDB()
+
     }
 
     function getImageFromDB(){
