@@ -8,7 +8,8 @@ function NavBar({account,
                 accountHandler,
                 loading,
                 imgUrl,
-                loader
+                loader,
+                unsubscriber
             }){
 
 
@@ -40,7 +41,7 @@ function NavBar({account,
                 } 
                      {
                         account &&
-                        <AccountBar accountHandler = {accountHandler} loader={loader}/> 
+                        <AccountBar accountHandler = {accountHandler} loader={loader} unsubscribe = {unsubscriber}/> 
                      }
             </span>
         </nav>

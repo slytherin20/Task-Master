@@ -1,7 +1,7 @@
 import { auth } from '../utilities/functions/firebase_config';
 import Loader from "react-loader-spinner";
 
-function AccountBar({accountHandler,loader}){
+function AccountBar({accountHandler,loader,unsubscribe}){
 
     function changeLocalInfo(){
        localStorage.clear();
@@ -9,6 +9,7 @@ function AccountBar({accountHandler,loader}){
     }
 
     function signOut(){
+        unsubscribe()
         loader()
         setTimeout(() => {
             auth.signOut()

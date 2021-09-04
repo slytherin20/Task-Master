@@ -37,6 +37,14 @@ function App(){
     const [url,setUrl] = useAsyncState(null);
     const [name,setName] = useState("");
 
+    ///Unsubscribe from listeners.
+    const [unsubscribeSidebar,setUnsubscribeSidebar] = useState(null);
+    const [unsubscribeCompleted,setUnsubscribeCompleted] = useState(null);
+    const [unsubscribeName,setUnsubscribeName] = useState(null);
+    const [unsubscribeAll,setUnsubscribeAll] = useState(null);
+    const [unsubscribePriority,setUnsubscribePriority] = useState(null);
+    const [unsubscribeLabel,setUnsubscribeLabel] = useState(null);
+
     //App Ref
     const appRef = useRef();
     const loaderRef = useRef();
@@ -55,7 +63,7 @@ function App(){
 
     //Get the data from database
     useEffect(()=>
-        displayElements()
+         displayElements()
     ,[])
 
     //Display tasks as per the tag clicked.
@@ -77,31 +85,32 @@ function App(){
         }
     }
 
-    function displayElements(){
-        addDefaultValue()
-        addCompletedTasks()
+    async function displayElements(){
+       addDefaultValue()
+      addCompletedTasks()
         imageUpload()
-        displayName()
-
+      displayName()
     }
 
     function displayName(){
         
-         nameRef.onSnapshot(function (querySnapshot){
+    let unsubscribeName =  nameRef.onSnapshot(function (querySnapshot){
             if(querySnapshot.docs.length!==0){
                 let data = querySnapshot.docs[0].data()
                 let [firstName,lastName] = [data.first,data.last]
                 setName(firstName+" "+lastName)
             }
         })
+        setUnsubscribeName(()=>unsubscribeName)
     }
 
      function addDefaultValue(){
         getSideBarLabels()
+       
     }
    
    function getSideBarLabels(){
-            sideBarRef.onSnapshot(function (querySnapshot){
+          let unsubscribeSidebar =   sideBarRef.onSnapshot(function (querySnapshot){
            querySnapshot.docs.map((doc)=>
            (
                 setAllLabels((prevState)=>(
@@ -112,6 +121,7 @@ function App(){
                ))
            ))
         })
+        setUnsubscribeSidebar(()=>unsubscribeSidebar)
     }
 
     //Input handlers
@@ -160,7 +170,20 @@ function App(){
     function showLoader(){
         loaderRef.current.classList.remove("hidden");
     }
-
+    function unsubscriber(){
+       unsubscribeCompleted()
+       unsubscribeSidebar()
+       unsubscribeName()
+       if(unsubscribeAll){
+           unsubscribeAll()
+       }
+       if(unsubscribeLabel){
+           unsubscribeLabel()
+       }
+       if(unsubscribePriority){
+           unsubscribePriority()
+       }
+    }
     function changeUrl(newUrl){
 
         setUrl(newUrl)
@@ -304,7 +327,7 @@ function App(){
         const priorities = ["high","low","medium"];
         let displayTitleClicked = displayTitle.toLowerCase();
         displayTitleClicked ==="all"?
-                displayAllTasks()
+                 displayAllTasks()
                 :((priorities.includes(displayTitleClicked))
                             ?displayByPriority()
                             :displayByLabel()
@@ -313,20 +336,40 @@ function App(){
 
     function displayAllTasks(){
         setDisplayArr([]);
-        collectionRef
+       let unsubscribe =  collectionRef
         .onSnapshot(generateSnapshot())
+
+        //Already existed a listener.
+        if(unsubscribeAll){
+            unsubscribeAll()
+        }
+       setUnsubscribeAll(()=>unsubscribe)
     }
     function displayByPriority(){
         setDisplayArr([]);
-        collectionRef
+        let unsubscribe = collectionRef
         .where("priority","==",displayTitle)
         .onSnapshot(generateSnapshot())
+
+        //Already existed a listener.
+        if(unsubscribePriority){
+            unsubscribePriority()
+        }
+
+        setUnsubscribePriority(()=>unsubscribe)
     }
     function displayByLabel(){
         setDisplayArr([]);
-        collectionRef
+        let unsubscribe = collectionRef
         .where("customLabel","==",displayTitle)
         .onSnapshot(generateSnapshot())
+        
+        //Already existed a listener.
+        if(unsubscribeLabel){
+            unsubscribeLabel()
+        }
+
+        setUnsubscribeLabel(()=>unsubscribe)
     }
     function generateSnapshot(){
         let snapshot = function (querySnapshot){
@@ -352,7 +395,7 @@ function App(){
 
     //Getting completed tasks from firestore
     function addCompletedTasks(){
-        completedListRef
+        let unsubscribe = completedListRef
         .onSnapshot(function (querySnapshot){
             setCompletedArr( querySnapshot.docs.map((doc=>{
                 let taskObj = {
@@ -367,6 +410,7 @@ function App(){
             })))
            
         })
+       setUnsubscribeCompleted(()=>unsubscribe)
     }
     
 
@@ -405,6 +449,7 @@ function App(){
             loading={loading}
             imgUrl = {url}
             loader={showLoader}
+            unsubscriber = {unsubscriber}
                 />
         <div 
                 className="main-container">
