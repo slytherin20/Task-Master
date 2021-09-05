@@ -234,7 +234,6 @@ select,option{
   padding: 10px;
   background-color: rgb(27, 27, 27);
   color:rgb(255, 255, 255);
-  box-shadow:0 2px 15px 7px rgb(27,27,27);
   left: calc((100% - 400px)/2);
 }
 .form-details,.personal-details-form{
@@ -469,7 +468,6 @@ hr{
     width:96%;
     padding:2%;
     left:0;
-    box-shadow: none;
     top:5%;
   }
   .main-page{
