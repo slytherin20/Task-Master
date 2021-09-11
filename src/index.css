@@ -236,9 +236,9 @@ select,option{
   border-radius: 50%;
 }
 .personal-details{
-  position: absolute;
+  position: fixed;
   z-index:1000;
-  top: 15%;
+  top: calc((100vh - 400px)/2);
   display: flex;
   flex-direction: column;
   width: 400px;
