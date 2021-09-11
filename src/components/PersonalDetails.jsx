@@ -94,6 +94,12 @@ export default function PersonalDetails({userId,
 
     function submitDetails(e){
         e.preventDefault()
+
+        if(imageText==="*Please upload a picture(png/jpeg/jpg/svn)"){
+            notify("Details not filled correctly.")
+            return
+        }
+      
         //Store image
         if(image!==noPhoto)
             addImage()
@@ -104,7 +110,7 @@ export default function PersonalDetails({userId,
         //Notification
         notify("Details saved successfully!")
 
-        //Store cashe for storing loogedIn flag.
+        //Store cache for storing loogedIn flag.
         if(localStorage.getItem("firstLogIn")!=="true" && !notFirstTime){
             localStorage.setItem("firstLogIn","true")
         }
@@ -199,6 +205,7 @@ export default function PersonalDetails({userId,
                                 }
                                 
             else {
+
                 setImageText("*Please upload a picture(png/jpeg/jpg/svn)")
             }
 

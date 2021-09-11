@@ -184,6 +184,7 @@ function App(){
            unsubscribePriority()
        }
     }
+    
     function changeUrl(newUrl){
 
         setUrl(newUrl)
