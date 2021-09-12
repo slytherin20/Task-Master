@@ -280,7 +280,7 @@ function App(){
     //Check if a custom label already exists
     function checkLabels(){
         let notExists = true
-        if(Object.keys(allLabels).length>1){
+        if(Object.keys(allLabels).length>0){ //That more than 1 label exist.
             for(let key in allLabels){
                 let selectedLabel = allLabels[key];
                 //When label already exists
@@ -481,7 +481,6 @@ function App(){
                         changeDeadlineHandler={setDeadlineHandler}
                         date={dateString}
                         addTaskHandler={addTask}
-                        notify={notify}
                         />
                     <div className="display-container">
                             <Display 
