@@ -14,7 +14,7 @@ function Display({tasks,
     let taskArr = [];
     let temp = date()
     temp = temp.split("-");
-    let currentDate = temp[1]+"/"+temp[2]+"/"+temp[0];
+    let currentDate = temp[1]+"/"+temp[2]+"/"+temp[0]; //mm-dd-yyyy
 
     function updateCompletedStatus(task){
         completedTask(task.id,task.taskName,task.deadline,task.customLabel)
@@ -32,7 +32,7 @@ function Display({tasks,
     function filterByName(){
         let temp = tasks.sort((a,b)=>
                                 (a.taskName.toLowerCase()>b.taskName.toLowerCase())
-                                ?1:-1)
+                                ?1:-1) //1 indicates that b takes precendence while -1 indicates opposite.
         taskArr = [...temp];
         updateDisplayArr(taskArr)
     }
@@ -41,10 +41,10 @@ function Display({tasks,
         let temp = tasks.sort((a,b)=>{
             if(a===b) return -1
             let date1Arr = a.deadline.split("-");
-            let date1 = date1Arr[1]+"/"+date1Arr[2]+"/"+date1Arr[0];
+            let date1 = date1Arr[1]+"/"+date1Arr[2]+"/"+date1Arr[0]; //mm-dd-yyyy
             let days1 = noOfDays(date1)
             let date2Arr = b.deadline.split("-");
-            let date2 = date2Arr[1]+"/"+date2Arr[2]+"/"+date2Arr[0];
+            let date2 = date2Arr[1]+"/"+date2Arr[2]+"/"+date2Arr[0]; //mm-dd-yyyy
             let days2 = noOfDays(date2)
             if(days1>days2)
                 return 1
@@ -75,7 +75,7 @@ function Display({tasks,
     function noOfDays(deadline){
         let date1 = new Date(currentDate)
         let date2 = new Date(deadline)
-        let timeDifference = date2.getTime() - date1.getTime()
+        let timeDifference = date2.getTime() - date1.getTime()  //result in ms
         let daysDifference = timeDifference/(1000*3600*24);
         return daysDifference;
     }

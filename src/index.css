@@ -354,6 +354,9 @@ label{
   border-radius: 7%;
   font-weight: bold;
 }
+.custom-label-tabs{
+  width:auto;
+}
 .delete,.done{
   background-color: rgb(27, 27, 27);
   color: gainsboro;

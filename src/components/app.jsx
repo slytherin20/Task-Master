@@ -280,7 +280,7 @@ function App(){
     //Check if a custom label already exists
     function checkLabels(){
         let notExists = true
-        if(Object.keys(allLabels).length>0){ //That more than 1 label exist.
+        if(Object.keys(allLabels).length>0){ 
             for(let key in allLabels){
                 let selectedLabel = allLabels[key];
                 //When label already exists
