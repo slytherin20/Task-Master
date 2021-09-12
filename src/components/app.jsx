@@ -184,7 +184,7 @@ function App(){
            unsubscribePriority()
        }
     }
-    
+
     function changeUrl(newUrl){
 
         setUrl(newUrl)
@@ -340,7 +340,7 @@ function App(){
        let unsubscribe =  collectionRef
         .onSnapshot(generateSnapshot())
 
-        //Already existed a listener.
+        //Already existed a listener. Used in case of filter clear.
         if(unsubscribeAll){
             unsubscribeAll()
         }

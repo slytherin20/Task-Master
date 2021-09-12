@@ -1,5 +1,4 @@
 import { auth } from '../utilities/functions/firebase_config';
-import Loader from "react-loader-spinner";
 
 function AccountBar({accountHandler,loader,unsubscribe}){
 
@@ -18,14 +17,6 @@ function AccountBar({accountHandler,loader,unsubscribe}){
 
 
     return(<>
-        <div className="loading hidden">
-                            <Loader
-                                type="TailSpin"
-                                color="#00BFFF"
-                                height={80}
-                                width={80}
-                                />
-        </div>
         <div 
             className="account-bar">
             <span 
