@@ -4,7 +4,6 @@ import Loader from "react-loader-spinner";
 function Sidebar({closeMenuHandler,displayHandler,loading,imgUrl,name,userTasks}){
         let priority = ['High','Medium','Low']
         let allLabels = new Map();
-        allLabels.set('All',["red",1])
        
          userTasks.forEach((task)=> {
              if(allLabels.has(task.customLabel)) {
@@ -15,7 +14,6 @@ function Sidebar({closeMenuHandler,displayHandler,loading,imgUrl,name,userTasks}
                  allLabels.set(task.customLabel,[task.color,1])
               }
              })
-             console.log(allLabels)
         let labelElements = []
         allLabels.forEach((value,key)=>  labelElements.push(<button 
         key = {key} 

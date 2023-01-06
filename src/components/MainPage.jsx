@@ -17,8 +17,7 @@ export default function MainPage({
     notify
 }){     
     const dateString = date();
-        const [menuState,setMenuState] =  useState(false);
-        const [accountState,setAccountState] = useState(false);
+        const [popupStatus,setPopupStatus] = useState('');
         const [userTasks,setUserTasks] = useState([]);
         const [displayTitle,setDisplayTitle] = useState("All"); //does not need to be a state
         const [task,setTask] = useState({
@@ -42,10 +41,12 @@ export default function MainPage({
     }, [displayTitle])
 
         function changeMenuState(){
-            setMenuState(!menuState)
+            if(popupStatus==='sidebar') setPopupStatus('')
+            else setPopupStatus('sidebar');
         }
         function changeAccountState(){
-            setAccountState(!accountState)
+           if(popupStatus==='account') setPopupStatus('')
+           else setPopupStatus('account')
         }
         function updateHandler(arr){
             setUserTasks(arr)
@@ -162,7 +163,7 @@ export default function MainPage({
             notify("New task added!")
         }
 
-    function deleteTaskHandler(id,label){
+    function deleteTaskHandler(id){
         //Delete the task
         deleteItem(id)
 
@@ -191,7 +192,7 @@ export default function MainPage({
      }
     return <div className="box">
             <NavBar 
-            account={accountState} 
+            account={popupStatus==='account'} 
             menuStateHandler={changeMenuState} 
             accountStateHandler={changeAccountState}
             accountHandler = {closeTab}
@@ -204,7 +205,7 @@ export default function MainPage({
         className="main-container">
             <div className="box-1">
             {
-                menuState && 
+                popupStatus==='sidebar' && 
                 <Sidebar 
                     closeMenuHandler={changeMenuState}
                     displayHandler={changedisplayTitle} 

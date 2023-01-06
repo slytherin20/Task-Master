@@ -3,7 +3,7 @@ import Work from "../utilities/images/046-lifting-monochrome.svg";
 
 function DisplayCompleted({tasks,deleteTask,notify}){
     function updateDeleteStatus(task){
-        deleteTask(task.id,task.label)
+        deleteTask(task.id)
         notify("Task Removed")
     }
     return(

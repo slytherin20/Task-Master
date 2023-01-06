@@ -21,7 +21,7 @@ function DisplayPending({tasks,
         notify("Task Completed!")
     }
     function updateDeleteTask(task){
-        deleteTask(task.id,task.customLabel)
+        deleteTask(task.id)
         notify("Task Removed")
     }
 

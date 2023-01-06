@@ -7,22 +7,23 @@ export default function DisplayTasks({
     deleteCompletedTaskHandler,
     deleteTaskHandler,
     notify,
-    displayTasks
+    displayTasks,
+    completedTaskHandler
 }){
   
-    let completedTasks = userTasks.filter((taskObject) => taskObject.status===false);
-    let pendingTasks = userTasks.filter((taskObject)=> taskObject.status===true);
+    let completedTasks = userTasks.filter(taskObject => taskObject.status===false);
+    let pendingTasks = userTasks.filter(taskObject=> taskObject.status===true);
 
     
-    function completedTaskHandler(id){
+    function getCompletedTask(id){
         let completedTask = userTasks.find((taskObj) => taskObj.id === id);
-        updateTaskHandler(completedTask)
+        completedTaskHandler(id,completedTask.status)
 
     }
     return   <div className="display-container">
     <DisplayPending
         tasks={pendingTasks} 
-        completedTask={completedTaskHandler} 
+        completedTask={getCompletedTask} 
         deleteTask={deleteTaskHandler}
         notify={notify}
         updateDisplayArr = {updateTaskHandler}
