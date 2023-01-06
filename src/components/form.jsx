@@ -1,15 +1,6 @@
 function Form({
     task,
-    changeNameHandler,
-    priority,
-    changePriorityHandler,
-    label,
-    changeLabelHandler,
-    color,
-    changeColorHandler,
-    deadline,
-    changeDeadlineHandler,
-    date,
+   setInput,
     addTaskHandler
 }){
     return(
@@ -23,17 +14,18 @@ function Form({
                 type="text" 
                 className="task-name" 
                 placeholder="Enter the task here" 
+                name = "taskName"
                 required
-                value={task} 
-                onChange={changeNameHandler}>
+                value={task.taskName} 
+                onChange={setInput}>
             
         </input>
         </label>
         <label className="priority-field">
             Priority level:
         <select 
-            value={priority} 
-            onChange={changePriorityHandler}>
+            value={task.priority} 
+            onChange={setInput} name="priority">
             <option 
                     value="Low">
                         Low
@@ -55,27 +47,30 @@ function Form({
             <input  
                     type="text" 
                     placeholder="Work/School etc." 
-                    value={label} 
+                    name="label"
+                    value={task.label} 
                     className="custom-label"
-                    onChange={changeLabelHandler}>
+                    onChange={setInput}>
             </input>
         </label>
         <label className="color-field">
             Label Color:
             <input 
                     type="color" 
-                    value={color} 
-                    onChange={changeColorHandler}>
+                    value={task.color} 
+                    name="color"
+                    onChange={setInput}>
             </input>
         </label>
         <label className="deadline-field">
             Deadline:
             <input 
                 type="date" 
-                value={deadline} 
+                value={task.deadline} 
                 className="date-field"
-                onChange={changeDeadlineHandler} 
-                min={date}>
+                name="deadline"
+                onChange={setInput} 
+                min={task.date}>
             </input>
         </label>
         </div>
