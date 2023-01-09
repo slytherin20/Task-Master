@@ -3,9 +3,8 @@ import NavBar from "./navbar";
 import Form from "./form";
 import DisplayTasks from './displaytasks';
 import { useState,useEffect } from "react";
-import { date } from "../utilities/functions/date";
 import db from "../utilities/functions/firebase_config";
-import firebase from "firebase/app"
+
 export default function MainPage({
     loading,
     url,
@@ -16,23 +15,16 @@ export default function MainPage({
     userID,
     notify
 }){     
-    const dateString = date();
+
         const [popupStatus,setPopupStatus] = useState('');
         const [userTasks,setUserTasks] = useState([]);
-        const [displayTitle,setDisplayTitle] = useState("All"); //does not need to be a state
-        const [task,setTask] = useState({
-            taskName:'',
-            priority:'Low',
-            label:'',
-            color:'#003333',
-            deadline: dateString
-        });
+        const [displayTitle,setDisplayTitle] = useState("All"); 
         const [unsubscribeAll,setUnsubscribeAll] = useState(null);
         const [unsubscribePriority,setUnsubscribePriority] = useState(null);
         const [unsubscribeLabel,setUnsubscribeLabel] = useState(null);
-    
-        const collectionRef = db.collection(`users/${userID}/tasks`);
         
+        const collectionRef = db.collection(`users/${userID}/tasks`);
+        console.log(unsubscribeAll)
 
      useEffect(() => {
         
@@ -54,27 +46,7 @@ export default function MainPage({
         function changedisplayTitle(selectedTag){
             setDisplayTitle(selectedTag);
         }
-        function setTaskDetails(e){
-            let label;
-            if(e.target.name==='label'){
-                if(e.target.value && e.target.value.toLowerCase()!=="all"){
-                    label = e.target.value;
-                }
-                else{
-                  
-                    label = ''
-                }
-                setTask({
-                    ...task,
-                label: label
-                })
-            }
-            else
-            setTask({
-                ...task,
-                [e.target.name]: e.target.value
-            })
-        }
+    
         function displayTasks(){
             const priorities = ["high","low","medium"];
             let displayTitleClicked = displayTitle.toLowerCase();
@@ -86,17 +58,15 @@ export default function MainPage({
                             )
         }
         function displayAllTasks(){
-           //setUserTasks(()=>[]);
            let unsubscribe =  collectionRef
             .onSnapshot(generateSnapshot())
             //Already existed a listener. Used in case of filter clear.
             if(unsubscribeAll){
                 unsubscribeAll()
             }
-           setUnsubscribeAll(()=>unsubscribe)
+           setUnsubscribeAll(()=>unsubscribe);
         }
         function displayByPriority(){
-           // setUserTasks(()=>[]);
             let unsubscribe = collectionRef
             .where("priority","==",displayTitle)
             .onSnapshot(generateSnapshot())
@@ -106,10 +76,9 @@ export default function MainPage({
                 unsubscribePriority()
             }
     
-            setUnsubscribePriority(()=>unsubscribe)
+            setUnsubscribePriority(()=>unsubscribe);
         }
         function displayByLabel(){
-         //   setUserTasks(()=>[]);
             let unsubscribe = collectionRef
             .where("customLabel","==",displayTitle)
             .onSnapshot(generateSnapshot())
@@ -144,41 +113,7 @@ export default function MainPage({
             return snapshot;
         }
     
-        function addTask(e){
-            e.preventDefault()
-            let taskObj = {
-                    name: task.taskName,
-                    priority: task.priority,
-                    deadline:task.deadline,
-                    inProgress:true,
-                    addedAt : firebase.firestore.FieldValue.serverTimestamp()
-            }
-            if(task.label){
-                taskObj["customLabel"] = task.label;
-                taskObj["labelColor"] = task.color;
-            }
-            collectionRef.add(taskObj)
-            
-            //Notify
-            notify("New task added!")
-        }
-
-    function deleteTaskHandler(id){
-        //Delete the task
-        deleteItem(id)
-
-    }
-    function deleteItem(id){
-        collectionRef
-        .doc(id)
-        .delete()
-    }
-
-    function completedTaskHandler(id,status){
-        collectionRef.doc(id).update({
-            inProgress: !status
-        })
-    }
+        
     function unsubscriber(){
         if(unsubscribeAll){
             unsubscribeAll()
@@ -218,18 +153,13 @@ export default function MainPage({
              }
             </div>
             <div className="box-2">
-                <Form 
-                task= {task} 
-                setInput={setTaskDetails}
-                addTaskHandler={addTask}
+                <Form notify={notify} collectionRef={collectionRef}
                 />
             <DisplayTasks userTasks={userTasks} 
-            deleteCompletedTaskHandler={deleteTaskHandler}
-            completedTaskHandler={completedTaskHandler}
             updateTaskHandler={updateHandler}
-            deleteTaskHandler={deleteTaskHandler}
             notify={notify}
             displayTasks={displayTasks}
+            collectionRef={collectionRef}
             />
             </div>           
     </div>

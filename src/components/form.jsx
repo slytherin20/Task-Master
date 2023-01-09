@@ -1,11 +1,40 @@
-function Form({
-    task,
-   setInput,
-    addTaskHandler
-}){
+import { useState } from "react";
+import { date } from "../utilities/functions/date";
+import { addTask } from "../utilities/functions/taskOperations";
+
+
+function Form({notify,collectionRef}){ const dateString = date();
+    const [task,setTask] = useState({
+        taskName:'',
+        priority:'Low',
+        label:'',
+        color:'#003333',
+        deadline: dateString
+    });
+    function setTaskDetails(e){
+        let label;
+        if(e.target.name==='label'){
+            if(e.target.value && e.target.value.toLowerCase()!=="all"){
+                label = e.target.value;
+            }
+            else{
+              
+                label = ''
+            }
+            setTask({
+                ...task,
+            label: label
+            })
+        }
+        else
+        setTask({
+            ...task,
+            [e.target.name]: e.target.value
+        })
+    }
     return(
         <form 
-        className="input-box" onSubmit={addTaskHandler}>
+        className="input-box" onSubmit={(e)=>addTask(e,task,notify,collectionRef)}>
         <div className="input-fields">
         <div className="row-1">
         <label className="task-name-field">
@@ -17,7 +46,7 @@ function Form({
                 name = "taskName"
                 required
                 value={task.taskName} 
-                onChange={setInput}>
+                onChange={setTaskDetails}>
             
         </input>
         </label>
@@ -25,7 +54,7 @@ function Form({
             Priority level:
         <select 
             value={task.priority} 
-            onChange={setInput} name="priority">
+            onChange={setTaskDetails} name="priority">
             <option 
                     value="Low">
                         Low
@@ -50,7 +79,7 @@ function Form({
                     name="label"
                     value={task.label} 
                     className="custom-label"
-                    onChange={setInput}>
+                    onChange={setTaskDetails}>
             </input>
         </label>
         <label className="color-field">
@@ -59,7 +88,7 @@ function Form({
                     type="color" 
                     value={task.color} 
                     name="color"
-                    onChange={setInput}>
+                    onChange={setTaskDetails}>
             </input>
         </label>
         <label className="deadline-field">
@@ -69,7 +98,7 @@ function Form({
                 value={task.deadline} 
                 className="date-field"
                 name="deadline"
-                onChange={setInput} 
+                onChange={setTaskDetails} 
                 min={task.date}>
             </input>
         </label>

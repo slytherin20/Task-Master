@@ -9,7 +9,8 @@ function DisplayPending({tasks,
                   deleteTask,
                   notify,
                   updateDisplayArr,
-                  displayTasks}){
+                  displayTasks,
+                collectionRef}){
     const [openFilter,setOpenFilter] = useState(false);
     let taskArr = [];
     let temp = date()
@@ -21,7 +22,7 @@ function DisplayPending({tasks,
         notify("Task Completed!")
     }
     function updateDeleteTask(task){
-        deleteTask(task.id)
+        deleteTask(task.id,collectionRef)
         notify("Task Removed")
     }
 
@@ -134,7 +135,7 @@ function DisplayPending({tasks,
                              task.deadline.split("-").reverse().join("-")
                             }</p>
                         <button className="done" onClick={()=>updateCompletedStatus(task)}>Done</button>
-                        <button className="delete" onClick={()=>updateDeleteTask(task)}>Delete</button>
+                        <button className="delete" onClick={()=>updateDeleteTask(task,collectionRef)}>Delete</button>
                         </div>
                 ))
                 

@@ -1,9 +1,9 @@
 import Work from "../utilities/images/046-lifting-monochrome.svg";
 
 
-function DisplayCompleted({tasks,deleteTask,notify}){
+function DisplayCompleted({tasks,deleteTask,notify,collectionRef}){
     function updateDeleteStatus(task){
-        deleteTask(task.id)
+        deleteTask(task.id,collectionRef)
         notify("Task Removed")
     }
     return(

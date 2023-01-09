@@ -1,14 +1,12 @@
 import DisplayPending from "./displaypending";
 import DisplayCompleted from "./displaycompleted";
-
+import { deleteTaskHandler,completedTaskHandler } from "../utilities/functions/taskOperations";
 export default function DisplayTasks({
     userTasks,
     updateTaskHandler,
-    deleteCompletedTaskHandler,
-    deleteTaskHandler,
     notify,
     displayTasks,
-    completedTaskHandler
+    collectionRef
 }){
   
     let completedTasks = userTasks.filter(taskObject => taskObject.status===false);
@@ -17,7 +15,7 @@ export default function DisplayTasks({
     
     function getCompletedTask(id){
         let completedTask = userTasks.find((taskObj) => taskObj.id === id);
-        completedTaskHandler(id,completedTask.status)
+        completedTaskHandler(id,completedTask.status,collectionRef)
 
     }
     return   <div className="display-container">
@@ -27,11 +25,13 @@ export default function DisplayTasks({
         deleteTask={deleteTaskHandler}
         notify={notify}
         updateDisplayArr = {updateTaskHandler}
-        displayTasks = {displayTasks} />
+        displayTasks = {displayTasks} 
+        collectionRef={collectionRef}/>
     <DisplayCompleted 
         tasks = {completedTasks}
-        deleteTask = {deleteCompletedTaskHandler}
-        notify={notify} />
+        deleteTask = {deleteTaskHandler}
+        notify={notify}
+        collectionRef={collectionRef} />
             
 </div>
 }
