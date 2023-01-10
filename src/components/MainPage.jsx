@@ -19,12 +19,13 @@ export default function MainPage({
         const [popupStatus,setPopupStatus] = useState('');
         const [userTasks,setUserTasks] = useState([]);
         const [displayTitle,setDisplayTitle] = useState("All"); 
-        const [unsubscribeAll,setUnsubscribeAll] = useState(null);
-        const [unsubscribePriority,setUnsubscribePriority] = useState(null);
-        const [unsubscribeLabel,setUnsubscribeLabel] = useState(null);
-        
+        const [unsubscribeListeners,setUnsubscribeListener] = useState({
+            all:null,
+            priority:null,
+            label:null
+        })
+      
         const collectionRef = db.collection(`users/${userID}/tasks`);
-        console.log(unsubscribeAll)
 
      useEffect(() => {
         
@@ -61,10 +62,13 @@ export default function MainPage({
            let unsubscribe =  collectionRef
             .onSnapshot(generateSnapshot())
             //Already existed a listener. Used in case of filter clear.
-            if(unsubscribeAll){
-                unsubscribeAll()
+            if(unsubscribeListeners.all){
+                unsubscribeListeners.all()
             }
-           setUnsubscribeAll(()=>unsubscribe);
+           setUnsubscribeListener({
+            ...unsubscribeListeners,
+            all: unsubscribe
+           })
         }
         function displayByPriority(){
             let unsubscribe = collectionRef
@@ -72,11 +76,14 @@ export default function MainPage({
             .onSnapshot(generateSnapshot())
     
             //Already existed a listener.
-            if(unsubscribePriority){
-                unsubscribePriority()
+            if(unsubscribeListeners.priority){
+                unsubscribeListeners.priority()
             }
     
-            setUnsubscribePriority(()=>unsubscribe);
+            setUnsubscribeListener({
+                ...unsubscribeListeners,
+                priority: unsubscribe
+            });
         }
         function displayByLabel(){
             let unsubscribe = collectionRef
@@ -84,11 +91,14 @@ export default function MainPage({
             .onSnapshot(generateSnapshot())
             
             //Already existed a listener.
-            if(unsubscribeLabel){
-                unsubscribeLabel()
+            if(unsubscribeListeners.label){
+                unsubscribeListeners.label()
             }
     
-            setUnsubscribeLabel(()=>unsubscribe)
+            setUnsubscribeListener({
+                ...unsubscribeListeners,
+                label: unsubscribe
+            })
         }
         function generateSnapshot(){
             let snapshot = function (querySnapshot){
@@ -115,14 +125,14 @@ export default function MainPage({
     
         
     function unsubscriber(){
-        if(unsubscribeAll){
-            unsubscribeAll()
+        if(unsubscribeListeners.all){
+            unsubscribeListeners.all()
         }
-        if(unsubscribeLabel){
-            unsubscribeLabel()
+        if(unsubscribeListeners.label){
+            unsubscribeListeners.label()
         }
-        if(unsubscribePriority){
-            unsubscribePriority()
+        if(unsubscribeListeners.priority){
+            unsubscribeListeners.priority()
         }
      }
     return <div className="box">
