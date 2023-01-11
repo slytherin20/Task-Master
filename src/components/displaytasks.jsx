@@ -6,7 +6,8 @@ export default function DisplayTasks({
     notify,
     displayTasks,
     collectionRef,
-    displayTitle
+    displayTitle,
+    updateTasks
 }){
 
     let completedTasks = userTasks.filter(taskObject => taskObject.status===false);
@@ -34,6 +35,7 @@ export default function DisplayTasks({
         deleteTask={deleteTaskHandler}
         notify={notify}
         displayTasks = {displayTasks} 
+        updateTasks = {updateTasks}
         collectionRef={collectionRef}/>
     <DisplayCompleted 
         tasks = {completedTasks}

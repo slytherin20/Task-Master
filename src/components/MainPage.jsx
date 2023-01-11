@@ -33,7 +33,7 @@ export default function MainPage({
         
         displayTasks()
 
-    }, [])
+    }, [displayTitle])
 
     useEffect(()=>{
         if(displayTitle==='All'){
@@ -56,6 +56,9 @@ export default function MainPage({
         }
         function changedisplayTitle(selectedTag){
             setDisplayTitle(selectedTag);
+        }
+        function updateTasks(arr){
+            setUserTasks(arr)
         }
     
         function displayTasks(){
@@ -144,6 +147,7 @@ export default function MainPage({
             displayTasks={displayTasks}
             collectionRef={collectionRef}
             displayTitle={displayTitle}
+            updateTasks={updateTasks}
             />
             </div>           
     </div>
