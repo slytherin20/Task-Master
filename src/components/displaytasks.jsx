@@ -3,16 +3,25 @@ import DisplayCompleted from "./displaycompleted";
 import { deleteTaskHandler,completedTaskHandler } from "../utilities/functions/taskOperations";
 export default function DisplayTasks({
     userTasks,
-    updateTaskHandler,
     notify,
     displayTasks,
-    collectionRef
+    collectionRef,
+    displayTitle
 }){
-  
+
     let completedTasks = userTasks.filter(taskObject => taskObject.status===false);
     let pendingTasks = userTasks.filter(taskObject=> taskObject.status===true);
+    let priority = ['High','Medium','Low']
+    //If display title is a priority
+    if(priority.includes(displayTitle)){
+        completedTasks = completedTasks.filter((task)=> task.priority===displayTitle);
+        pendingTasks = pendingTasks.filter((task)=> task.priority===displayTitle)
+    }
+    else if(displayTitle!=='All'){ //For custom label
+        completedTasks = completedTasks.filter((task)=> task.customLabel===displayTitle);
+        pendingTasks = pendingTasks.filter((task)=> task.customLabel===displayTitle)
+    }
 
-    
     function getCompletedTask(id){
         let completedTask = userTasks.find((taskObj) => taskObj.id === id);
         completedTaskHandler(id,completedTask.status,collectionRef)
@@ -24,7 +33,6 @@ export default function DisplayTasks({
         completedTask={getCompletedTask} 
         deleteTask={deleteTaskHandler}
         notify={notify}
-        updateDisplayArr = {updateTaskHandler}
         displayTasks = {displayTasks} 
         collectionRef={collectionRef}/>
     <DisplayCompleted 

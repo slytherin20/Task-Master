@@ -24,6 +24,8 @@ export default function MainPage({
             priority:null,
             label:null
         })
+        const [sidebarLabels,setSidebarLabels] = useState({});
+     
       
         const collectionRef = db.collection(`users/${userID}/tasks`);
 
@@ -31,7 +33,18 @@ export default function MainPage({
         
         displayTasks()
 
-    }, [displayTitle])
+    }, [])
+
+    useEffect(()=>{
+        if(displayTitle==='All'){
+            let labels={};
+            userTasks.forEach((task)=>{
+                if(labels[task.customLabel]) labels[task.customLabel] = [task.color,task.customLabel[0]+1]
+                else labels[task.customLabel] = [task.color,1]
+            })
+            setSidebarLabels(labels)
+        }
+    },[userTasks])
 
         function changeMenuState(){
             if(popupStatus==='sidebar') setPopupStatus('')
@@ -41,26 +54,15 @@ export default function MainPage({
            if(popupStatus==='account') setPopupStatus('')
            else setPopupStatus('account')
         }
-        function updateHandler(arr){
-            setUserTasks(arr)
-        }
         function changedisplayTitle(selectedTag){
             setDisplayTitle(selectedTag);
         }
     
         function displayTasks(){
-            const priorities = ["high","low","medium"];
-            let displayTitleClicked = displayTitle.toLowerCase();
-            displayTitleClicked ==="all"?
-                     displayAllTasks()
-                    :((priorities.includes(displayTitleClicked))
-                                ?displayByPriority()
-                                :displayByLabel()
-                            )
-        }
-        function displayAllTasks(){
+          
            let unsubscribe =  collectionRef
             .onSnapshot(generateSnapshot())
+            
             //Already existed a listener. Used in case of filter clear.
             if(unsubscribeListeners.all){
                 unsubscribeListeners.all()
@@ -70,40 +72,10 @@ export default function MainPage({
             all: unsubscribe
            })
         }
-        function displayByPriority(){
-            let unsubscribe = collectionRef
-            .where("priority","==",displayTitle)
-            .onSnapshot(generateSnapshot())
-    
-            //Already existed a listener.
-            if(unsubscribeListeners.priority){
-                unsubscribeListeners.priority()
-            }
-    
-            setUnsubscribeListener({
-                ...unsubscribeListeners,
-                priority: unsubscribe
-            });
-        }
-        function displayByLabel(){
-            let unsubscribe = collectionRef
-            .where("customLabel","==",displayTitle)
-            .onSnapshot(generateSnapshot())
-            
-            //Already existed a listener.
-            if(unsubscribeListeners.label){
-                unsubscribeListeners.label()
-            }
-    
-            setUnsubscribeListener({
-                ...unsubscribeListeners,
-                label: unsubscribe
-            })
-        }
         function generateSnapshot(){
             let snapshot = function (querySnapshot){
-                setUserTasks(
-                    querySnapshot.docs.map((doc)=>{
+                
+                setUserTasks(querySnapshot.docs.map((doc)=>{
                         let taskObj = {
                             id:doc.id,
                             taskName: doc.data().name,
@@ -117,8 +89,10 @@ export default function MainPage({
                             taskObj.color =  doc.data().labelColor
                         }
                        return taskObj;
-                     })
-                )
+                     }))
+
+            
+                
             }
             return snapshot;
         }
@@ -158,7 +132,7 @@ export default function MainPage({
                     loading={loading}
                     imgUrl={url}
                     name={name}
-                    userTasks={userTasks}
+                    labels={sidebarLabels}
                     />
              }
             </div>
@@ -166,10 +140,10 @@ export default function MainPage({
                 <Form notify={notify} collectionRef={collectionRef}
                 />
             <DisplayTasks userTasks={userTasks} 
-            updateTaskHandler={updateHandler}
             notify={notify}
             displayTasks={displayTasks}
             collectionRef={collectionRef}
+            displayTitle={displayTitle}
             />
             </div>           
     </div>

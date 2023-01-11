@@ -1,19 +1,20 @@
 import cancelIcon from '../utilities/images/cancel.png';
 import Loader from "react-loader-spinner";
 
-function Sidebar({closeMenuHandler,displayHandler,loading,imgUrl,name,userTasks}){
+function Sidebar({closeMenuHandler,displayHandler,loading,imgUrl,name,labels}){
         let priority = ['High','Medium','Low']
         let allLabels = new Map();
        
-         userTasks.forEach((task)=> {
-             if(allLabels.has(task.customLabel)) {
-                let labelCount = allLabels.get(task.customLabel)[2];
-                allLabels.set(task.customLabel,[task.color,labelCount+1])
-             }
-              else{
-                 allLabels.set(task.customLabel,[task.color,1])
-              }
-             })
+        for(let label in labels)
+       { 
+        if(allLabels.has(label)) {
+                        let labelCount = allLabels.get(label)[1];
+                        allLabels.set(label,[labels[label][0],labelCount+1])
+                     }
+                     else{
+                                 allLabels.set(label,[labels[label][0],1])
+                              }
+       }
         let labelElements = []
         allLabels.forEach((value,key)=>  labelElements.push(<button 
         key = {key} 

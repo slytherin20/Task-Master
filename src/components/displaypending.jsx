@@ -8,12 +8,11 @@ function DisplayPending({tasks,
                   completedTask,
                   deleteTask,
                   notify,
-                  updateDisplayArr,
                   displayTasks,
                 collectionRef}){
     const [openFilter,setOpenFilter] = useState(false);
-    let taskArr = [];
-    let temp = date()
+    let taskArr = [...tasks];
+    let temp = date();
     temp = temp.split("-");
     let currentDate = temp[1]+"/"+temp[2]+"/"+temp[0]; //mm-dd-yyyy
 
@@ -35,7 +34,6 @@ function DisplayPending({tasks,
                                 (a.taskName.toLowerCase()>b.taskName.toLowerCase())
                                 ?1:-1) //1 indicates that b takes precendence while -1 indicates opposite.
         taskArr = [...temp];
-        updateDisplayArr(taskArr)
     }
 
     function filterByDeadline(){
@@ -52,7 +50,6 @@ function DisplayPending({tasks,
             else return -1
         })
         taskArr = [...temp];
-        updateDisplayArr(taskArr)
     }
 
     function filterByPriority(){
@@ -70,7 +67,7 @@ function DisplayPending({tasks,
                 default:break;
             }
         })
-        updateDisplayArr(tempArr)
+        taskArr=[...tempArr]
     }
 
     function noOfDays(deadline){
@@ -86,7 +83,7 @@ function DisplayPending({tasks,
         <span className="task-type">Pending Tasks</span>
         <hr></hr>
         <div className="display-pending-container">
-            {    tasks.length!==0 &&
+            {    taskArr.length!==0 &&
                  <div className="filter-container">
                     Sort By
                  <img src={Sort}
