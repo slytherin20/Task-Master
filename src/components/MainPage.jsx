@@ -19,11 +19,7 @@ export default function MainPage({
         const [popupStatus,setPopupStatus] = useState('');
         const [userTasks,setUserTasks] = useState([]);
         const [displayTitle,setDisplayTitle] = useState("All"); 
-        const [unsubscribeListeners,setUnsubscribeListener] = useState({
-            all:null,
-            priority:null,
-            label:null
-        })
+        const [unsubscribeListener,setUnsubscribeListener] = useState(null)
         const [sidebarLabels,setSidebarLabels] = useState({});
      
       
@@ -67,13 +63,10 @@ export default function MainPage({
             .onSnapshot(generateSnapshot())
             
             //Already existed a listener. Used in case of filter clear.
-            if(unsubscribeListeners.all){
-                unsubscribeListeners.all()
+            if(unsubscribeListener){
+                unsubscribeListener()
             }
-           setUnsubscribeListener({
-            ...unsubscribeListeners,
-            all: unsubscribe
-           })
+           setUnsubscribeListener(()=> unsubscribe)
         }
         function generateSnapshot(){
             let snapshot = function (querySnapshot){
@@ -102,15 +95,10 @@ export default function MainPage({
     
         
     function unsubscriber(){
-        if(unsubscribeListeners.all){
-            unsubscribeListeners.all()
+        if(unsubscribeListener){
+            unsubscribeListener()
         }
-        if(unsubscribeListeners.label){
-            unsubscribeListeners.label()
-        }
-        if(unsubscribeListeners.priority){
-            unsubscribeListeners.priority()
-        }
+        
      }
     return <div className="box">
             <NavBar 
