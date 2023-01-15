@@ -6,11 +6,9 @@ import db, { auth } from "../utilities/functions/firebase_config";
 
 export default function PersonalDetails({userId,
                                         accountHandler,
-                                        changeLoading,
-                                        changeUrl,
-                                        nameHandler,
                                         notify,
                                         notFirstTime,
+                                        changeUserDetails,
                                         appRef}){
    
     const [firstName,setFirstName] = useState("");
@@ -143,7 +141,7 @@ export default function PersonalDetails({userId,
        //Check when is upload completed.
        upload.on('state_changed',
                ()=>{
-                   changeLoading(true)
+                 changeUserDetails(null)
                 },
                 (error)=>{
                     console.log("Error while uploading image:",error)
@@ -151,8 +149,7 @@ export default function PersonalDetails({userId,
                 ()=>{
                     upload.snapshot.ref.getDownloadURL().then((url)=>
                         {   let name=firstName+" "+lastName
-                            changeUrl(url)
-                            nameHandler(name)
+                            changeUserDetails(url,name)
                         }
                     )}
                 )

@@ -6,8 +6,7 @@ import { useState,useEffect } from "react";
 import db from "../utilities/functions/firebase_config";
 
 export default function MainPage({
-    loading,
-    url,
+    pictureVars,
     showLoader,
     name,
     accountTab,
@@ -106,8 +105,8 @@ export default function MainPage({
             menuStateHandler={changeMenuState} 
             accountStateHandler={changeAccountState}
             accountHandler = {closeTab}
-            loading={loading}
-            imgUrl = {url}
+            loading={pictureVars.loading}
+            imgUrl = {pictureVars.url}
             loader={showLoader}
             unsubscriber = {unsubscriber}
         />
@@ -120,8 +119,8 @@ export default function MainPage({
                     closeMenuHandler={changeMenuState}
                     displayHandler={changedisplayTitle} 
                     uploadStatus = {accountTab}
-                    loading={loading}
-                    imgUrl={url}
+                    loading={pictureVars.loading}
+                    imgUrl={pictureVars.url}
                     name={name}
                     labels={sidebarLabels}
                     />

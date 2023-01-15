@@ -4,7 +4,6 @@ import MainPage from "./MainPage.jsx";
 import PersonalDetails from "./PersonalDetails";
 import getImage from "../utilities/functions/GetImage";
 import noPhoto from "../utilities/images/nophoto.jpg";
-import useAsyncState from "../hooks/asyncState";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRef } from "react";
@@ -12,9 +11,11 @@ import { useRef } from "react";
 
 function App(){
     const [accountTab,setAccountTab] = useState(false);
-    const [loading,setLoading] = useState(true);
-    const [url,setUrl] = useAsyncState(null);
-    const [name,setName] = useState("");
+    const [pictureVars,setPictureVars] = useState({
+        url: null,
+        loading: true,
+        name:""
+    })
     const [unsubscribeName,setUnsubscribeName] = useState(null);
 
 
@@ -41,44 +42,33 @@ function App(){
 
     //Get the user info from database
     useEffect(()=>
-         displayUserInfo()
+      getPersonalDetails()
     ,[])
 
 
-    
-    async function imageUpload(){
-    let url = await getImage(userID,storage)
-        if(url){
-            changeUrl(url)
-        }
-        else{
-            setUrl(noPhoto)
-        }
-    }
-
-    async function displayUserInfo(){
-        imageUpload()
-      displayName()
-    }
-
-    function displayName(){
-        
-    let unsubscribeName =  nameRef.onSnapshot(function (querySnapshot){
+    async function getPersonalDetails(){
+        let name = '';
+        let unsubscribeName =  nameRef.onSnapshot(function (querySnapshot){
             if(querySnapshot.docs.length!==0){
                 let data = querySnapshot.docs[0].data()
                 let [firstName,lastName] = [data.first,data.last]
-                setName(firstName+" "+lastName)
+                name = firstName+" "+lastName;
             }
         })
         setUnsubscribeName(()=>unsubscribeName)
+        let url = await getImage(userID,storage)
+        if(url){
+          changeUserDetails(url,name)
+        }
+        else{
+        changeUserDetails(noPhoto,name)
+        }
     }
-
+ 
     function closeTab(){
         setAccountTab(!accountTab);
     }
-    function changeLoading(loadingValue){
-        setLoading(loadingValue)
-    }
+   
     function notify(message){
         toast.dark(message)
     }
@@ -86,20 +76,20 @@ function App(){
         loaderRef.current.classList.remove("hidden");
     }
 
-    function changeUrl(newUrl){
-
-        setUrl(newUrl)
-        .then(()=>
-        changeLoading(false)
-        )
-        .catch((err)=>console.log("Error getting url:",err))
+    function changeUserDetails(url,name){
+        if(url)
+        setPictureVars({
+            url:url,
+            loading: false,
+            name: name
+        })
+        else 
+        setPictureVars({
+            ...pictureVars,
+            loading: true,
+            name: name
+        })
     }
-
-    function changeName(name){
-        setName(name)
-    }
-
-  
 
 
     return(
@@ -110,9 +100,7 @@ function App(){
             <PersonalDetails 
                 userId={userID} 
                 accountHandler={closeTab}
-                changeLoading={changeLoading}
-                changeUrl={changeUrl}
-                nameHandler={changeName}
+                changeUserDetails = {changeUserDetails}
                 notify={notify}
                 notFirstTime = {notFirstLogin}
                 appRef = {appRef}
@@ -120,10 +108,9 @@ function App(){
             }             
         <MainPage 
         closeTab={closeTab}
-        loading={loading}
-        url={url}
+        pictureVars = {pictureVars}
         showLoader={showLoader}
-        name={name}
+        name={pictureVars.name}
         userID={userID}
         notify={notify}
         />
