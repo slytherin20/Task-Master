@@ -127,7 +127,9 @@ export default function MainPage({
              }
             </div>
             <div className="box-2">
-                <Form notify={notify} collectionRef={collectionRef}
+                <Form notify={notify} 
+                collectionRef={collectionRef} 
+                displayHandler={changedisplayTitle}
                 />
             <DisplayTasks userTasks={userTasks} 
             notify={notify}

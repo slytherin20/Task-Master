@@ -3,7 +3,7 @@ import { date } from "../utilities/functions/date";
 import { addTask } from "../utilities/functions/taskOperations";
 
 
-function Form({notify,collectionRef}){ const dateString = date();
+function Form({notify,collectionRef,displayHandler}){ const dateString = date();
     const [task,setTask] = useState({
         taskName:'',
         priority:'Low',
@@ -34,7 +34,7 @@ function Form({notify,collectionRef}){ const dateString = date();
     }
     return(
         <form 
-        className="input-box" onSubmit={(e)=>addTask(e,task,notify,collectionRef)}>
+        className="input-box" onSubmit={(e)=>{addTask(e,task,notify,collectionRef);displayHandler("All")}}>
         <div className="input-fields">
         <div className="row-1">
         <label className="task-name-field">
