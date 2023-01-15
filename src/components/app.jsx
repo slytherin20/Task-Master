@@ -7,6 +7,7 @@ import noPhoto from "../utilities/images/nophoto.jpg";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRef } from "react";
+import Modal from "./Modal";
 
 
 function App(){
@@ -20,7 +21,6 @@ function App(){
 
 
     //App Ref
-    const appRef = useRef();
     const loaderRef = useRef();
 
     //Firestore
@@ -94,17 +94,16 @@ function App(){
 
     return(
               <>
-              <div className="visible-screen" ref={appRef}>
-            </div>
             {notFirstLogin!==undefined && 
-            <PersonalDetails 
-                userId={userID} 
-                accountHandler={closeTab}
-                changeUserDetails = {changeUserDetails}
-                notify={notify}
-                notFirstTime = {notFirstLogin}
-                appRef = {appRef}
-                />  
+            <Modal>
+                <PersonalDetails 
+                    userId={userID} 
+                    accountHandler={closeTab}
+                    changeUserDetails = {changeUserDetails}
+                    notify={notify}
+                    notFirstTime = {notFirstLogin}
+                    />  
+            </Modal>
             }             
         <MainPage 
         closeTab={closeTab}
