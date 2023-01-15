@@ -1,19 +1,29 @@
 import cancelIcon from '../utilities/images/cancel.png';
 import Loader from "react-loader-spinner";
 
-function Sidebar({closeMenuHandler,labels,displayHandler,loading,imgUrl,name}){
-        // Setting all the custom labels to sidebar
-        let labelsArr = []
-        for(let key in labels){
-                        labelsArr.push(
-                                <button 
-                                key = {labels[key][0]} 
-                                className="custom-label-tabs" 
-                                style={{border: `solid 3px ${labels[key][1]}`}}
-                                onClick={()=>displayHandler(key)}
-                                >
-                                        {key}</button>
-         ) } 
+function Sidebar({closeMenuHandler,displayHandler,loading,imgUrl,name,labels}){
+        let priority = ['High','Medium','Low']
+        let allLabels = new Map();
+       
+        for(let label in labels)
+       { 
+        if(allLabels.has(label)) {
+                        let labelCount = allLabels.get(label)[1];
+                        allLabels.set(label,[labels[label][0],labelCount+1])
+                     }
+                     else{
+                                 allLabels.set(label,[labels[label][0],1])
+                              }
+       }
+        let labelElements = []
+        allLabels.forEach((value,key)=>  labelElements.push(<button 
+        key = {key} 
+        className="custom-label-tabs" 
+        style={{border: `solid 3px ${value[0]}`}}
+        onClick={()=>displayHandler(key)}
+        >
+                {key}</button>))
+
         return (
                 <div 
                         className="sidebar-menu">
@@ -43,24 +53,14 @@ function Sidebar({closeMenuHandler,labels,displayHandler,loading,imgUrl,name}){
                         <div className="priority-tabs">
                                 <span>Priority Levels</span>
                                 <div className="buttons">
-                                <button 
-                                        className="low-btn" 
-                                        onClick={()=>
-                                        displayHandler("Low")}>
-                                        Low
+                              {  priority.map((level)=> 
+                                <button key={level} 
+                                className={`${level.toLowerCase()}-btn`}
+                                onClick={()=>displayHandler(level)}>
+                                       {level} 
                                 </button>
-                                <button 
-                                        className="medium-btn" 
-                                        onClick={()=>
-                                        displayHandler("Medium")}>
-                                        Medium
-                                </button>
-                                <button 
-                                        className="high-btn" 
-                                        onClick={()=>
-                                        displayHandler("High")}>
-                                        High
-                                </button>
+                                )
+                              }
                                 </div>
                         </div>
                         <hr></hr>
@@ -74,7 +74,8 @@ function Sidebar({closeMenuHandler,labels,displayHandler,loading,imgUrl,name}){
                                 >
                                 All</button>
                                 <div className="buttons">
-                                {labelsArr}
+                                { labelElements
+                               }
                                 </div>
                         </div>
 

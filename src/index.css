@@ -520,3 +520,7 @@ hr{
     justify-content: center;
   }
 }
+
+.overflow-hidden{
+  overflow: hidden;
+}

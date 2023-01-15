@@ -6,19 +6,21 @@ import db, { auth } from "../utilities/functions/firebase_config";
 
 export default function PersonalDetails({userId,
                                         accountHandler,
-                                        changeLoading,
-                                        changeUrl,
-                                        nameHandler,
                                         notify,
                                         notFirstTime,
-                                        appRef}){
+                                        changeUserDetails
+                                        }){
    
-    const [firstName,setFirstName] = useState("");
-    const [lastName,setLastName] = useState("");
-    const [image,setImage] = useState(noPhoto);
-    const [imagePrefix,setImagePrefix] = useState("nophoto.jpg");
-    const [imageText,setImageText] = useState("");
-    const [imageSrc,setImageSrc] = useState(noPhoto);
+    const [name,setName] = useState({
+        first:"",
+        last:""
+    });
+    const [imageDetails,setImageDetails] = useState({
+        image: noPhoto,
+        src: noPhoto,
+        prefix: "nophoto.jpg",
+        text:""
+    })
     const [storedName,setStoredName] = useState({});
     const [storedImage,setStoredImage] = useState(null);
 
@@ -26,9 +28,6 @@ export default function PersonalDetails({userId,
     const userID = auth.currentUser.uid;
     const collectionRef = db.collection(`users/${userID}/name`);
     const storage = firebase.storage();
-
-    //Reference
-    let currentRef = null;
 
     useEffect(() => {
 
@@ -49,28 +48,12 @@ export default function PersonalDetails({userId,
             console.log(error)
         }
         )
+        getImageFromDB()
         return ()=>{
             unsubscribe()
         }
 
     }, [])
-
-    useEffect(() => {
-        showContent()
-
-        return ()=>{
-            currentRef.classList.remove("freeze-screen");
-        }
-    }, [])
-    
-    function showContent(){
-             // Freeze screen 
-             appRef.current.classList.add("freeze-screen");
-             currentRef = appRef.current;
-             //Get the image from database if already exists
-            getImageFromDB()
-
-    }
 
     function getImageFromDB(){
 
@@ -87,21 +70,31 @@ export default function PersonalDetails({userId,
 
     }
 
-    function changeName(e,name){
-        name==="first"?setFirstName(e.target.value)
-                      :setLastName(e.target.value)
+    function changeName(e,info){
+        if(info==='first'){
+            setName({
+                first: e.target.value,
+                last: name.last
+            })
+        }
+        else{
+            setName({
+                first: name.first,
+                last: e.target.value
+              })
+            }
     }
 
     function submitDetails(e){
         e.preventDefault()
 
-        if(imageText==="*Please upload a picture(png/jpeg/jpg/svn)"){
+        if(imageDetails.text==="*Please upload a picture(png/jpeg/jpg/svn)"){
             notify("Details not filled correctly.")
             return
         }
       
         //Store image
-        if(image!==noPhoto)
+        if(imageDetails.image!==noPhoto)
             addImage()
 
         //Store name
@@ -118,7 +111,7 @@ export default function PersonalDetails({userId,
     }
     function addImage(){
         //User has selected an image
-        if(("profile."+imagePrefix)!=="nophoto.jpg"){
+        if(("profile."+imageDetails.prefix)!=="nophoto.jpg"){
             //Already exists delete first then add new image
            if(storedImage){
             storage.ref(`users/${userId}/picture/`+storedImage)
@@ -136,39 +129,36 @@ export default function PersonalDetails({userId,
     function addImageToDB(){
         const storageRef =  
                 storage
-                .ref(`users/${userId}/picture/profile.`+imagePrefix)
+                .ref(`users/${userId}/picture/profile.`+imageDetails.prefix)
         
-       let upload =  storageRef.put(image)
+       let upload =  storageRef.put(imageDetails.image)
 
        //Check when is upload completed.
        upload.on('state_changed',
                ()=>{
-                   changeLoading(true)
+                 changeUserDetails(null)
                 },
                 (error)=>{
                     console.log("Error while uploading image:",error)
                 },
                 ()=>{
                     upload.snapshot.ref.getDownloadURL().then((url)=>
-                        {   let name=firstName+" "+lastName
-                            changeUrl(url)
-                            nameHandler(name)
+                        {   let fullName=name.first+" "+name.last;
+                            changeUserDetails(url,fullName)
                         }
                     )}
                 )
         //Add a promise `then` part which notifies that data stored successfully!
-        setStoredImage("profile."+imagePrefix)
+        setStoredImage("profile."+imageDetails.prefix)
     }
 
     function addName(){
-
-        if(firstName && lastName){
-
+        if(name.first && name.last){
             //If name not already exist.
             if(Object.keys(storedName).length===0){
                 collectionRef.add({
-                    first: firstName,
-                    last: lastName
+                    first: name.first,
+                    last: name.last
                 })
             }
             //If name already exist in database.
@@ -176,13 +166,12 @@ export default function PersonalDetails({userId,
                 collectionRef
                 .doc(storedName.id)
                 .update({
-                    first: firstName,
-                    last: lastName,
+                    first: name.first,
+                    last: name.last
                 })
             }
         }
     }
-
     function uploadImage(e){
 
         if(e.target.files[0]){
@@ -197,16 +186,18 @@ export default function PersonalDetails({userId,
                                     let reader = new FileReader()
                                     reader.readAsDataURL(file)
                                     reader.onloadend = ()=>{
-                                                setImageSrc(reader.result)
-                                                setImage(file)
-                                                setImageText("");
-                                                setImagePrefix(prefix)
+                                                setImageDetails({
+                                                    image: file,
+                                                    src: reader.result,
+                                                    prefix: prefix,
+                                                    text: ""
+                                                })
                                              }
                                 }
                                 
             else {
 
-                setImageText("*Please upload a picture(png/jpeg/jpg/svn)")
+                imageDetails.text("*Please upload a picture(png/jpeg/jpg/svn)")
             }
 
         }
@@ -229,7 +220,7 @@ export default function PersonalDetails({userId,
                         <h3 className="personal-details-title">Personal Details</h3>
                         <img 
                             className="submit-image"
-                            src={imageSrc} 
+                            src={imageDetails.src} 
                             alt="display"/>
                     <label className="personal-details-form">
                             Please provide your picture:
@@ -241,7 +232,7 @@ export default function PersonalDetails({userId,
                         </input>
                         <span 
                             style={{color: "red"}}>
-                                {imageText}
+                                {imageDetails.text}
                         </span>
                     </label>
                     <label className="names">

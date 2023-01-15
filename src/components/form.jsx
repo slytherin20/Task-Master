@@ -1,20 +1,40 @@
-function Form({
-    task,
-    changeNameHandler,
-    priority,
-    changePriorityHandler,
-    label,
-    changeLabelHandler,
-    color,
-    changeColorHandler,
-    deadline,
-    changeDeadlineHandler,
-    date,
-    addTaskHandler
-}){
+import { useState } from "react";
+import { date } from "../utilities/functions/date";
+import { addTask } from "../utilities/functions/taskOperations";
+
+
+function Form({notify,collectionRef,displayHandler}){ const dateString = date();
+    const [task,setTask] = useState({
+        taskName:'',
+        priority:'Low',
+        label:'',
+        color:'#003333',
+        deadline: dateString
+    });
+    function setTaskDetails(e){
+        let label;
+        if(e.target.name==='label'){
+            if(e.target.value && e.target.value.toLowerCase()!=="all"){
+                label = e.target.value;
+            }
+            else{
+              
+                label = ''
+            }
+            setTask({
+                ...task,
+            label: label
+            })
+        }
+        else
+        setTask({
+            ...task,
+            [e.target.name]: e.target.value
+        })
+    }
     return(
         <form 
-        className="input-box" onSubmit={addTaskHandler}>
+        className="input-box" onSubmit={(e)=>{addTask(e,task,notify,collectionRef);displayHandler("All")}}>
         <div className="input-fields">
         <div className="row-1">
         <label className="task-name-field">
@@ -23,17 +43,18 @@ function Form({
                 type="text" 
                 className="task-name" 
                 placeholder="Enter the task here" 
+                name = "taskName"
                 required
-                value={task} 
-                onChange={changeNameHandler}>
+                value={task.taskName} 
+                onChange={setTaskDetails}>
             
         </input>
         </label>
         <label className="priority-field">
             Priority level:
         <select 
-            value={priority} 
-            onChange={changePriorityHandler}>
+            value={task.priority} 
+            onChange={setTaskDetails} name="priority">
             <option 
                     value="Low">
                         Low
@@ -55,27 +76,30 @@ function Form({
             <input  
                     type="text" 
                     placeholder="Work/School etc." 
-                    value={label} 
+                    name="label"
+                    value={task.label} 
                     className="custom-label"
-                    onChange={changeLabelHandler}>
+                    onChange={setTaskDetails}>
             </input>
         </label>
         <label className="color-field">
             Label Color:
             <input 
                     type="color" 
-                    value={color} 
-                    onChange={changeColorHandler}>
+                    value={task.color} 
+                    name="color"
+                    onChange={setTaskDetails}>
             </input>
         </label>
         <label className="deadline-field">
             Deadline:
             <input 
                 type="date" 
-                value={deadline} 
+                value={task.deadline} 
                 className="date-field"
-                onChange={changeDeadlineHandler} 
-                min={date}>
+                name="deadline"
+                onChange={setTaskDetails} 
+                min={task.date}>
             </input>
         </label>
         </div>
