@@ -187,8 +187,8 @@ export default function PersonalDetails({userId,
                                     reader.readAsDataURL(file)
                                     reader.onloadend = ()=>{
                                                 setImageDetails({
-                                                    image: file,
-                                                    src: reader.result,
+                                                    image: file, //Actual image storing in state to put on firestore as it accepts image as whole and not data url
+                                                    src: reader.result,// Data url
                                                     prefix: prefix,
                                                     text: ""
                                                 })
@@ -220,7 +220,7 @@ export default function PersonalDetails({userId,
                         <h3 className="personal-details-title">Personal Details</h3>
                         <img 
                             className="submit-image"
-                            src={imageDetails.src} 
+                            src={imageDetails.src}  
                             alt="display"/>
                     <label className="personal-details-form">
                             Please provide your picture:
