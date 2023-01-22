@@ -6,7 +6,6 @@ import getImage from "../utilities/functions/GetImage";
 import noPhoto from "../utilities/images/nophoto.jpg";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useRef } from "react";
 import Modal from "./Modal";
 
 
@@ -19,9 +18,6 @@ function App(){
     })
     const [unsubscribeName,setUnsubscribeName] = useState(null);
 
-
-    //App Ref
-    const loaderRef = useRef();
 
     //Firestore
     const userID = auth.currentUser.uid;
@@ -44,7 +40,6 @@ function App(){
     useEffect(()=>
       getPersonalDetails()
     ,[])
-
 
     async function getPersonalDetails(){
         let name = '';
@@ -72,9 +67,7 @@ function App(){
     function notify(message){
         toast.dark(message)
     }
-    function showLoader(){
-        loaderRef.current.classList.remove("hidden");
-    }
+
 
     function changeUserDetails(url,name){
         if(url)
@@ -108,10 +101,10 @@ function App(){
         <MainPage 
         closeTab={closeTab}
         pictureVars = {pictureVars}
-        showLoader={showLoader}
         name={pictureVars.name}
         userID={userID}
         notify={notify}
+        unsubscribeName = {unsubscribeName}
         />
         <ToastContainer />
        </>

@@ -6,7 +6,7 @@ const body = document.getElementById("body");
 
 
 function Modal({children}){
-    let personalDetails = children;
+    let content = children;
     useEffect(()=>{
         body.classList.add("overflow-hidden");
 
@@ -16,7 +16,7 @@ function Modal({children}){
     },[])
 
     return createPortal(<div className="freeze-screen">
-        {personalDetails}
+        {content}
     </div>,modalRoot)
 }
 

@@ -4,15 +4,16 @@ import Form from "./form";
 import DisplayTasks from './displaytasks';
 import { useState,useEffect } from "react";
 import db from "../utilities/functions/firebase_config";
+import { auth } from '../utilities/functions/firebase_config';
 
 export default function MainPage({
     pictureVars,
-    showLoader,
     name,
     accountTab,
     closeTab,
     userID,
-    notify
+    notify,
+    unsubscribeName
 }){     
 
         const [popupStatus,setPopupStatus] = useState('');
@@ -40,6 +41,8 @@ export default function MainPage({
             setSidebarLabels(labels)
         }
     },[userTasks])
+
+    useEffect(()=> {if(unsubscribeListener===false){auth.signOut() }},[unsubscribeListener])
 
         function changeMenuState(){
             if(popupStatus==='sidebar') setPopupStatus('')
@@ -96,6 +99,8 @@ export default function MainPage({
     function unsubscriber(){
         if(unsubscribeListener){
             unsubscribeListener()
+            unsubscribeName()
+            setUnsubscribeListener(false)
         }
         
      }
@@ -107,7 +112,6 @@ export default function MainPage({
             accountHandler = {closeTab}
             loading={pictureVars.loading}
             imgUrl = {pictureVars.url}
-            loader={showLoader}
             unsubscriber = {unsubscriber}
         />
     <div 

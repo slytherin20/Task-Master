@@ -1,19 +1,10 @@
-import { auth } from '../utilities/functions/firebase_config';
-
-function AccountBar({accountHandler,loader,unsubscribe}){
+function AccountBar({accountHandler,unsubscribe}){
 
     function changeLocalInfo(){
        localStorage.clear();
-       signOut()
+       unsubscribe()
     }
 
-    function signOut(){
-        unsubscribe()
-        loader()
-        setTimeout(() => {
-            auth.signOut()
-        }, 1000);
-    }
 
 
     return(<>
